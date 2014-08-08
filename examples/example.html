@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>Dumper - Myo</title>
+    <script src="../myojs-0.8.6.js"></script>
+    <script>
+        var hub = new Myo.Hub();
+
+        hub.on('ready', function() {
+            console.log("ready");
+        });
+        hub.on('connect', function() {
+            console.log("connected!");
+        });
+        hub.on('frame', function(frame) {
+            document.getElementById('out').innerHTML = frame.rotation;
+        });
+        hub.on('disconnect', function() {
+            console.log("disconnect");
+        });
+    </script>
+</head>
+<body>
+<button onclick="hub.myo.vibrate(hub.myo.VIBRATION_LONG);">Vibrate</button>
+  <pre>
+    <div id="out"></div>
+  </pre>
+</body>
+</html>
