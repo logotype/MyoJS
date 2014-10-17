@@ -1,6 +1,6 @@
 {
-  "name": "MyoJS",
-  "version": "0.8.6",
+  "name": "myojs",
+  "version": "0.8.17",
   "description": "JavaScript client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
@@ -9,8 +9,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "underscore": "^1.6.0",
-    "ws": "^0.4.31"
+    "underscore": "latest",
+    "ws": "latest"
   },
   "devDependencies": {
     "browserify": "latest",
