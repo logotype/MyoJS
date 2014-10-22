@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.8.17
+ * MyoJS v0.8.18
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2014 Victor Norgren
@@ -1921,7 +1921,7 @@ var Frame = module.exports = function (data) {
     }
 
     this.data = data;
-    this.type = 'frame';
+    this.type = "frame";
 };
 
 
@@ -1934,16 +1934,16 @@ Frame.prototype.toString = function () {
     return "[Frame id:" + this.id + " timestamp:" + this.timestamp + " accel:" + this.accel.toString() + "]";
 };
 },{"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"underscore":3}],7:[function(require,module,exports){
-var BaseConnection = require('./connection/BaseConnection').BaseConnection,
-    EventEmitter = require('events').EventEmitter,
+var BaseConnection = require("./connection/BaseConnection").BaseConnection,
+    EventEmitter = require("events").EventEmitter,
     CircularBuffer = require("./CircularBuffer"),
-    _ = require('underscore');
+    _ = require("underscore");
 
 var Hub = module.exports = function (data, opt) {
-    this.connectionType = require('./connection/BaseConnection');
-    this.myoType = require('./Myo');
+    this.connectionType = require("./connection/BaseConnection");
+    this.myoType = require("./Myo");
     this.connection = new this.connectionType(opt);
-    this.historyType = require('./CircularBuffer');
+    this.historyType = require("./CircularBuffer");
     this.history = new this.historyType(200);
     this.myos = [];
     this.listeners = [];
@@ -1951,26 +1951,26 @@ var Hub = module.exports = function (data, opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function (data) {
+    this.connection.on("deviceInfo", function (data) {
         hub.myo = new hub.myoType(data, hub.connection);
     });
 
     // Forward events
-    this.connection.on('frame', function (frame) {
+    this.connection.on("frame", function (frame) {
         hub.history.push(frame);
-        hub.emit('frame', frame);
+        hub.emit("frame", frame);
     });
-    this.connection.on('pose', function (pose) {
-        hub.emit('pose', pose);
+    this.connection.on("pose", function (pose) {
+        hub.emit("pose", pose);
     });
-    this.connection.on('ready', function () {
-        hub.emit('ready');
+    this.connection.on("ready", function () {
+        hub.emit("ready");
     });
-    this.connection.on('connect', function () {
-        hub.emit('connect');
+    this.connection.on("connect", function () {
+        hub.emit("connect");
     });
-    this.connection.on('disconnect', function () {
-        hub.emit('disconnect');
+    this.connection.on("disconnect", function () {
+        hub.emit("disconnect");
     });
 };
 
@@ -2073,7 +2073,7 @@ module.exports = {
     Version: require('./Version.js')
 };
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13}],9:[function(require,module,exports){
-var EventEmitter = require('events').EventEmitter;
+var EventEmitter = require("events").EventEmitter;
 
 var Myo = module.exports = function (data, context) {
     /**
@@ -2776,7 +2776,7 @@ Vector3.prototype.toString = function () {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.8.17',
+    full: "0.8.17",
     major: 0,
     minor: 8,
     dot: 1

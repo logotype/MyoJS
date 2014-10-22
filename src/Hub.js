@@ -1,13 +1,13 @@
-var BaseConnection = require('./connection/BaseConnection').BaseConnection,
-    EventEmitter = require('events').EventEmitter,
+var BaseConnection = require("./connection/BaseConnection").BaseConnection,
+    EventEmitter = require("events").EventEmitter,
     CircularBuffer = require("./CircularBuffer"),
-    _ = require('underscore');
+    _ = require("underscore");
 
 var Hub = module.exports = function (data, opt) {
-    this.connectionType = require('./connection/BaseConnection');
-    this.myoType = require('./Myo');
+    this.connectionType = require("./connection/BaseConnection");
+    this.myoType = require("./Myo");
     this.connection = new this.connectionType(opt);
-    this.historyType = require('./CircularBuffer');
+    this.historyType = require("./CircularBuffer");
     this.history = new this.historyType(200);
     this.myos = [];
     this.listeners = [];
@@ -15,26 +15,26 @@ var Hub = module.exports = function (data, opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function (data) {
+    this.connection.on("deviceInfo", function (data) {
         hub.myo = new hub.myoType(data, hub.connection);
     });
 
     // Forward events
-    this.connection.on('frame', function (frame) {
+    this.connection.on("frame", function (frame) {
         hub.history.push(frame);
-        hub.emit('frame', frame);
+        hub.emit("frame", frame);
     });
-    this.connection.on('pose', function (pose) {
-        hub.emit('pose', pose);
+    this.connection.on("pose", function (pose) {
+        hub.emit("pose", pose);
     });
-    this.connection.on('ready', function () {
-        hub.emit('ready');
+    this.connection.on("ready", function () {
+        hub.emit("ready");
     });
-    this.connection.on('connect', function () {
-        hub.emit('connect');
+    this.connection.on("connect", function () {
+        hub.emit("connect");
     });
-    this.connection.on('disconnect', function () {
-        hub.emit('disconnect');
+    this.connection.on("disconnect", function () {
+        hub.emit("disconnect");
     });
 };
 

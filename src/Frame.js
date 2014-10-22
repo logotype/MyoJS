@@ -64,7 +64,7 @@ var Frame = module.exports = function (data) {
     }
 
     this.data = data;
-    this.type = 'frame';
+    this.type = "frame";
 };
 
 
