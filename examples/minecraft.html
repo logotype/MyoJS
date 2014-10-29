@@ -237,7 +237,8 @@
 
 						}
 
-						THREE.GeometryUtils.merge( geometry, dummy );
+                                               dummy.updateMatrix();
+                                               geometry.merge(dummy.geometry, dummy.matrix);
 
 						if ( ( px != h && px != h + 1 ) || x == 0 ) {
 
@@ -250,7 +251,8 @@
 							var colors = dummy.geometry.faces[ 1 ].vertexColors;
 							colors[ 2 ] = pxnz > px && x > 0 ? shadow : light;
 
-							THREE.GeometryUtils.merge( geometry, dummy );
+                                                       dummy.updateMatrix();
+                                                       geometry.merge(dummy.geometry, dummy.matrix);
 
 						}
 
@@ -265,7 +267,8 @@
 							var colors = dummy.geometry.faces[ 1 ].vertexColors;
 							colors[ 2 ] = nxpz > nx && x < worldWidth - 1 ? shadow : light;
 
-							THREE.GeometryUtils.merge( geometry, dummy );
+                                                       dummy.updateMatrix();
+                                                       geometry.merge(dummy.geometry, dummy.matrix);
 
 						}
 
@@ -280,7 +283,8 @@
 							var colors = dummy.geometry.faces[ 1 ].vertexColors;
 							colors[ 2 ] = pxpz > pz && z < worldDepth - 1 ? shadow : light;
 
-							THREE.GeometryUtils.merge( geometry, dummy );
+                                                       dummy.updateMatrix();
+                                                       geometry.merge(dummy.geometry, dummy.matrix);
 
 						}
 
@@ -295,7 +299,8 @@
 							var colors = dummy.geometry.faces[ 1 ].vertexColors;
 							colors[ 2 ] = nxnz > nz && z > 0 ? shadow : light;
 
-							THREE.GeometryUtils.merge( geometry, dummy );
+                                                       dummy.updateMatrix();
+                                                       geometry.merge(dummy.geometry, dummy.matrix);
 
 						}
 
