@@ -1,9 +1,9 @@
 {
     "name": "myojs",
-    "version": "0.8.18",
+    "version": "0.6.0",
     "homepage": "https://github.com/logotype/myoJS.git",
     "description": "JavaScript client for the Thalmic Labs Myo",
-    "main": "myojs-0.8.18.js",
+    "main": "myojs-0.6.0.js",
     "keywords": [
         "myo",
         "myojs",
