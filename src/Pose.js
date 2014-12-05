@@ -10,39 +10,34 @@ var Pose = module.exports = function (data) {
     this.type = data.type;
 
     /**
-     * Default pose type when no pose is being made (PoseTypeNone)
+     * Rest pose.
      */
     this.POSE_REST = 0;
 
     /**
-     * Clenching fingers together to make a fist (PoseTypeFist)
+     * User is making a fist.
      */
     this.POSE_FIST = 1;
 
     /**
-     * Turning your palm towards yourself (PoseTypeWaveIn)
+     * User has an open palm rotated towards the posterior of their wrist.
      */
     this.POSE_WAVE_IN = 2;
 
     /**
-     * Turning your palm away from yourself (PoseTypeWaveOut)
+     * User has an open palm rotated towards the anterior of their wrist.
      */
     this.POSE_WAVE_OUT = 3;
 
     /**
-     * Spreading your fingers and extending your palm (PoseTypeFingersSpread)
+     * User has an open palm with their fingers spread away from each other.
      */
     this.POSE_FINGERS_SPREAD = 4;
 
     /**
-     * Thumb to pinky (unlock)
+     * User tapped their thumb and middle finger together twice in succession.
      */
-    this.POSE_RESERVED_1 = 5;
-
-    /**
-     * Thumb to pinky (unlock)
-     */
-    this.POSE_THUMB_TO_PINKY = 6;
+    this.DOUBLE_TAP = 5;
 };
 
 Pose.prototype.isEqualTo = function (other) {
@@ -71,7 +66,7 @@ Pose.prototype.toString = function () {
     }
     switch (this.type) {
         case this.POSE_REST:
-            return "[Pose type:" + this.type.toString() + " POSE_NONE]";
+            return "[Pose type:" + this.type.toString() + " POSE_REST]";
             break;
         case this.POSE_FIST:
             return "[Pose type:" + this.type.toString() + " POSE_FIST]";
@@ -85,11 +80,8 @@ Pose.prototype.toString = function () {
         case this.POSE_FINGERS_SPREAD:
             return "[Pose type:" + this.type.toString() + " POSE_FINGERS_SPREAD]";
             break;
-        case this.POSE_RESERVED_1:
-            return "[Pose type:" + this.type.toString() + " POSE_RESERVED_1]";
-            break;
-        case this.POSE_THUMB_TO_PINKY:
-            return "[Pose type:" + this.type.toString() + " POSE_THUMB_TO_PINKY]";
+        case this.DOUBLE_TAP:
+            return "[Pose type:" + this.type.toString() + " DOUBLE_TAP]";
             break;
         default:
             break;

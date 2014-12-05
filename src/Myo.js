@@ -17,8 +17,22 @@ var Myo = module.exports = function (data, context) {
     this.VIBRATION_LONG = 2;
 
     /**
+     * Unlock for a fixed period of time.
+     */
+    this.UNLOCK_TIMED = 0;
+
+    /**
+     * Unlock until explicitly told to re-lock.
+     */
+    this.UNLOCK_HOLD = 1;
+
+    /**
+     * User did a single, discrete action, such as pausing a video.
+     */
+    this.USER_ACTION_SINGLE = 0;
+
+    /**
      * @private
-     * Native Extension context object.
      *
      */
     this.context = context;
@@ -54,6 +68,50 @@ Myo.prototype.vibrate = function (length) {
             break;
         default:
             throw new Error("Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG");
+            break;
+    }
+};
+
+/**
+ * Unlock the given Myo.
+ * Can be called when a Myo is paired.
+ *
+ */
+Myo.prototype.unlock = function (option) {
+    switch (option) {
+        case this.UNLOCK_TIMED:
+            this.context.send({"command":"unlock", "args" : [this.UNLOCK_TIMED]});
+            break;
+        case this.UNLOCK_HOLD:
+            this.context.send({"command":"unlock", "args" : [this.UNLOCK_HOLD]});
+            break;
+        default:
+            throw new Error("Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD");
+            break;
+    }
+};
+
+/**
+ * Lock the given Myo immediately.
+ * Can be called when a Myo is paired.
+ *
+ */
+Myo.prototype.lock = function () {
+    this.context.send({"command":"lock"});
+};
+
+/**
+ * Notify the given Myo that a user action was recognized.
+ * Can be called when a Myo is paired. Will cause Myo to vibrate.
+ *
+ */
+Myo.prototype.notifyUserAction = function (action) {
+    switch (action) {
+        case this.USER_ACTION_SINGLE:
+            this.context.send({"command":"notifyUserAction", "args" : [this.USER_ACTION_SINGLE]});
+            break;
+        default:
+            throw new Error("Valid values are: Myo.USER_ACTION_SINGLE");
             break;
     }
 };
