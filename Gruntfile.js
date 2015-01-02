@@ -4,7 +4,7 @@ module.exports = function(grunt){
 \n * MyoJS v<%= pkg.version %>\
 \n * https://github.com/logotype/myojs.git\
 \n * \
-\n * Copyright 2014 Victor Norgren\
+\n * Copyright 2015 Victor Norgren\
 \n * Released under the MIT license\
 \n */";
 

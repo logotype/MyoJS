@@ -63,6 +63,15 @@ var Frame = module.exports = function (data) {
         this.gyro = Vector3.invalid();
     }
 
+    /**
+     * EMG data
+     */
+    if (data["emg"]) {
+        this.emg = data["emg"];
+    } else {
+        this.emg = [];
+    }
+
     this.data = data;
     this.type = "frame";
 };

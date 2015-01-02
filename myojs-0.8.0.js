@@ -1,8 +1,8 @@
 /*! 
- * MyoJS v0.7.0
+ * MyoJS v0.8.0
  * https://github.com/logotype/myojs.git
  * 
- * Copyright 2014 Victor Norgren
+ * Copyright 2015 Victor Norgren
  * Released under the MIT license
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -1943,6 +1943,15 @@ var Frame = module.exports = function (data) {
         this.gyro = Vector3.invalid();
     }
 
+    /**
+     * EMG data
+     */
+    if (data["emg"]) {
+        this.emg = data["emg"];
+    } else {
+        this.emg = [];
+    }
+
     this.data = data;
     this.type = "frame";
 };
@@ -2851,7 +2860,7 @@ Vector3.prototype.toString = function () {
 module.exports = {
     full: "0.8.17",
     major: 0,
-    minor: 7,
+    minor: 8,
     dot: 0
 }
 },{}],14:[function(require,module,exports){
