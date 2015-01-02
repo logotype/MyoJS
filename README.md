@@ -41,6 +41,7 @@ Features
 + Same structure as official API
 + Supports browser and node.js connections
 + Accelerometer, Gyroscope, Pose and more
++ Access to raw EMG data
 + Connects via [myodaemon OSX app](https://github.com/logotype/myodaemon)
 
 Authors
@@ -56,7 +57,7 @@ Authors
 Copyright and license
 ---------------------
 
-Copyright © 2014 logotype
+Copyright © 2015 logotype
 
 Author: Victor Norgren
 
