@@ -21,11 +21,11 @@ var Vector3 = module.exports = function (data) {
  *
  */
 Vector3.prototype.opposite = function () {
-    return new Vector3({
-        x: -this.x,
-        y: -this.y,
-        z: -this.z
-    });
+    return new Vector3([
+        -this.x,
+        -this.y,
+        -this.z
+    ]);
 };
 
 /**
@@ -35,11 +35,11 @@ Vector3.prototype.opposite = function () {
  *
  */
 Vector3.prototype.plus = function (other) {
-    return new Vector3({
-        x: this.x + other.x,
-        y: this.y + other.y,
-        z: this.z + other.z
-    });
+    return new Vector3([
+        this.x + other.x,
+        this.y + other.y,
+        this.z + other.z
+    ]);
 };
 
 /**
@@ -62,11 +62,11 @@ Vector3.prototype.plusAssign = function (other) {
  *
  */
 Vector3.prototype.minus = function (other) {
-    return new Vector3({
-        x: this.x - other.x,
-        y: this.y - other.y,
-        z: this.z - other.z
-    });
+    return new Vector3([
+        this.x - other.x,
+        this.y - other.y,
+        this.z - other.z
+    ]);
 };
 
 /**
@@ -89,11 +89,11 @@ Vector3.prototype.minusAssign = function (other) {
  *
  */
 Vector3.prototype.multiply = function (scalar) {
-    return new Vector3({
-        x: this.x * scalar,
-        y: this.y * scalar,
-        z: this.z * scalar
-    });
+    return new Vector3([
+        this.x * scalar,
+        this.y * scalar,
+        this.z * scalar
+    ]);
 };
 
 /**
@@ -116,11 +116,11 @@ Vector3.prototype.multiplyAssign = function (scalar) {
  *
  */
 Vector3.prototype.divide = function (scalar) {
-    return new Vector3({
-        x: this.x / scalar,
-        y: this.y / scalar,
-        z: this.z / scalar
-    });
+    return new Vector3([
+        this.x / scalar,
+        this.y / scalar,
+        this.z / scalar
+    ]);
 };
 
 /**
@@ -184,11 +184,11 @@ Vector3.prototype.angleTo = function (other) {
  *
  */
 Vector3.prototype.cross = function (other) {
-    return new Vector3({
-        x: (this.y * other.z) - (this.z * other.y),
-        y: (this.z * other.x) - (this.x * other.z),
-        z: (this.x * other.y) - (this.y * other.x)
-    });
+    return new Vector3([
+        (this.y * other.z) - (this.z * other.y),
+        (this.z * other.x) - (this.x * other.z),
+        (this.x * other.y) - (this.y * other.x)
+    ]);
 };
 
 /**
@@ -257,18 +257,18 @@ Vector3.prototype.magnitudeSquared = function () {
 Vector3.prototype.normalized = function () {
     var denom = this.magnitudeSquared();
     if (denom <= 0)
-        return new Vector3({
-            x: 0,
-            y: 0,
-            z: 0
-        });
+        return new Vector3([
+            0,
+            0,
+            0
+        ]);
 
     denom = 1 / Math.sqrt(denom);
-    return new Vector3({
-        x: this.x * denom,
-        y: this.y * denom,
-        z: this.z * denom
-    });
+    return new Vector3([
+        this.x * denom,
+        this.y * denom,
+        this.z * denom
+    ]);
 };
 
 /**
@@ -328,11 +328,11 @@ Vector3.prototype.roll = function () {
  *
  */
 Vector3.prototype.zero = function () {
-    return new Vector3({
-        x: 0,
-        y: 0,
-        z: 0
-    });
+    return new Vector3([
+        0,
+        0,
+        0
+    ]);
 };
 
 /**
@@ -341,11 +341,11 @@ Vector3.prototype.zero = function () {
  *
  */
 Vector3.prototype.xAxis = function () {
-    return new Vector3({
-        x: 1,
-        y: 0,
-        z: 0
-    });
+    return new Vector3([
+        1,
+        0,
+        0
+    ]);
 };
 
 /**
@@ -354,11 +354,11 @@ Vector3.prototype.xAxis = function () {
  *
  */
 Vector3.prototype.yAxis = function () {
-    return new Vector3({
-        x: 0,
-        y: 1,
-        z: 0
-    });
+    return new Vector3([
+        0,
+        1,
+        0
+    ]);
 };
 
 /**
@@ -367,11 +367,11 @@ Vector3.prototype.yAxis = function () {
  *
  */
 Vector3.prototype.zAxis = function () {
-    return new Vector3({
-        x: 0,
-        y: 0,
-        z: 1
-    });
+    return new Vector3([
+        0,
+        0,
+        1
+    ]);
 };
 
 /**
@@ -380,11 +380,11 @@ Vector3.prototype.zAxis = function () {
  *
  */
 Vector3.prototype.left = function () {
-    return new Vector3({
-        x: -1,
-        y: 0,
-        z: 0
-    });
+    return new Vector3([
+        -1,
+        0,
+        0
+    ]);
 };
 
 /**
@@ -402,11 +402,11 @@ Vector3.prototype.right = function () {
  *
  */
 Vector3.prototype.down = function () {
-    return new Vector3({
-        x: 0,
-        y: -1,
-        z: 0
-    });
+    return new Vector3([
+        0,
+        -1,
+        0
+    ]);
 };
 
 /**
@@ -424,11 +424,11 @@ Vector3.prototype.up = function () {
  *
  */
 Vector3.prototype.forward = function () {
-    return new Vector3({
-        x: 0,
-        y: 0,
-        z: -1
-    });
+    return new Vector3([
+        0,
+        0,
+        -1
+    ]);
 };
 
 /**

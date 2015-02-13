@@ -27,6 +27,9 @@ var Hub = module.exports = function (data, opt) {
     this.connection.on("pose", function (pose) {
         hub.emit("pose", pose);
     });
+    this.connection.on("event", function (event) {
+        hub.emit(event.type);
+    });
     this.connection.on("ready", function () {
         hub.emit("ready");
     });

@@ -1,6 +1,6 @@
 {
   "name": "myojs",
-  "version": "0.8.1",
+  "version": "0.8.1.1",
   "description": "JavaScript client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
@@ -13,6 +13,8 @@
     "ws": "latest"
   },
   "devDependencies": {
+    "mocha": "latest",
+    "chai": "latest",
     "browserify": "latest",
     "uglify-js": "latest",
     "grunt": "latest",

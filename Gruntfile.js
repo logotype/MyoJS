@@ -16,8 +16,7 @@ module.exports = function(grunt){
                 files: {
                     'src/': 'src/Version.js',
                     './': 'bower.json',
-                    'examples/': 'examples/*.html',
-                    'test/': 'test/helpers/browser.html'
+                    'examples/': 'examples/*.html'
                 },
                 options:{
                     replacements: [
@@ -77,7 +76,6 @@ module.exports = function(grunt){
                 src: [filename + '.js', filename + '.min.js']
             }
         },
-        // run with `grunt watch` or `grunt test watch`
         watch: {
             files: 'src/**/*',
             tasks: ['default'],
@@ -88,10 +86,7 @@ module.exports = function(grunt){
 
         },
         exec: {
-            'test-browser': './node_modules/.bin/mocha-phantomjs -R dot test/helpers/browser.html',
-            // -i -g stands for inverse grep.  Tests tagged browser-only will be excluded.
-            'test-node': './node_modules/.bin/mocha src/index.js test/helpers/node.js test/*.js -R dot -i -g browser-only',
-            'test-integration': 'node integration_test/reconnection.js && node integration_test/protocol_versions.js'
+            'test-node': './node_modules/.bin/mocha src/index.js test/*.js -i'
         }
     });
 
@@ -112,8 +107,6 @@ module.exports = function(grunt){
     ]);
 
     grunt.registerTask('test-only', [
-        'exec:test-node',
-        'exec:test-browser',
-        'exec:test-integration'
+        'exec:test-node'
     ]);
 };

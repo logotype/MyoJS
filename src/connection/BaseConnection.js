@@ -112,6 +112,11 @@ BaseConnection.prototype.handleData = function (data) {
         if (messageEvent.pose) {
             this.emit("pose", messageEvent.pose);
         }
+
+        // Emit event if existing
+        if (messageEvent.event) {
+            this.emit("event", messageEvent.event);
+        }
     }
 };
 

@@ -19,21 +19,21 @@ var Quaternion = module.exports = function (data) {
 
 Quaternion.prototype.normalized = function () {
     var magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
-    return new Quaternion({
-        x: this.x / magnitude,
-        y: this.y / magnitude,
-        z: this.z / magnitude,
-        w: this.w / magnitude
-    });
+    return new Quaternion([
+        this.x / magnitude,
+        this.y / magnitude,
+        this.z / magnitude,
+        this.w / magnitude
+    ]);
 };
 
 Quaternion.prototype.conjugate = function () {
-    return new Quaternion({
-        x: -this.x,
-        y: -this.y,
-        z: -this.z,
-        w: this.w
-    });
+    return new Quaternion([
+        -this.x,
+        -this.y,
+        -this.z,
+        this.w
+    ]);
 };
 
 Quaternion.prototype.roll = function (rotation) {
@@ -56,11 +56,7 @@ Quaternion.prototype.yaw = function (rotation) {
  *
  */
 Quaternion.invalid = function() {
-    return new Quaternion({ invalid: true,
-        x: NaN,
-        y: NaN,
-        z: NaN
-    });
+    return new Quaternion({ invalid: true });
 };
 
 /**

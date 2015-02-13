@@ -27,6 +27,10 @@ var Frame = module.exports = function (data) {
         this.euler = data["euler"];
     }
 
+    if (data["rssi"]) {
+        this.rssi = data["rssi"];
+    }
+
     /**
      * A change in pose has been detected.
      * @member pose
