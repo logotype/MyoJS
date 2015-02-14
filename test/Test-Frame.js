@@ -38,7 +38,7 @@ describe('Frame', function(){
         });
 
         it('should make a pose of type DOUBLE_TAP', function(){
-            var pose = new MyoJS.Pose({});
+            var pose = new MyoJS.Pose({invalid:true});
             assert.equal(frame.pose.type, pose.DOUBLE_TAP, 'Pose is POSE.DOUBLE_TAP');
         });
     });
