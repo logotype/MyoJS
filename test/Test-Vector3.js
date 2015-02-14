@@ -10,6 +10,18 @@ describe('Vector3', function(){
             assert.equal(vec.z, 3);
         });
     });
+    describe('constructor validation', function(){
+        it('should throw an error when passing an empty object', function(){
+            assert.throws(function() {
+                new MyoJS.Vector3({});
+            }, Error, "Components needs to be an array");
+        });
+        it('should throw an error when passing strings', function(){
+            assert.throws(function() {
+                new MyoJS.Vector3(["a", "b", "c"]);
+            }, Error, "Component values needs to be integers or numbers");
+        });
+    });
     describe('#opposite', function(){
         it('should return a Vector3 object with all components negated', function(){
             var vec1 = new MyoJS.Vector3([1, 2, 3]);
@@ -132,9 +144,15 @@ describe('Vector3', function(){
     });
     describe('#isValid', function(){
         it('should be valid', function(){ assert.equal(new MyoJS.Vector3([1, 2, 3]).isValid(), true) });
-        it('should not be valid', function(){ assert.equal(new MyoJS.Vector3(["a", "b", "c"]).isValid(), false) });
-        it('should not be valid', function(){ assert.equal(new MyoJS.Vector3([NaN, NaN, NaN]).isValid(), false) });
-        it('should not be valid', function(){ assert.equal(new MyoJS.Vector3({}).isValid(), false) });
+        assert.throws(function() {
+            new MyoJS.Vector3(["a", "b", "c"]);
+        }, Error, "Component values needs to be integers or numbers");
+        assert.throws(function() {
+            new MyoJS.Vector3([NaN, NaN, NaN]);
+        }, Error, "Component values needs to be integers or numbers");
+        assert.throws(function() {
+            new MyoJS.Vector3({});
+        }, Error, "Components needs to be an array");
         it('should not be valid', function(){ assert.equal(new MyoJS.Vector3({invalid:true}).isValid(), false) });
     });
     describe('#magnitude', function(){

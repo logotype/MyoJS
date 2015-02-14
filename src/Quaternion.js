@@ -5,6 +5,12 @@ var Quaternion = module.exports = function(data) {
     this.valid = data.hasOwnProperty("invalid") ? false : true;
 
     if (this.valid) {
+        if(Object.prototype.toString.call(data) !== '[object Array]') {
+            throw new Error("Components needs to be an array");
+        }
+        if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
+            throw new Error("Component values needs to be integers or numbers");
+        }
         this.x = data[0];
         this.y = data[1];
         this.z = data[2];
