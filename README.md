@@ -6,6 +6,8 @@ The Myo armband measures the electrical activity from your muscles to detect wha
 
 [thalmic.com](http://www.thalmic.com)
 
+[![Build Status](https://travis-ci.org/logotype/MyoJS.svg?branch=master)](https://travis-ci.org/logotype/MyoJS)
+
 Quick start
 -----------
 
