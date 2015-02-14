@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.8.1.1
+ * MyoJS v0.8.2
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -2920,7 +2920,7 @@ module.exports = {
     full: "0.8.17",
     major: 0,
     minor: 8,
-    dot: 1
+    dot: 2
 }
 },{}],14:[function(require,module,exports){
 (function (process){

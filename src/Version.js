@@ -3,5 +3,5 @@ module.exports = {
     full: "0.8.17",
     major: 0,
     minor: 8,
-    dot: 1
+    dot: 2
 }
