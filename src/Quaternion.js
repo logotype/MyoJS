@@ -1,10 +1,10 @@
-var Quaternion = module.exports = function (data) {
+var Quaternion = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Quaternion object.
      */
     this.valid = data.hasOwnProperty("invalid") ? false : true;
 
-    if(this.valid) {
+    if (this.valid) {
         this.x = data[0];
         this.y = data[1];
         this.z = data[2];
@@ -17,7 +17,14 @@ var Quaternion = module.exports = function (data) {
     }
 };
 
-Quaternion.prototype.normalized = function () {
+/**
+ * A normalized copy of this quaternion.
+ * A normalized quaternion has the same direction as the original
+ * quaternion, but with a length of one.
+ * @return A Quaternion object with a length of one, pointing in the same direction as this Quaternion object.
+ *
+ */
+Quaternion.prototype.normalized = function() {
     var magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
     return new Quaternion([
         this.x / magnitude,
@@ -27,25 +34,80 @@ Quaternion.prototype.normalized = function () {
     ]);
 };
 
-Quaternion.prototype.conjugate = function () {
-    return new Quaternion([
-        -this.x,
-        -this.y,
-        -this.z,
+/**
+ * A copy of this quaternion pointing in the opposite direction.
+ *
+ */
+Quaternion.prototype.conjugate = function() {
+    return new Quaternion([-this.x, -this.y, -this.z,
         this.w
     ]);
 };
 
-Quaternion.prototype.roll = function (rotation) {
-    return Math.atan2(2 * rotation.y * rotation.w - 2 * rotation.x * rotation.z, 1 - 2 * rotation.y * rotation.y - 2 * rotation.z * rotation.z);
+/**
+ * Convert Quaternion to Euler angles.
+ * @see http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
+ *
+ */
+Quaternion.prototype.toEuler = function() {
+    var test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
+
+    sqw = this.w * this.w;
+    sqx = this.x * this.x;
+    sqy = this.y * this.y;
+    sqz = this.z * this.z;
+    unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+    test = this.x * this.y + this.z * this.w;
+    if (test > 0.499 * unit) { // singularity at north pole
+        heading = 2 * Math.atan2(this.x, this.w);
+        attitude = Math.PI / 2;
+        bank = 0;
+        return;
+    }
+    if (test < -0.499 * unit) { // singularity at south pole
+        heading = -2 * Math.atan2(this.x, this.w);
+        attitude = -Math.PI / 2;
+        bank = 0;
+        return;
+    }
+    heading = Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, sqx - sqy - sqz + sqw);
+    attitude = Math.asin(2 * test / unit);
+    bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
+
+    /*
+     * Heading = rotation about y axis
+     * Attitude = rotation about z axis
+     * Bank = rotation about x axis
+     */
+    return {
+        heading: heading,
+        attitude: attitude,
+        bank: bank
+    }
 };
 
-Quaternion.prototype.pitch = function (rotation) {
-    return Math.atan2(2 * rotation.x * rotation.w - 2 * rotation.y * rotation.z, 1 - 2 * rotation.x * rotation.x - 2 * rotation.z * rotation.z);
+/**
+ * Convert Quaternion to Euler angles (roll).
+ *
+ */
+Quaternion.prototype.roll = function() {
+    return Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, 1 - 2 * this.y * this.y - 2 * this.z * this.z);
 };
 
-Quaternion.prototype.yaw = function (rotation) {
-    return Math.asin(2 * rotation.x * rotation.y + 2 * rotation.z * rotation.w);
+/**
+ * Convert Quaternion to Euler angles (pitch).
+ *
+ */
+Quaternion.prototype.pitch = function() {
+    return Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, 1 - 2 * this.x * this.x - 2 * this.z * this.z);
+};
+
+/**
+ * Convert Quaternion to Euler angles (yaw).
+ *
+ */
+Quaternion.prototype.yaw = function() {
+    return Math.asin(2 * this.x * this.y + 2 * this.z * this.w);
 };
 
 /**
@@ -56,7 +118,9 @@ Quaternion.prototype.yaw = function (rotation) {
  *
  */
 Quaternion.invalid = function() {
-    return new Quaternion({ invalid: true });
+    return new Quaternion({
+        invalid: true
+    });
 };
 
 /**
@@ -64,8 +128,8 @@ Quaternion.invalid = function() {
  * @return
  *
  */
-Quaternion.prototype.toString = function () {
-    if(!this.valid) {
+Quaternion.prototype.toString = function() {
+    if (!this.valid) {
         return "[Quaternion invalid]";
     }
     return "[Quaternion x:" + this.x + " y:" + this.y + " z:" + this.z + " w:" + this.w + "]";

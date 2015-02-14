@@ -86,7 +86,7 @@ module.exports = function(grunt){
 
         },
         exec: {
-            'test-node': './node_modules/.bin/mocha src/index.js test/*.js -i'
+            'test-node': './node_modules/.bin/mocha src/index.js test/*.js -i -R dot'
         }
     });
 

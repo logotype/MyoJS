@@ -1,10 +1,10 @@
-var CircularBuffer = require('../src/CircularBuffer'),
+var MyoJS = require('../src'),
     assert = require('chai').assert;
 
 describe('CircularBuffer', function(){
     describe('#push', function(){
         it('should allow pushing elements', function(){
-            var buf = new CircularBuffer(10);
+            var buf = new MyoJS.CircularBuffer(10);
             buf.push(1);
             buf.push(2);
             buf.push(3);
@@ -17,7 +17,7 @@ describe('CircularBuffer', function(){
 
     describe('overflowing', function(){
         it('should return elements after its overflowed', function(){
-            var buf = new CircularBuffer(10);
+            var buf = new MyoJS.CircularBuffer(10);
             for (var i = 0; i != 20; i++) {
                 buf.push(i);
             }

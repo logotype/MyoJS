@@ -1,5 +1,4 @@
-var Frame = require('../src/Frame'),
-    Pose = require('../src/Pose'),
+var MyoJS = require('../src'),
     assert = require('chai').assert;
     _ = require('underscore');
 
@@ -7,7 +6,7 @@ var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : 1423842951, "rssi" : 
 
 describe('Frame', function(){
     describe('End to End', function(){
-        var frame = new Frame(JSON.parse(frameDump).frame);
+        var frame = new MyoJS.Frame(JSON.parse(frameDump).frame);
         it('should have id', function(){ assert.equal(frame.id, 43928, 'id found') });
         it('should have timestamp', function(){ assert.equal(frame.timestamp, 1423842951, 'timestamp found') });
         it('should have rssi', function(){ assert.equal(frame.rssi, 53, 'rssi found') });
@@ -39,7 +38,7 @@ describe('Frame', function(){
         });
 
         it('should make a pose of type DOUBLE_TAP', function(){
-            var pose = new Pose({});
+            var pose = new MyoJS.Pose({});
             assert.equal(frame.pose.type, pose.DOUBLE_TAP, 'Pose is POSE.DOUBLE_TAP');
         });
     });

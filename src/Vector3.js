@@ -56,7 +56,7 @@ Vector3.prototype.plusAssign = function (other) {
 };
 
 /**
- * A copy of this vector pointing in the opposite direction.
+ * A copy of this vector pointing in the opposite direction (conjugate).
  * @param other
  * @return
  *
