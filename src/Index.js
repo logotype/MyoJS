@@ -3,6 +3,7 @@
  * @namespace Myo
  */
 module.exports = {
+    BaseConnection: require("./connection/BaseConnection"),
     Hub: require("./Hub"),
     Myo: require("./Myo"),
     CircularBuffer: require("./CircularBuffer"),

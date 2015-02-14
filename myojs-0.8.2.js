@@ -2073,6 +2073,7 @@ _.extend(Hub.prototype, EventEmitter.prototype);
  * @namespace Myo
  */
 module.exports = {
+    BaseConnection: require("./connection/BaseConnection"),
     Hub: require("./Hub"),
     Myo: require("./Myo"),
     CircularBuffer: require("./CircularBuffer"),
@@ -2082,7 +2083,7 @@ module.exports = {
     Frame: require("./Frame"),
     Version: require('./Version.js')
 };
-},{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13}],9:[function(require,module,exports){
+},{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
 var EventEmitter = require("events").EventEmitter;
 
 var Myo = module.exports = function (data, context) {

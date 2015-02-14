@@ -1,4 +1,4 @@
-var MyoJS = require('../src'),
+var MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
 
 describe('Vector3', function(){
