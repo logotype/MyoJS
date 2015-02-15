@@ -2,24 +2,32 @@ var MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
 
 describe('Vector3', function(){
-    describe('constructor', function(){
+    describe('Constructor validation', function(){
         it('should return a Vector3 object with correct components', function(){
             var vec = new MyoJS.Vector3([1, 2, 3]);
             assert.equal(vec.x, 1);
             assert.equal(vec.y, 2);
             assert.equal(vec.z, 3);
         });
-    });
-    describe('constructor validation', function(){
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
                 new MyoJS.Vector3({});
             }, Error, "Components needs to be an array");
         });
+        it('should throw an error when having no arguments', function(){
+            assert.throws(function() {
+                new MyoJS.Vector3();
+            }, Error, "Missing constructor arguments");
+        });
         it('should throw an error when passing strings', function(){
             assert.throws(function() {
                 new MyoJS.Vector3(["a", "b", "c"]);
             }, Error, "Component values needs to be integers or numbers");
+        });
+        it('should throw an error when passing string as argument', function(){
+            assert.throws(function() {
+                var frame = new MyoJS.Vector3("frame");
+            }, Error, "Constructor parameter needs to be an object");
         });
     });
     describe('#opposite', function(){

@@ -5,6 +5,32 @@ var MyoJS = require('../src/Index.js'),
 var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : 1423842951, "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ] }}';
 
 describe('Frame', function(){
+    describe('Constructor validation', function(){
+        it('should throw an error when having no arguments', function(){
+            assert.throws(function() {
+                new MyoJS.Frame();
+            }, Error, "Missing constructor arguments");
+        });
+        it('should throw an error when having no frame id', function(){
+            assert.throws(function() {
+                var invalidFrame = JSON.parse(frameDump);
+                delete invalidFrame.frame.id;
+                var frame = new MyoJS.Frame(invalidFrame.frame);
+            }, Error, "Frame id needs to be of type integer");
+        });
+        it('should throw an error when having no frame timestamp', function(){
+            assert.throws(function() {
+                var invalidFrame = JSON.parse(frameDump);
+                delete invalidFrame.frame.timestamp;
+                var frame = new MyoJS.Frame(invalidFrame.frame);
+            }, Error, "Timestamp needs to be of type integer");
+        });
+        it('should throw an error when passing string as argument', function(){
+            assert.throws(function() {
+                var frame = new MyoJS.Frame("frame");
+            }, Error, "Constructor parameter needs to be an object");
+        });
+    });
     describe('End to End', function(){
         var frame = new MyoJS.Frame(JSON.parse(frameDump).frame);
         it('should have id', function(){ assert.equal(frame.id, 43928, 'id found') });
@@ -28,6 +54,11 @@ describe('Frame', function(){
             it('should have x', function(){ assert.equal(frame.gyro.x, 2.868652, 'x is matching') });
             it('should have y', function(){ assert.equal(frame.gyro.y, -2.868652, 'y is matching') });
             it('should have z', function(){ assert.equal(frame.gyro.z, 2.563476, 'z is matching') });
+        });
+
+        describe('vector comparison', function() {
+            it('gyro should be equal to gyro', function(){ assert.equal(frame.gyro.isEqualTo(frame.gyro), true) });
+            it('gyro should not be equal to accel', function(){ assert.equal(frame.gyro.isEqualTo(frame.accel), false) });
         });
 
         describe('frame.rotation (Quaternion)', function() {

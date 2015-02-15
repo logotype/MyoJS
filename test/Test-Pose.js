@@ -2,14 +2,12 @@ var MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
 
 describe('Pose', function(){
-    describe('constructor', function(){
+    describe('Constructor validation', function(){
         it('should return a Pose object', function(){
             var pose = new MyoJS.Pose({type:3});
             assert.equal(pose.type, 3);
             assert.equal(pose.type, pose.POSE_WAVE_OUT);
         });
-    });
-    describe('constructor validation', function(){
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
                 new MyoJS.Pose({});

@@ -15,7 +15,7 @@ describe('CircularBuffer', function(){
         });
     });
 
-    describe('overflowing', function(){
+    describe('Overflowing', function(){
         it('should return elements after its overflowed', function(){
             var buf = new MyoJS.CircularBuffer(10);
             for (var i = 0; i != 20; i++) {

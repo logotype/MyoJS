@@ -6,6 +6,20 @@ var Hub = require("./Hub"),
     _ = require("underscore");
 
 var Frame = module.exports = function (data) {
+
+    if(!data) {
+        throw new Error("Missing constructor arguments");
+    }
+    if(typeof data !== "object") {
+        throw new Error("Constructor parameter needs to be an object");
+    }
+    if(!data.hasOwnProperty("id") || data.id !== parseInt(data.id, 10)) {
+        throw new Error("Frame id needs to be of type integer");
+    }
+    if(!data.hasOwnProperty("timestamp") || data.timestamp !== parseInt(data.timestamp, 10)) {
+        throw new Error("Timestamp needs to be of type integer");
+    }
+
     /**
      * A unique ID for this Frame. Consecutive frames processed by the Myo
      * have consecutive increasing values.
