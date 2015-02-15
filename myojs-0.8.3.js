@@ -1991,7 +1991,7 @@ var Hub = module.exports = function (opt) {
 
     // Forward events
     this.connection.on('deviceInfo', function (data) {
-        hub.myo = new Myo(data, hub.connection);
+        hub.myo = new Myo(hub.connection);
     });
 
     // Forward events
@@ -2095,7 +2095,11 @@ module.exports = {
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 
-var Myo = module.exports = function (data, context) {
+var Myo = module.exports = function (context) {
+
+    if(!context) {
+        throw new Error("Missing context");
+    }
     /**
      * A vibration lasting a small amount of time (VibrationLengthShort)
      */
