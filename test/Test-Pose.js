@@ -11,17 +11,17 @@ describe('Pose', function(){
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
                 new MyoJS.Pose({});
-            }, Error, "Pose type needs to be of type integer");
+            }, Error, 'Pose type needs to be of type integer');
         });
         it('should throw an error when passing string as type', function(){
             assert.throws(function() {
-                new MyoJS.Pose({type:"a"});
-            }, Error, "Pose type needs to be of type integer");
+                new MyoJS.Pose({type:'a'});
+            }, Error, 'Pose type needs to be of type integer');
         });
         it('should throw an error when passing array', function(){
             assert.throws(function() {
-                new MyoJS.Pose(["a", "b", "c"]);
-            }, Error, "Constructor parameter needs to be an object");
+                new MyoJS.Pose(['a', 'b', 'c']);
+            }, Error, 'Constructor parameter needs to be an object');
         });
     });
     describe('#isEqual', function(){

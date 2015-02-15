@@ -1,13 +1,14 @@
-var BaseConnection = require("./connection/BaseConnection").BaseConnection,
-    EventEmitter = require("events").EventEmitter,
-    CircularBuffer = require("./CircularBuffer"),
-    _ = require("underscore");
+var EventEmitter = require('events').EventEmitter,
+    BaseConnection = require('./connection/BaseConnection').BaseConnection,
+    CircularBuffer = require('./CircularBuffer'),
+    Myo = require('./Myo'),
+    _ = require('underscore');
 
-var Hub = module.exports = function (data, opt) {
+var Hub = module.exports = function (opt) {
     this.connectionType = require("./connection/BaseConnection");
-    this.myoType = require("./Myo");
+    this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);
-    this.historyType = require("./CircularBuffer");
+    this.historyType = require('./CircularBuffer');
     this.history = new this.historyType(200);
     this.myos = [];
     this.listeners = [];
@@ -15,29 +16,29 @@ var Hub = module.exports = function (data, opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on("deviceInfo", function (data) {
-        hub.myo = new hub.myoType(data, hub.connection);
+    this.connection.on('deviceInfo', function (data) {
+        hub.myo = new Myo(data, hub.connection);
     });
 
     // Forward events
-    this.connection.on("frame", function (frame) {
+    this.connection.on('frame', function (frame) {
         hub.history.push(frame);
-        hub.emit("frame", frame);
+        hub.emit('frame', frame);
     });
-    this.connection.on("pose", function (pose) {
-        hub.emit("pose", pose);
+    this.connection.on('pose', function (pose) {
+        hub.emit('pose', pose);
     });
-    this.connection.on("event", function (event) {
+    this.connection.on('event', function (event) {
         hub.emit(event.type);
     });
-    this.connection.on("ready", function () {
-        hub.emit("ready");
+    this.connection.on('ready', function () {
+        hub.emit('ready');
     });
-    this.connection.on("connect", function () {
-        hub.emit("connect");
+    this.connection.on('connect', function () {
+        hub.emit('connect');
     });
-    this.connection.on("disconnect", function () {
-        hub.emit("disconnect");
+    this.connection.on('disconnect', function () {
+        hub.emit('disconnect');
     });
 };
 
@@ -69,7 +70,7 @@ Hub.prototype.frame = function (num) {
  */
 Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
     var myo = this.connection.send({
-        "waitForMyo": timeoutMilliseconds
+        'waitForMyo': timeoutMilliseconds
     });
     if (myo) {
         myo.context = this.connection;
@@ -86,7 +87,7 @@ Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
 Hub.prototype.addListener = function (listener) {
     this.listeners.push(listener);
     this.connection.send({
-        "addListener": listener
+        'addListener': listener
     });
 };
 
@@ -108,7 +109,7 @@ Hub.prototype.removeListener = function (listener) {
  */
 Hub.prototype.run = function (durationMilliseconds) {
     this.connection.send({
-        "run": durationMilliseconds
+        'run': durationMilliseconds
     });
 };
 
@@ -118,7 +119,7 @@ Hub.prototype.run = function (durationMilliseconds) {
  */
 Hub.prototype.runOnce = function (durationMilliseconds) {
     this.connection.send({
-        "runOnce": durationMilliseconds
+        'runOnce': durationMilliseconds
     });
 };
 

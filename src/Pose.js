@@ -2,14 +2,14 @@ var Pose = module.exports = function (data) {
     /**
      * Indicates whether this is a valid Pose object.
      */
-    this.valid = data.hasOwnProperty("invalid") ? false : true;
+    this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if(this.valid) {
-        if(typeof data !== "object" || Object.prototype.toString.call(data) === '[object Array]') {
-            throw new Error("Constructor parameter needs to be an object");
+        if(typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+            throw new Error('Constructor parameter needs to be an object');
         }
-        if(!data.hasOwnProperty("type") || data.type !== parseInt(data.type, 10)) {
-            throw new Error("Pose type needs to be of type integer");
+        if(!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
+            throw new Error('Pose type needs to be of type integer');
         }
     }
 
@@ -71,29 +71,29 @@ Pose.invalid = function() {
  */
 Pose.prototype.toString = function () {
     if(!this.valid) {
-        return "[Pose invalid]";
+        return '[Pose invalid]';
     }
     switch (this.type) {
         case this.POSE_REST:
-            return "[Pose type:" + this.type.toString() + " POSE_REST]";
+            return '[Pose type:' + this.type.toString() + ' POSE_REST]';
             break;
         case this.POSE_FIST:
-            return "[Pose type:" + this.type.toString() + " POSE_FIST]";
+            return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
             break;
         case this.POSE_WAVE_IN:
-            return "[Pose type:" + this.type.toString() + " POSE_WAVE_IN]";
+            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
             break;
         case this.POSE_WAVE_OUT:
-            return "[Pose type:" + this.type.toString() + " POSE_WAVE_OUT]";
+            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
             break;
         case this.POSE_FINGERS_SPREAD:
-            return "[Pose type:" + this.type.toString() + " POSE_FINGERS_SPREAD]";
+            return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
             break;
         case this.DOUBLE_TAP:
-            return "[Pose type:" + this.type.toString() + " DOUBLE_TAP]";
+            return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
             break;
         default:
             break;
     }
-    return "[Pose type:" + this.type.toString() + "]";
+    return '[Pose type:' + this.type.toString() + ']';
 };

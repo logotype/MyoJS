@@ -8,4 +8,4 @@ if (typeof(window) !== 'undefined' && typeof(window.requestAnimationFrame) !== '
   );
 }
 
-Myo = module.exports = require("../src/Index");
+Myo = module.exports = require('../src/Index');

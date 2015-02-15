@@ -1,23 +1,23 @@
 var Vector3 = module.exports = function (data) {
 
     if(!data) {
-        throw new Error("Missing constructor arguments");
+        throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== "object") {
-        throw new Error("Constructor parameter needs to be an object");
+    if(typeof data !== 'object') {
+        throw new Error('Constructor parameter needs to be an object');
     }
 
     /**
      * Indicates whether this is a valid Vector3 object.
      */
-    this.valid = data.hasOwnProperty("invalid") ? false : true;
+    this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if(this.valid) {
         if(!data || Object.prototype.toString.call(data) !== '[object Array]') {
-            throw new Error("Components needs to be an array");
+            throw new Error('Components needs to be an array');
         }
         if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
-            throw new Error("Component values needs to be integers or numbers");
+            throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
         this.y = data[1];
@@ -472,7 +472,7 @@ Vector3.invalid = function() {
  */
 Vector3.prototype.toString = function () {
     if(!this.valid) {
-        return "[Vector3 invalid]";
+        return '[Vector3 invalid]';
     }
-    return "[Vector3 x:" + this.x + " y:" + this.y + " z:" + this.z + "]";
+    return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
 };

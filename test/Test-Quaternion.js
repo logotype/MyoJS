@@ -13,12 +13,12 @@ describe('Quaternion', function(){
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
                 new MyoJS.Quaternion({});
-            }, Error, "Components needs to be an array");
+            }, Error, 'Components needs to be an array');
         });
         it('should throw an error when passing strings', function(){
             assert.throws(function() {
-                new MyoJS.Quaternion(["a", "b", "c", "d"]);
-            }, Error, "Component values needs to be integers or numbers");
+                new MyoJS.Quaternion(['a', 'b', 'c', 'd']);
+            }, Error, 'Component values needs to be integers or numbers');
         });
     });
     describe('Euler angles', function(){

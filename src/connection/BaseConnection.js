@@ -3,7 +3,7 @@ var Frame = require('../Frame'),
     _ = require('underscore');
 
 var BaseConnection = module.exports = function (options) {
-    "use strict";
+    'use strict';
 
     this.options = _.defaults(options || {}, {
         host: '127.0.0.1',
@@ -15,25 +15,25 @@ var BaseConnection = module.exports = function (options) {
 };
 
 BaseConnection.prototype.getUrl = function () {
-    "use strict";
+    'use strict';
 
-    return "ws://" + this.host + ":" + this.port + "/";
+    return 'ws://' + this.host + ':' + this.port + '/';
 };
 
 BaseConnection.prototype.handleOpen = function () {
-    "use strict";
+    'use strict';
 
     if (!this.connected) {
         this.send({
-            "command": "requestDeviceInfo"
+            'command': 'requestDeviceInfo'
         });
     }
 };
 
 BaseConnection.prototype.handleClose = function (code, reason) {
-    "use strict";
+    'use strict';
 
-    console.log("handleClose: " + code + ", reason: " + reason);
+    console.log('handleClose: ' + code + ', reason: ' + reason);
 
     if (!this.connected) return;
     this.disconnect();
@@ -41,7 +41,7 @@ BaseConnection.prototype.handleClose = function (code, reason) {
 };
 
 BaseConnection.prototype.startReconnection = function () {
-    "use strict";
+    'use strict';
 
     var connection = this;
     if (!this.reconnectionTimer) {
@@ -52,7 +52,7 @@ BaseConnection.prototype.startReconnection = function () {
 };
 
 BaseConnection.prototype.stopReconnection = function () {
-    "use strict";
+    'use strict';
 
     this.reconnectionTimer = clearInterval(this.reconnectionTimer);
 };
@@ -60,7 +60,7 @@ BaseConnection.prototype.stopReconnection = function () {
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
 BaseConnection.prototype.disconnect = function (allowReconnect) {
-    "use strict";
+    'use strict';
 
     if (!allowReconnect) this.stopReconnection();
     if (!this.socket) return;
@@ -74,7 +74,7 @@ BaseConnection.prototype.disconnect = function (allowReconnect) {
 };
 
 BaseConnection.prototype.reconnect = function () {
-    "use strict";
+    'use strict';
 
     if (this.connected) {
         this.stopReconnection();
@@ -85,17 +85,17 @@ BaseConnection.prototype.reconnect = function () {
 };
 
 BaseConnection.prototype.handleData = function (data) {
-    "use strict";
+    'use strict';
 
     var message, messageEvent, frame, deviceInfo;
 
     message = JSON.parse(data);
 
     // Wait for deviceInfo until connected
-    if (!this.connected && message.hasOwnProperty("frame")) {
-        frame = message["frame"];
-        if (frame.hasOwnProperty("deviceInfo")) {
-            deviceInfo = frame["deviceInfo"];
+    if (!this.connected && message.hasOwnProperty('frame')) {
+        frame = message['frame'];
+        if (frame.hasOwnProperty('deviceInfo')) {
+            deviceInfo = frame['deviceInfo'];
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');
@@ -104,24 +104,24 @@ BaseConnection.prototype.handleData = function (data) {
 
     if (!this.connected) return;
 
-    if (message.hasOwnProperty("frame")) {
+    if (message.hasOwnProperty('frame')) {
         messageEvent = new Frame(message.frame);
         this.emit(messageEvent.type, messageEvent);
 
         // Emit pose if existing
         if (messageEvent.pose) {
-            this.emit("pose", messageEvent.pose);
+            this.emit('pose', messageEvent.pose);
         }
 
         // Emit event if existing
         if (messageEvent.event) {
-            this.emit("event", messageEvent.event);
+            this.emit('event', messageEvent.event);
         }
     }
 };
 
 BaseConnection.prototype.connect = function () {
-    "use strict";
+    'use strict';
 
     if (this.socket) return;
 
@@ -155,7 +155,7 @@ BaseConnection.prototype.connect = function () {
 };
 
 BaseConnection.prototype.send = function (data) {
-    "use strict";
+    'use strict';
     this.socket.send(JSON.stringify(data));
 };
 

@@ -1849,26 +1849,26 @@ CircularBuffer.prototype.push = function(o) {
 };
 
 },{}],6:[function(require,module,exports){
-var Hub = require("./Hub"),
-    Myo = require("./Myo"),
-    Pose = require("./Pose"),
-    Quaternion = require("./Quaternion"),
-    Vector3 = require("./Vector3"),
-    _ = require("underscore");
+var Hub = require('./Hub'),
+    Myo = require('./Myo'),
+    Pose = require('./Pose'),
+    Quaternion = require('./Quaternion'),
+    Vector3 = require('./Vector3'),
+    _ = require('underscore');
 
 var Frame = module.exports = function (data) {
 
     if(!data) {
-        throw new Error("Missing constructor arguments");
+        throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== "object") {
-        throw new Error("Constructor parameter needs to be an object");
+    if(typeof data !== 'object') {
+        throw new Error('Constructor parameter needs to be an object');
     }
-    if(!data.hasOwnProperty("id") || data.id !== parseInt(data.id, 10)) {
-        throw new Error("Frame id needs to be of type integer");
+    if(!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
+        throw new Error('Frame id needs to be of type integer');
     }
-    if(!data.hasOwnProperty("timestamp") || data.timestamp !== parseInt(data.timestamp, 10)) {
-        throw new Error("Timestamp needs to be of type integer");
+    if(!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
+        throw new Error('Timestamp needs to be of type integer');
     }
 
     /**
@@ -1888,12 +1888,12 @@ var Frame = module.exports = function (data) {
      */
     this.timestamp = data.timestamp;
 
-    if (data["euler"]) {
-        this.euler = data["euler"];
+    if (data['euler']) {
+        this.euler = data['euler'];
     }
 
-    if (data["rssi"]) {
-        this.rssi = data["rssi"];
+    if (data['rssi']) {
+        this.rssi = data['rssi'];
     }
 
     /**
@@ -1902,8 +1902,8 @@ var Frame = module.exports = function (data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data["pose"]) {
-        this.pose = new Pose(data["pose"]);
+    if (data['pose']) {
+        this.pose = new Pose(data['pose']);
     } else {
         this.pose = Pose.invalid();
     }
@@ -1914,20 +1914,20 @@ var Frame = module.exports = function (data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data["rotation"]) {
-        this.rotation = new Quaternion(data["rotation"]);
+    if (data['rotation']) {
+        this.rotation = new Quaternion(data['rotation']);
     } else {
         this.rotation = Quaternion.invalid();
     }
 
-    if (data["accel"]) {
-        this.accel = new Vector3(data["accel"]);
+    if (data['accel']) {
+        this.accel = new Vector3(data['accel']);
     } else {
         this.accel = Vector3.invalid();
     }
 
-    if (data["gyro"]) {
-        this.gyro = new Vector3(data["gyro"]);
+    if (data['gyro']) {
+        this.gyro = new Vector3(data['gyro']);
     } else {
         this.gyro = Vector3.invalid();
     }
@@ -1935,14 +1935,14 @@ var Frame = module.exports = function (data) {
     /**
      * EMG data
      */
-    if (data["emg"]) {
-        this.emg = data["emg"];
+    if (data['emg']) {
+        this.emg = data['emg'];
     } else {
         this.emg = [];
     }
 
     this.data = data;
-    this.type = "frame";
+    this.type = 'frame';
 };
 
 
@@ -1952,19 +1952,20 @@ var Frame = module.exports = function (data) {
  *
  */
 Frame.prototype.toString = function () {
-    return "[Frame id:" + this.id + " timestamp:" + this.timestamp + " accel:" + this.accel.toString() + "]";
+    return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
 };
 },{"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"underscore":3}],7:[function(require,module,exports){
-var BaseConnection = require("./connection/BaseConnection").BaseConnection,
-    EventEmitter = require("events").EventEmitter,
-    CircularBuffer = require("./CircularBuffer"),
-    _ = require("underscore");
+var EventEmitter = require('events').EventEmitter,
+    BaseConnection = require('./connection/BaseConnection').BaseConnection,
+    CircularBuffer = require('./CircularBuffer'),
+    Myo = require('./Myo'),
+    _ = require('underscore');
 
-var Hub = module.exports = function (data, opt) {
+var Hub = module.exports = function (opt) {
     this.connectionType = require("./connection/BaseConnection");
-    this.myoType = require("./Myo");
+    this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);
-    this.historyType = require("./CircularBuffer");
+    this.historyType = require('./CircularBuffer');
     this.history = new this.historyType(200);
     this.myos = [];
     this.listeners = [];
@@ -1972,29 +1973,29 @@ var Hub = module.exports = function (data, opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on("deviceInfo", function (data) {
-        hub.myo = new hub.myoType(data, hub.connection);
+    this.connection.on('deviceInfo', function (data) {
+        hub.myo = new Myo(data, hub.connection);
     });
 
     // Forward events
-    this.connection.on("frame", function (frame) {
+    this.connection.on('frame', function (frame) {
         hub.history.push(frame);
-        hub.emit("frame", frame);
+        hub.emit('frame', frame);
     });
-    this.connection.on("pose", function (pose) {
-        hub.emit("pose", pose);
+    this.connection.on('pose', function (pose) {
+        hub.emit('pose', pose);
     });
-    this.connection.on("event", function (event) {
+    this.connection.on('event', function (event) {
         hub.emit(event.type);
     });
-    this.connection.on("ready", function () {
-        hub.emit("ready");
+    this.connection.on('ready', function () {
+        hub.emit('ready');
     });
-    this.connection.on("connect", function () {
-        hub.emit("connect");
+    this.connection.on('connect', function () {
+        hub.emit('connect');
     });
-    this.connection.on("disconnect", function () {
-        hub.emit("disconnect");
+    this.connection.on('disconnect', function () {
+        hub.emit('disconnect');
     });
 };
 
@@ -2026,7 +2027,7 @@ Hub.prototype.frame = function (num) {
  */
 Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
     var myo = this.connection.send({
-        "waitForMyo": timeoutMilliseconds
+        'waitForMyo': timeoutMilliseconds
     });
     if (myo) {
         myo.context = this.connection;
@@ -2043,7 +2044,7 @@ Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
 Hub.prototype.addListener = function (listener) {
     this.listeners.push(listener);
     this.connection.send({
-        "addListener": listener
+        'addListener': listener
     });
 };
 
@@ -2065,7 +2066,7 @@ Hub.prototype.removeListener = function (listener) {
  */
 Hub.prototype.run = function (durationMilliseconds) {
     this.connection.send({
-        "run": durationMilliseconds
+        'run': durationMilliseconds
     });
 };
 
@@ -2075,7 +2076,7 @@ Hub.prototype.run = function (durationMilliseconds) {
  */
 Hub.prototype.runOnce = function (durationMilliseconds) {
     this.connection.send({
-        "runOnce": durationMilliseconds
+        'runOnce': durationMilliseconds
     });
 };
 
@@ -2087,18 +2088,18 @@ _.extend(Hub.prototype, EventEmitter.prototype);
  * @namespace Myo
  */
 module.exports = {
-    BaseConnection: require("./connection/BaseConnection"),
-    Hub: require("./Hub"),
-    Myo: require("./Myo"),
-    CircularBuffer: require("./CircularBuffer"),
-    Pose: require("./Pose"),
-    Quaternion: require("./Quaternion"),
-    Vector3: require("./Vector3"),
-    Frame: require("./Frame"),
+    BaseConnection: require('./connection/BaseConnection'),
+    Hub: require('./Hub'),
+    Myo: require('./Myo'),
+    CircularBuffer: require('./CircularBuffer'),
+    Pose: require('./Pose'),
+    Quaternion: require('./Quaternion'),
+    Vector3: require('./Vector3'),
+    Frame: require('./Frame'),
     Version: require('./Version.js')
 };
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
-var EventEmitter = require("events").EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 
 var Myo = module.exports = function (data, context) {
     /**
@@ -2146,7 +2147,7 @@ var Myo = module.exports = function (data, context) {
  */
 Myo.prototype.requestRssi = function () {
     this.context.send({
-        "requestRssi": true
+        'requestRssi': true
     });
 };
 
@@ -2158,16 +2159,16 @@ Myo.prototype.requestRssi = function () {
 Myo.prototype.vibrate = function (length) {
     switch (length) {
         case this.VIBRATION_SHORT:
-            this.context.send({"command":"vibrate", "args" : [this.VIBRATION_SHORT]});
+            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_SHORT]});
             break;
         case this.VIBRATION_MEDIUM:
-            this.context.send({"command":"vibrate", "args" : [this.VIBRATION_MEDIUM]});
+            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_MEDIUM]});
             break;
         case this.VIBRATION_LONG:
-            this.context.send({"command":"vibrate", "args" : [this.VIBRATION_LONG]});
+            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_LONG]});
             break;
         default:
-            throw new Error("Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG");
+            throw new Error('Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
             break;
     }
 };
@@ -2180,13 +2181,13 @@ Myo.prototype.vibrate = function (length) {
 Myo.prototype.unlock = function (option) {
     switch (option) {
         case this.UNLOCK_TIMED:
-            this.context.send({"command":"unlock", "args" : [this.UNLOCK_TIMED]});
+            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_TIMED]});
             break;
         case this.UNLOCK_HOLD:
-            this.context.send({"command":"unlock", "args" : [this.UNLOCK_HOLD]});
+            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_HOLD]});
             break;
         default:
-            throw new Error("Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD");
+            throw new Error('Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
             break;
     }
 };
@@ -2197,7 +2198,7 @@ Myo.prototype.unlock = function (option) {
  *
  */
 Myo.prototype.lock = function () {
-    this.context.send({"command":"lock"});
+    this.context.send({'command':'lock'});
 };
 
 /**
@@ -2208,10 +2209,10 @@ Myo.prototype.lock = function () {
 Myo.prototype.notifyUserAction = function (action) {
     switch (action) {
         case this.USER_ACTION_SINGLE:
-            this.context.send({"command":"notifyUserAction", "args" : [this.USER_ACTION_SINGLE]});
+            this.context.send({'command':'notifyUserAction', 'args' : [this.USER_ACTION_SINGLE]});
             break;
         default:
-            throw new Error("Valid values are: Myo.USER_ACTION_SINGLE");
+            throw new Error('Valid values are: Myo.USER_ACTION_SINGLE');
             break;
     }
 };
@@ -2220,14 +2221,14 @@ var Pose = module.exports = function (data) {
     /**
      * Indicates whether this is a valid Pose object.
      */
-    this.valid = data.hasOwnProperty("invalid") ? false : true;
+    this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if(this.valid) {
-        if(typeof data !== "object" || Object.prototype.toString.call(data) === '[object Array]') {
-            throw new Error("Constructor parameter needs to be an object");
+        if(typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+            throw new Error('Constructor parameter needs to be an object');
         }
-        if(!data.hasOwnProperty("type") || data.type !== parseInt(data.type, 10)) {
-            throw new Error("Pose type needs to be of type integer");
+        if(!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
+            throw new Error('Pose type needs to be of type integer');
         }
     }
 
@@ -2289,45 +2290,45 @@ Pose.invalid = function() {
  */
 Pose.prototype.toString = function () {
     if(!this.valid) {
-        return "[Pose invalid]";
+        return '[Pose invalid]';
     }
     switch (this.type) {
         case this.POSE_REST:
-            return "[Pose type:" + this.type.toString() + " POSE_REST]";
+            return '[Pose type:' + this.type.toString() + ' POSE_REST]';
             break;
         case this.POSE_FIST:
-            return "[Pose type:" + this.type.toString() + " POSE_FIST]";
+            return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
             break;
         case this.POSE_WAVE_IN:
-            return "[Pose type:" + this.type.toString() + " POSE_WAVE_IN]";
+            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
             break;
         case this.POSE_WAVE_OUT:
-            return "[Pose type:" + this.type.toString() + " POSE_WAVE_OUT]";
+            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
             break;
         case this.POSE_FINGERS_SPREAD:
-            return "[Pose type:" + this.type.toString() + " POSE_FINGERS_SPREAD]";
+            return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
             break;
         case this.DOUBLE_TAP:
-            return "[Pose type:" + this.type.toString() + " DOUBLE_TAP]";
+            return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
             break;
         default:
             break;
     }
-    return "[Pose type:" + this.type.toString() + "]";
+    return '[Pose type:' + this.type.toString() + ']';
 };
 },{}],11:[function(require,module,exports){
 var Quaternion = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Quaternion object.
      */
-    this.valid = data.hasOwnProperty("invalid") ? false : true;
+    this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if (this.valid) {
         if(Object.prototype.toString.call(data) !== '[object Array]') {
-            throw new Error("Components needs to be an array");
+            throw new Error('Components needs to be an array');
         }
         if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
-            throw new Error("Component values needs to be integers or numbers");
+            throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
         this.y = data[1];
@@ -2454,31 +2455,31 @@ Quaternion.invalid = function() {
  */
 Quaternion.prototype.toString = function() {
     if (!this.valid) {
-        return "[Quaternion invalid]";
+        return '[Quaternion invalid]';
     }
-    return "[Quaternion x:" + this.x + " y:" + this.y + " z:" + this.z + " w:" + this.w + "]";
+    return '[Quaternion x:' + this.x + ' y:' + this.y + ' z:' + this.z + ' w:' + this.w + ']';
 };
 },{}],12:[function(require,module,exports){
 var Vector3 = module.exports = function (data) {
 
     if(!data) {
-        throw new Error("Missing constructor arguments");
+        throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== "object") {
-        throw new Error("Constructor parameter needs to be an object");
+    if(typeof data !== 'object') {
+        throw new Error('Constructor parameter needs to be an object');
     }
 
     /**
      * Indicates whether this is a valid Vector3 object.
      */
-    this.valid = data.hasOwnProperty("invalid") ? false : true;
+    this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if(this.valid) {
         if(!data || Object.prototype.toString.call(data) !== '[object Array]') {
-            throw new Error("Components needs to be an array");
+            throw new Error('Components needs to be an array');
         }
         if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
-            throw new Error("Component values needs to be integers or numbers");
+            throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
         this.y = data[1];
@@ -2933,14 +2934,14 @@ Vector3.invalid = function() {
  */
 Vector3.prototype.toString = function () {
     if(!this.valid) {
-        return "[Vector3 invalid]";
+        return '[Vector3 invalid]';
     }
-    return "[Vector3 x:" + this.x + " y:" + this.y + " z:" + this.z + "]";
+    return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
 };
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: "0.8.17",
+    full: '0.8.2',
     major: 0,
     minor: 8,
     dot: 2
@@ -2952,7 +2953,7 @@ var Frame = require('../Frame'),
     _ = require('underscore');
 
 var BaseConnection = module.exports = function (options) {
-    "use strict";
+    'use strict';
 
     this.options = _.defaults(options || {}, {
         host: '127.0.0.1',
@@ -2964,25 +2965,25 @@ var BaseConnection = module.exports = function (options) {
 };
 
 BaseConnection.prototype.getUrl = function () {
-    "use strict";
+    'use strict';
 
-    return "ws://" + this.host + ":" + this.port + "/";
+    return 'ws://' + this.host + ':' + this.port + '/';
 };
 
 BaseConnection.prototype.handleOpen = function () {
-    "use strict";
+    'use strict';
 
     if (!this.connected) {
         this.send({
-            "command": "requestDeviceInfo"
+            'command': 'requestDeviceInfo'
         });
     }
 };
 
 BaseConnection.prototype.handleClose = function (code, reason) {
-    "use strict";
+    'use strict';
 
-    console.log("handleClose: " + code + ", reason: " + reason);
+    console.log('handleClose: ' + code + ', reason: ' + reason);
 
     if (!this.connected) return;
     this.disconnect();
@@ -2990,7 +2991,7 @@ BaseConnection.prototype.handleClose = function (code, reason) {
 };
 
 BaseConnection.prototype.startReconnection = function () {
-    "use strict";
+    'use strict';
 
     var connection = this;
     if (!this.reconnectionTimer) {
@@ -3001,7 +3002,7 @@ BaseConnection.prototype.startReconnection = function () {
 };
 
 BaseConnection.prototype.stopReconnection = function () {
-    "use strict";
+    'use strict';
 
     this.reconnectionTimer = clearInterval(this.reconnectionTimer);
 };
@@ -3009,7 +3010,7 @@ BaseConnection.prototype.stopReconnection = function () {
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
 BaseConnection.prototype.disconnect = function (allowReconnect) {
-    "use strict";
+    'use strict';
 
     if (!allowReconnect) this.stopReconnection();
     if (!this.socket) return;
@@ -3023,7 +3024,7 @@ BaseConnection.prototype.disconnect = function (allowReconnect) {
 };
 
 BaseConnection.prototype.reconnect = function () {
-    "use strict";
+    'use strict';
 
     if (this.connected) {
         this.stopReconnection();
@@ -3034,17 +3035,17 @@ BaseConnection.prototype.reconnect = function () {
 };
 
 BaseConnection.prototype.handleData = function (data) {
-    "use strict";
+    'use strict';
 
     var message, messageEvent, frame, deviceInfo;
 
     message = JSON.parse(data);
 
     // Wait for deviceInfo until connected
-    if (!this.connected && message.hasOwnProperty("frame")) {
-        frame = message["frame"];
-        if (frame.hasOwnProperty("deviceInfo")) {
-            deviceInfo = frame["deviceInfo"];
+    if (!this.connected && message.hasOwnProperty('frame')) {
+        frame = message['frame'];
+        if (frame.hasOwnProperty('deviceInfo')) {
+            deviceInfo = frame['deviceInfo'];
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');
@@ -3053,24 +3054,24 @@ BaseConnection.prototype.handleData = function (data) {
 
     if (!this.connected) return;
 
-    if (message.hasOwnProperty("frame")) {
+    if (message.hasOwnProperty('frame')) {
         messageEvent = new Frame(message.frame);
         this.emit(messageEvent.type, messageEvent);
 
         // Emit pose if existing
         if (messageEvent.pose) {
-            this.emit("pose", messageEvent.pose);
+            this.emit('pose', messageEvent.pose);
         }
 
         // Emit event if existing
         if (messageEvent.event) {
-            this.emit("event", messageEvent.event);
+            this.emit('event', messageEvent.event);
         }
     }
 };
 
 BaseConnection.prototype.connect = function () {
-    "use strict";
+    'use strict';
 
     if (this.socket) return;
 
@@ -3104,7 +3105,7 @@ BaseConnection.prototype.connect = function () {
 };
 
 BaseConnection.prototype.send = function (data) {
-    "use strict";
+    'use strict';
     this.socket.send(JSON.stringify(data));
 };
 
@@ -3121,6 +3122,6 @@ if (typeof(window) !== 'undefined' && typeof(window.requestAnimationFrame) !== '
   );
 }
 
-Myo = module.exports = require("../src/Index");
+Myo = module.exports = require('../src/Index');
 
 },{"../src/Index":8}]},{},[15]);
