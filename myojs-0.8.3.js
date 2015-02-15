@@ -1962,13 +1962,30 @@ var EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
 var Hub = module.exports = function (opt) {
+
+    if(opt) {
+        if(typeof opt !== 'object') {
+            throw new Error('Constructor parameter needs to be an object');
+            return;
+        }
+        if(!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
+            throw new Error('Host needs to be of type string');
+            return;
+        }
+        if(!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
+            throw new Error('Port needs to be of type integer');
+            return;
+        }
+    }
+
     this.connectionType = require("./connection/BaseConnection");
     this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);
     this.historyType = require('./CircularBuffer');
     this.history = new this.historyType(200);
     this.myos = [];
-    this.listeners = [];
+
+    this.connection.connect();
 
     var hub = this;
 
@@ -2036,29 +2053,6 @@ Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
     }
 
     return null;
-};
-
-/**
- * Register a listener to be called when device events occur.
- */
-Hub.prototype.addListener = function (listener) {
-    this.listeners.push(listener);
-    this.connection.send({
-        'addListener': listener
-    });
-};
-
-/**
- * Remove a previously registered listener.
- */
-Hub.prototype.removeListener = function (listener) {
-    var i = 0;
-    for (i; i < this.listeners.length; i++) {
-        if (this.listeners[i] == listener) {
-            this.listeners.splice(i, 1);
-            break;
-        }
-    }
 };
 
 /**
@@ -2959,9 +2953,9 @@ var BaseConnection = module.exports = function (options) {
         host: '127.0.0.1',
         port: 6450
     });
+
     this.host = this.options.host;
     this.port = this.options.port;
-    this.connect();
 };
 
 BaseConnection.prototype.getUrl = function () {
@@ -2982,8 +2976,6 @@ BaseConnection.prototype.handleOpen = function () {
 
 BaseConnection.prototype.handleClose = function (code, reason) {
     'use strict';
-
-    console.log('handleClose: ' + code + ', reason: ' + reason);
 
     if (!this.connected) return;
     this.disconnect();

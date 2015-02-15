@@ -9,9 +9,9 @@ var BaseConnection = module.exports = function (options) {
         host: '127.0.0.1',
         port: 6450
     });
+
     this.host = this.options.host;
     this.port = this.options.port;
-    this.connect();
 };
 
 BaseConnection.prototype.getUrl = function () {
@@ -32,8 +32,6 @@ BaseConnection.prototype.handleOpen = function () {
 
 BaseConnection.prototype.handleClose = function (code, reason) {
     'use strict';
-
-    console.log('handleClose: ' + code + ', reason: ' + reason);
 
     if (!this.connected) return;
     this.disconnect();
