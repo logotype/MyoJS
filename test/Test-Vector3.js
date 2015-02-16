@@ -8,6 +8,7 @@ describe('Vector3', function(){
             assert.equal(vec.x, 1);
             assert.equal(vec.y, 2);
             assert.equal(vec.z, 3);
+            assert.equal(vec instanceof MyoJS.Vector3, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {

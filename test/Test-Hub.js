@@ -8,11 +8,13 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub({host: '0.0.0.0', port: 0});
             assert.equal(hub.connection.host, '0.0.0.0');
             assert.equal(hub.connection.port, 0);
+            assert.equal(hub instanceof MyoJS.Hub, true);
         });
         it('should return a Hub object with default host', function(){
             var hub = new MyoJS.Hub();
             assert.equal(hub.connection.host, '127.0.0.1');
             assert.equal(hub.connection.port, 6450);
+            assert.equal(hub instanceof MyoJS.Hub, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {

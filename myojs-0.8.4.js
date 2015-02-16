@@ -1896,6 +1896,10 @@ var Frame = module.exports = function(data) {
         this.rssi = data['rssi'];
     }
 
+    if (data['event']) {
+        this.event = data['event'];
+    }
+
     /**
      * A change in pose has been detected.
      * @member pose
@@ -1963,18 +1967,6 @@ var EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
 var Hub = module.exports = function(opt) {
-
-    if (opt) {
-        if (typeof opt !== 'object') {
-            throw new Error('Constructor parameter needs to be an object');
-        }
-        if (!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
-            throw new Error('Host needs to be of type string');
-        }
-        if (!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
-            throw new Error('Port needs to be of type integer');
-        }
-    }
 
     this.connectionType = require("./connection/BaseConnection");
     this.myoType = require('./Myo');
@@ -2974,6 +2966,18 @@ var Frame = require('../Frame'),
 var BaseConnection = module.exports = function(options) {
     'use strict';
 
+    if (options) {
+        if (typeof options !== 'object') {
+            throw new Error('Constructor parameter needs to be an object');
+        }
+        if (!options.hasOwnProperty('host') || typeof options.host !== 'string') {
+            throw new Error('Host needs to be of type string');
+        }
+        if (!options.hasOwnProperty('port') || options.port !== parseInt(options.port, 10)) {
+            throw new Error('Port needs to be of type integer');
+        }
+    }
+
     this.options = _.defaults(options || {}, {
         host: '127.0.0.1',
         port: 6450
@@ -3054,9 +3058,18 @@ BaseConnection.prototype.reconnect = function() {
 BaseConnection.prototype.handleData = function(data) {
     'use strict';
 
-    var message, messageEvent, frame, deviceInfo;
+    var message, frameObject, frame, deviceInfo;
 
-    message = JSON.parse(data);
+    if (!data) {
+        throw new Error("No data received");
+    }
+
+    // TODO Profile performance of this try/catch block
+    try {
+        message = JSON.parse(data);
+    } catch (exception) {
+        throw new Error("Invalid JSON");
+    }
 
     // Wait for deviceInfo until connected
     if (!this.connected && message.hasOwnProperty('frame')) {
@@ -3072,17 +3085,17 @@ BaseConnection.prototype.handleData = function(data) {
     if (!this.connected) return;
 
     if (message.hasOwnProperty('frame')) {
-        messageEvent = new Frame(message.frame);
-        this.emit(messageEvent.type, messageEvent);
+        frameObject = new Frame(message.frame);
+        this.emit(frameObject.type, frameObject);
 
         // Emit pose if existing
-        if (messageEvent.pose) {
-            this.emit('pose', messageEvent.pose);
+        if (frameObject.pose) {
+            this.emit('pose', frameObject.pose);
         }
 
         // Emit event if existing
-        if (messageEvent.event) {
-            this.emit('event', messageEvent.event);
+        if (frameObject.event) {
+            this.emit('event', frameObject.event);
         }
     }
 };
@@ -3123,7 +3136,17 @@ BaseConnection.prototype.connect = function() {
 
 BaseConnection.prototype.send = function(data) {
     'use strict';
-    this.socket.send(JSON.stringify(data));
+
+    if (typeof data !== 'object' || typeof data === 'string') {
+        throw new Error('Parameter needs to be an object');
+    }
+
+    // TODO Profile performance of this try/catch block
+    try {
+        this.socket.send(JSON.stringify(data));
+    } catch (exception) {
+        throw new Error("Invalid JSON");
+    }
 };
 
 _.extend(BaseConnection.prototype, EventEmitter.prototype);

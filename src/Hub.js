@@ -6,18 +6,6 @@ var EventEmitter = require('events').EventEmitter,
 
 var Hub = module.exports = function(opt) {
 
-    if (opt) {
-        if (typeof opt !== 'object') {
-            throw new Error('Constructor parameter needs to be an object');
-        }
-        if (!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
-            throw new Error('Host needs to be of type string');
-        }
-        if (!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
-            throw new Error('Port needs to be of type integer');
-        }
-    }
-
     this.connectionType = require("./connection/BaseConnection");
     this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);

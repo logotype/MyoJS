@@ -7,6 +7,7 @@ describe('Pose', function(){
             var pose = new MyoJS.Pose({type:3});
             assert.equal(pose.type, 3);
             assert.equal(pose.type, pose.POSE_WAVE_OUT);
+            assert.equal(pose instanceof MyoJS.Pose, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {

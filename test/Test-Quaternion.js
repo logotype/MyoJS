@@ -9,6 +9,7 @@ describe('Quaternion', function(){
             assert.equal(quaternion.y, 2);
             assert.equal(quaternion.z, 3);
             assert.equal(quaternion.w, 4);
+            assert.equal(quaternion instanceof MyoJS.Quaternion, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {

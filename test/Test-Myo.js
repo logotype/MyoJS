@@ -8,6 +8,7 @@ describe('Myo', function(){
             var context = {};
             var myo = new MyoJS.Myo(context);
             assert.equal(myo.context, context);
+            assert.equal(myo instanceof MyoJS.Myo, true);
         });
         it('should throw an error when missing arguments', function(){
             assert.throws(function() {

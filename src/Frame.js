@@ -45,6 +45,10 @@ var Frame = module.exports = function(data) {
         this.rssi = data['rssi'];
     }
 
+    if (data['event']) {
+        this.event = data['event'];
+    }
+
     /**
      * A change in pose has been detected.
      * @member pose

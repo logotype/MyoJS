@@ -14,7 +14,6 @@ describe('CircularBuffer', function(){
             assert.equal(undefined, buf.get(3))
         });
     });
-
     describe('Overflowing', function(){
         it('should return elements after its overflowed', function(){
             var buf = new MyoJS.CircularBuffer(10);
