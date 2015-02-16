@@ -39,6 +39,11 @@ describe('Hub', function(){
                 new MyoJS.Hub({host:'someString', port:'someOtherString'});
             }, Error, 'Port needs to be of type integer');
         });
+        it('should throw an error when argument is not an object', function(){
+            assert.throws(function() {
+                new MyoJS.Hub('someString');
+            }, Error, 'Constructor parameter needs to be an object');
+        });
     });
     describe('#addListener', function(){
         it('should add a listener', function(){
@@ -125,6 +130,66 @@ describe('Hub', function(){
             var frame = new MyoJS.Frame(JSON.parse(frameDump).frame);
             hub.history.push(frame);
             assert.notEqual(hub.frame(10), frame);
+        });
+    });
+    describe('#waitForMyo', function(){
+        it('should call context', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var hub = new MyoJS.Hub();
+            hub.connection = context;
+            hub.waitForMyo(100);
+            assert.equal(output, '{"waitForMyo":100}');
+        });
+        it('should throw an error when parameter is not integer', function(){
+            assert.throws(function() {
+                var context = {};
+                context.send = function() {};
+                var hub = new MyoJS.Hub();
+                hub.connection = context;
+                hub.waitForMyo('someString');
+            }, Error, 'timeoutMilliseconds needs to be of type integer');
+        });
+    });
+    describe('#run', function(){
+        it('should call context', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var hub = new MyoJS.Hub();
+            hub.connection = context;
+            hub.run(100);
+            assert.equal(output, '{"run":100}');
+        });
+        it('should throw an error when parameter is not integer', function(){
+            assert.throws(function() {
+                var context = {};
+                context.send = function() {};
+                var hub = new MyoJS.Hub();
+                hub.connection = context;
+                hub.run('someString');
+            }, Error, 'durationMilliseconds needs to be of type integer');
+        });
+    });
+    describe('#runOnce', function(){
+        it('should call context', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var hub = new MyoJS.Hub();
+            hub.connection = context;
+            hub.runOnce(100);
+            assert.equal(output, '{"runOnce":100}');
+        });
+        it('should throw an error when parameter is not integer', function(){
+            assert.throws(function() {
+                var context = {};
+                context.send = function() {};
+                var hub = new MyoJS.Hub();
+                hub.connection = context;
+                hub.runOnce('someString');
+            }, Error, 'durationMilliseconds needs to be of type integer');
         });
     });
 });

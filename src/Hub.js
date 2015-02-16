@@ -9,15 +9,12 @@ var Hub = module.exports = function(opt) {
     if (opt) {
         if (typeof opt !== 'object') {
             throw new Error('Constructor parameter needs to be an object');
-            return;
         }
         if (!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
             throw new Error('Host needs to be of type string');
-            return;
         }
         if (!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
             throw new Error('Port needs to be of type integer');
-            return;
         }
     }
 
@@ -86,22 +83,21 @@ Hub.prototype.frame = function(num) {
  * not be run concurrently with run() or runOnce().</p>
  */
 Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
-    var myo = this.connection.send({
+    if (!timeoutMilliseconds || timeoutMilliseconds !== parseInt(timeoutMilliseconds, 10)) {
+        throw new Error('timeoutMilliseconds needs to be of type integer');
+    }
+    this.connection.send({
         'waitForMyo': timeoutMilliseconds
     });
-    if (myo) {
-        myo.context = this.connection;
-        this.myos.push(myo);
-        return myo;
-    }
-
-    return null;
 };
 
 /**
  * Run the event loop for the specified duration (in milliseconds).
  */
 Hub.prototype.run = function(durationMilliseconds) {
+    if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
+        throw new Error('durationMilliseconds needs to be of type integer');
+    }
     this.connection.send({
         'run': durationMilliseconds
     });
@@ -112,6 +108,9 @@ Hub.prototype.run = function(durationMilliseconds) {
  * duration (in milliseconds) has elapsed.
  */
 Hub.prototype.runOnce = function(durationMilliseconds) {
+    if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
+        throw new Error('durationMilliseconds needs to be of type integer');
+    }
     this.connection.send({
         'runOnce': durationMilliseconds
     });

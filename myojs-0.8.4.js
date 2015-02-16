@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.8.3
+ * MyoJS v0.8.4
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -1831,21 +1831,21 @@ if (WebSocket) ws.prototype = WebSocket.prototype;
 
 },{}],5:[function(require,module,exports){
 var CircularBuffer = module.exports = function(size) {
-  this.pos = 0;
-  this._buf = [];
-  this.size = size;
+    this.pos = 0;
+    this._buf = [];
+    this.size = size;
 };
 
 CircularBuffer.prototype.get = function(i) {
-  if (i == undefined) i = 0;
-  if (i >= this.size) return undefined;
-  if (i >= this._buf.length) return undefined;
-  return this._buf[(this.pos - i - 1) % this.size];
+    if (i == undefined) i = 0;
+    if (i >= this.size) return undefined;
+    if (i >= this._buf.length) return undefined;
+    return this._buf[(this.pos - i - 1) % this.size];
 };
 
 CircularBuffer.prototype.push = function(o) {
-  this._buf[this.pos % this.size] = o;
-  return this.pos++;
+    this._buf[this.pos % this.size] = o;
+    return this.pos++;
 };
 
 },{}],6:[function(require,module,exports){
@@ -1856,18 +1856,18 @@ var Hub = require('./Hub'),
     Vector3 = require('./Vector3'),
     _ = require('underscore');
 
-var Frame = module.exports = function (data) {
+var Frame = module.exports = function(data) {
 
-    if(!data) {
+    if (!data) {
         throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== 'object') {
+    if (typeof data !== 'object') {
         throw new Error('Constructor parameter needs to be an object');
     }
-    if(!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
+    if (!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
         throw new Error('Frame id needs to be of type integer');
     }
-    if(!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
+    if (!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
         throw new Error('Timestamp needs to be of type integer');
     }
 
@@ -1951,9 +1951,10 @@ var Frame = module.exports = function (data) {
  * @return
  *
  */
-Frame.prototype.toString = function () {
+Frame.prototype.toString = function() {
     return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
 };
+
 },{"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"underscore":3}],7:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     BaseConnection = require('./connection/BaseConnection').BaseConnection,
@@ -1961,20 +1962,17 @@ var EventEmitter = require('events').EventEmitter,
     Myo = require('./Myo'),
     _ = require('underscore');
 
-var Hub = module.exports = function (opt) {
+var Hub = module.exports = function(opt) {
 
-    if(opt) {
-        if(typeof opt !== 'object') {
+    if (opt) {
+        if (typeof opt !== 'object') {
             throw new Error('Constructor parameter needs to be an object');
-            return;
         }
-        if(!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
+        if (!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
             throw new Error('Host needs to be of type string');
-            return;
         }
-        if(!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
+        if (!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
             throw new Error('Port needs to be of type integer');
-            return;
         }
     }
 
@@ -1990,28 +1988,28 @@ var Hub = module.exports = function (opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function (data) {
+    this.connection.on('deviceInfo', function(data) {
         hub.myo = new Myo(hub.connection);
     });
 
     // Forward events
-    this.connection.on('frame', function (frame) {
+    this.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
     });
-    this.connection.on('pose', function (pose) {
+    this.connection.on('pose', function(pose) {
         hub.emit('pose', pose);
     });
-    this.connection.on('event', function (event) {
+    this.connection.on('event', function(event) {
         hub.emit(event.type);
     });
-    this.connection.on('ready', function () {
+    this.connection.on('ready', function() {
         hub.emit('ready');
     });
-    this.connection.on('connect', function () {
+    this.connection.on('connect', function() {
         hub.emit('connect');
     });
-    this.connection.on('disconnect', function () {
+    this.connection.on('disconnect', function() {
         hub.emit('disconnect');
     });
 };
@@ -2032,7 +2030,7 @@ var Hub = module.exports = function (opt) {
  * parameter is specified, the newest frame. If a frame is not available at
  * the specified history position, an invalid Frame is returned.
  **/
-Hub.prototype.frame = function (num) {
+Hub.prototype.frame = function(num) {
     return this.history.get(num) || null;
 };
 
@@ -2042,23 +2040,22 @@ Hub.prototype.frame = function (num) {
  * <p>If timeout_ms is zero, this function blocks until a Myo is found. This function must
  * not be run concurrently with run() or runOnce().</p>
  */
-Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
-    var myo = this.connection.send({
+Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
+    if (!timeoutMilliseconds || timeoutMilliseconds !== parseInt(timeoutMilliseconds, 10)) {
+        throw new Error('timeoutMilliseconds needs to be of type integer');
+    }
+    this.connection.send({
         'waitForMyo': timeoutMilliseconds
     });
-    if (myo) {
-        myo.context = this.connection;
-        this.myos.push(myo);
-        return myo;
-    }
-
-    return null;
 };
 
 /**
  * Run the event loop for the specified duration (in milliseconds).
  */
-Hub.prototype.run = function (durationMilliseconds) {
+Hub.prototype.run = function(durationMilliseconds) {
+    if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
+        throw new Error('durationMilliseconds needs to be of type integer');
+    }
     this.connection.send({
         'run': durationMilliseconds
     });
@@ -2068,7 +2065,10 @@ Hub.prototype.run = function (durationMilliseconds) {
  * Run the event loop until a single event occurs, or the specified
  * duration (in milliseconds) has elapsed.
  */
-Hub.prototype.runOnce = function (durationMilliseconds) {
+Hub.prototype.runOnce = function(durationMilliseconds) {
+    if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
+        throw new Error('durationMilliseconds needs to be of type integer');
+    }
     this.connection.send({
         'runOnce': durationMilliseconds
     });
@@ -2092,12 +2092,13 @@ module.exports = {
     Frame: require('./Frame'),
     Version: require('./Version.js')
 };
+
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 
-var Myo = module.exports = function (context) {
+var Myo = module.exports = function(context) {
 
-    if(!context) {
+    if (!context) {
         throw new Error("Missing context");
     }
     /**
@@ -2143,7 +2144,7 @@ var Myo = module.exports = function (context) {
  * <p>An onRssi event will likely be generated with the value of the RSSI.</p>
  *
  */
-Myo.prototype.requestRssi = function () {
+Myo.prototype.requestRssi = function() {
     this.context.send({
         'requestRssi': true
     });
@@ -2154,16 +2155,25 @@ Myo.prototype.requestRssi = function () {
  * @param length
  *
  */
-Myo.prototype.vibrate = function (length) {
+Myo.prototype.vibrate = function(length) {
     switch (length) {
         case this.VIBRATION_SHORT:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_SHORT]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_SHORT]
+            });
             break;
         case this.VIBRATION_MEDIUM:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_MEDIUM]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_MEDIUM]
+            });
             break;
         case this.VIBRATION_LONG:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_LONG]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_LONG]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
@@ -2176,13 +2186,19 @@ Myo.prototype.vibrate = function (length) {
  * Can be called when a Myo is paired.
  *
  */
-Myo.prototype.unlock = function (option) {
+Myo.prototype.unlock = function(option) {
     switch (option) {
         case this.UNLOCK_TIMED:
-            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_TIMED]});
+            this.context.send({
+                'command': 'unlock',
+                'args': [this.UNLOCK_TIMED]
+            });
             break;
         case this.UNLOCK_HOLD:
-            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_HOLD]});
+            this.context.send({
+                'command': 'unlock',
+                'args': [this.UNLOCK_HOLD]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
@@ -2195,8 +2211,10 @@ Myo.prototype.unlock = function (option) {
  * Can be called when a Myo is paired.
  *
  */
-Myo.prototype.lock = function () {
-    this.context.send({'command':'lock'});
+Myo.prototype.lock = function() {
+    this.context.send({
+        'command': 'lock'
+    });
 };
 
 /**
@@ -2204,28 +2222,32 @@ Myo.prototype.lock = function () {
  * Can be called when a Myo is paired. Will cause Myo to vibrate.
  *
  */
-Myo.prototype.notifyUserAction = function (action) {
+Myo.prototype.notifyUserAction = function(action) {
     switch (action) {
         case this.USER_ACTION_SINGLE:
-            this.context.send({'command':'notifyUserAction', 'args' : [this.USER_ACTION_SINGLE]});
+            this.context.send({
+                'command': 'notifyUserAction',
+                'args': [this.USER_ACTION_SINGLE]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.USER_ACTION_SINGLE');
             break;
     }
 };
+
 },{"events":1}],10:[function(require,module,exports){
-var Pose = module.exports = function (data) {
+var Pose = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Pose object.
      */
     this.valid = data.hasOwnProperty('invalid') ? false : true;
 
-    if(this.valid) {
-        if(typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+    if (this.valid) {
+        if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
             throw new Error('Constructor parameter needs to be an object');
         }
-        if(!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
+        if (!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
             throw new Error('Pose type needs to be of type integer');
         }
     }
@@ -2266,7 +2288,7 @@ var Pose = module.exports = function (data) {
     this.DOUBLE_TAP = 5;
 };
 
-Pose.prototype.isEqualTo = function (other) {
+Pose.prototype.isEqualTo = function(other) {
     return this.type == other.type;
 };
 
@@ -2278,7 +2300,9 @@ Pose.prototype.isEqualTo = function (other) {
  *
  */
 Pose.invalid = function() {
-    return new Pose({ invalid: true });
+    return new Pose({
+        invalid: true
+    });
 };
 
 /**
@@ -2286,8 +2310,8 @@ Pose.invalid = function() {
  * @return
  *
  */
-Pose.prototype.toString = function () {
-    if(!this.valid) {
+Pose.prototype.toString = function() {
+    if (!this.valid) {
         return '[Pose invalid]';
     }
     switch (this.type) {
@@ -2314,6 +2338,7 @@ Pose.prototype.toString = function () {
     }
     return '[Pose type:' + this.type.toString() + ']';
 };
+
 },{}],11:[function(require,module,exports){
 var Quaternion = module.exports = function(data) {
     /**
@@ -2322,10 +2347,10 @@ var Quaternion = module.exports = function(data) {
     this.valid = data.hasOwnProperty('invalid') ? false : true;
 
     if (this.valid) {
-        if(Object.prototype.toString.call(data) !== '[object Array]') {
+        if (Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
-        if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
+        if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
             throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
@@ -2457,13 +2482,14 @@ Quaternion.prototype.toString = function() {
     }
     return '[Quaternion x:' + this.x + ' y:' + this.y + ' z:' + this.z + ' w:' + this.w + ']';
 };
-},{}],12:[function(require,module,exports){
-var Vector3 = module.exports = function (data) {
 
-    if(!data) {
+},{}],12:[function(require,module,exports){
+var Vector3 = module.exports = function(data) {
+
+    if (!data) {
         throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== 'object') {
+    if (typeof data !== 'object') {
         throw new Error('Constructor parameter needs to be an object');
     }
 
@@ -2472,11 +2498,11 @@ var Vector3 = module.exports = function (data) {
      */
     this.valid = data.hasOwnProperty('invalid') ? false : true;
 
-    if(this.valid) {
-        if(!data || Object.prototype.toString.call(data) !== '[object Array]') {
+    if (this.valid) {
+        if (!data || Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
-        if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
+        if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
             throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
@@ -2494,12 +2520,8 @@ var Vector3 = module.exports = function (data) {
  * @return A Vector3 object with all components negated.
  *
  */
-Vector3.prototype.opposite = function () {
-    return new Vector3([
-        -this.x,
-        -this.y,
-        -this.z
-    ]);
+Vector3.prototype.opposite = function() {
+    return new Vector3([-this.x, -this.y, -this.z]);
 };
 
 /**
@@ -2508,7 +2530,7 @@ Vector3.prototype.opposite = function () {
  * @return
  *
  */
-Vector3.prototype.plus = function (other) {
+Vector3.prototype.plus = function(other) {
     return new Vector3([
         this.x + other.x,
         this.y + other.y,
@@ -2522,7 +2544,7 @@ Vector3.prototype.plus = function (other) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.plusAssign = function (other) {
+Vector3.prototype.plusAssign = function(other) {
     this.x += other.x;
     this.y += other.y;
     this.z += other.z;
@@ -2535,7 +2557,7 @@ Vector3.prototype.plusAssign = function (other) {
  * @return
  *
  */
-Vector3.prototype.minus = function (other) {
+Vector3.prototype.minus = function(other) {
     return new Vector3([
         this.x - other.x,
         this.y - other.y,
@@ -2549,7 +2571,7 @@ Vector3.prototype.minus = function (other) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.minusAssign = function (other) {
+Vector3.prototype.minusAssign = function(other) {
     this.x -= other.x;
     this.y -= other.y;
     this.z -= other.z;
@@ -2562,7 +2584,7 @@ Vector3.prototype.minusAssign = function (other) {
  * @return
  *
  */
-Vector3.prototype.multiply = function (scalar) {
+Vector3.prototype.multiply = function(scalar) {
     return new Vector3([
         this.x * scalar,
         this.y * scalar,
@@ -2576,7 +2598,7 @@ Vector3.prototype.multiply = function (scalar) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.multiplyAssign = function (scalar) {
+Vector3.prototype.multiplyAssign = function(scalar) {
     this.x *= scalar;
     this.y *= scalar;
     this.z *= scalar;
@@ -2589,7 +2611,7 @@ Vector3.prototype.multiplyAssign = function (scalar) {
  * @return
  *
  */
-Vector3.prototype.divide = function (scalar) {
+Vector3.prototype.divide = function(scalar) {
     return new Vector3([
         this.x / scalar,
         this.y / scalar,
@@ -2603,7 +2625,7 @@ Vector3.prototype.divide = function (scalar) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.divideAssign = function (scalar) {
+Vector3.prototype.divideAssign = function(scalar) {
     this.x /= scalar;
     this.y /= scalar;
     this.z /= scalar;
@@ -2616,7 +2638,7 @@ Vector3.prototype.divideAssign = function (scalar) {
  * @return True; if equal, False otherwise.
  *
  */
-Vector3.prototype.isEqualTo = function (other) {
+Vector3.prototype.isEqualTo = function(other) {
     if (this.x != other.x || this.y != other.y || this.z != other.z)
         return false;
     else
@@ -2637,7 +2659,7 @@ Vector3.prototype.isEqualTo = function (other) {
  * @return The angle between this vector and the specified vector in radians.
  *
  */
-Vector3.prototype.angleTo = function (other) {
+Vector3.prototype.angleTo = function(other) {
     var denom = this.magnitudeSquared() * other.magnitudeSquared();
     if (denom <= 0)
         return 0;
@@ -2657,11 +2679,9 @@ Vector3.prototype.angleTo = function (other) {
  * @return The cross product of this vector and the specified vector.
  *
  */
-Vector3.prototype.cross = function (other) {
+Vector3.prototype.cross = function(other) {
     return new Vector3([
-        (this.y * other.z) - (this.z * other.y),
-        (this.z * other.x) - (this.x * other.z),
-        (this.x * other.y) - (this.y * other.x)
+        (this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)
     ]);
 };
 
@@ -2673,7 +2693,7 @@ Vector3.prototype.cross = function (other) {
  * @return The distance from this point to the specified point.
  *
  */
-Vector3.prototype.distanceTo = function (other) {
+Vector3.prototype.distanceTo = function(other) {
     return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y) + (this.z - other.z) * (this.z - other.z));
 };
 
@@ -2686,7 +2706,7 @@ Vector3.prototype.distanceTo = function (other) {
  * @return The dot product of this vector and the specified vector.
  *
  */
-Vector3.prototype.dot = function (other) {
+Vector3.prototype.dot = function(other) {
     return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
 };
 
@@ -2695,7 +2715,7 @@ Vector3.prototype.dot = function (other) {
  * @return If any component is NaN or infinite, then this returns false.
  *
  */
-Vector3.prototype.isValid = function () {
+Vector3.prototype.isValid = function() {
     return (this.x <= Number.MAX_VALUE && this.x >= -Number.MAX_VALUE) && (this.y <= Number.MAX_VALUE && this.y >= -Number.MAX_VALUE) && (this.z <= Number.MAX_VALUE && this.z >= -Number.MAX_VALUE);
 };
 
@@ -2708,7 +2728,7 @@ Vector3.prototype.isValid = function () {
  * @return The length of this vector.
  *
  */
-Vector3.prototype.magnitude = function () {
+Vector3.prototype.magnitude = function() {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 };
 
@@ -2717,7 +2737,7 @@ Vector3.prototype.magnitude = function () {
  * @return The square of the length of this vector.
  *
  */
-Vector3.prototype.magnitudeSquared = function () {
+Vector3.prototype.magnitudeSquared = function() {
     return this.x * this.x + this.y * this.y + this.z * this.z;
 };
 
@@ -2728,7 +2748,7 @@ Vector3.prototype.magnitudeSquared = function () {
  * @return A Vector object with a length of one, pointing in the same direction as this Vector object.
  *
  */
-Vector3.prototype.normalized = function () {
+Vector3.prototype.normalized = function() {
     var denom = this.magnitudeSquared();
     if (denom <= 0)
         return new Vector3([
@@ -2756,7 +2776,7 @@ Vector3.prototype.normalized = function () {
  * @return The angle of this vector above or below the horizon (x-z plane).
  *
  */
-Vector3.prototype.pitch = function () {
+Vector3.prototype.pitch = function() {
     return Math.atan2(this.y, -this.z);
 };
 
@@ -2772,7 +2792,7 @@ Vector3.prototype.pitch = function () {
  * @return The angle of this vector to the right or left of the negative z-axis.
  *
  */
-Vector3.prototype.yaw = function () {
+Vector3.prototype.yaw = function() {
     return Math.atan2(this.x, -this.z);
 };
 
@@ -2792,7 +2812,7 @@ Vector3.prototype.yaw = function () {
  * @return The angle of this vector to the right or left of the y-axis.
  *
  */
-Vector3.prototype.roll = function () {
+Vector3.prototype.roll = function() {
     return Math.atan2(this.x, -this.y);
 };
 
@@ -2801,7 +2821,7 @@ Vector3.prototype.roll = function () {
  * @return
  *
  */
-Vector3.prototype.zero = function () {
+Vector3.prototype.zero = function() {
     return new Vector3([
         0,
         0,
@@ -2814,7 +2834,7 @@ Vector3.prototype.zero = function () {
  * @return
  *
  */
-Vector3.prototype.xAxis = function () {
+Vector3.prototype.xAxis = function() {
     return new Vector3([
         1,
         0,
@@ -2827,7 +2847,7 @@ Vector3.prototype.xAxis = function () {
  * @return
  *
  */
-Vector3.prototype.yAxis = function () {
+Vector3.prototype.yAxis = function() {
     return new Vector3([
         0,
         1,
@@ -2840,7 +2860,7 @@ Vector3.prototype.yAxis = function () {
  * @return
  *
  */
-Vector3.prototype.zAxis = function () {
+Vector3.prototype.zAxis = function() {
     return new Vector3([
         0,
         0,
@@ -2853,9 +2873,8 @@ Vector3.prototype.zAxis = function () {
  * @return
  *
  */
-Vector3.prototype.left = function () {
-    return new Vector3([
-        -1,
+Vector3.prototype.left = function() {
+    return new Vector3([-1,
         0,
         0
     ]);
@@ -2866,7 +2885,7 @@ Vector3.prototype.left = function () {
  * @return
  *
  */
-Vector3.prototype.right = function () {
+Vector3.prototype.right = function() {
     return this.xAxis();
 };
 
@@ -2875,10 +2894,9 @@ Vector3.prototype.right = function () {
  * @return
  *
  */
-Vector3.prototype.down = function () {
+Vector3.prototype.down = function() {
     return new Vector3([
-        0,
-        -1,
+        0, -1,
         0
     ]);
 };
@@ -2888,7 +2906,7 @@ Vector3.prototype.down = function () {
  * @return
  *
  */
-Vector3.prototype.up = function () {
+Vector3.prototype.up = function() {
     return this.yAxis();
 };
 
@@ -2897,11 +2915,10 @@ Vector3.prototype.up = function () {
  * @return
  *
  */
-Vector3.prototype.forward = function () {
+Vector3.prototype.forward = function() {
     return new Vector3([
         0,
-        0,
-        -1
+        0, -1
     ]);
 };
 
@@ -2910,7 +2927,7 @@ Vector3.prototype.forward = function () {
  * @return
  *
  */
-Vector3.prototype.backward = function () {
+Vector3.prototype.backward = function() {
     return this.zAxis();
 };
 
@@ -2922,7 +2939,9 @@ Vector3.prototype.backward = function () {
  *
  */
 Vector3.invalid = function() {
-    return new Vector3({ invalid: true });
+    return new Vector3({
+        invalid: true
+    });
 };
 
 /**
@@ -2930,27 +2949,29 @@ Vector3.invalid = function() {
  * @return
  *
  */
-Vector3.prototype.toString = function () {
-    if(!this.valid) {
+Vector3.prototype.toString = function() {
+    if (!this.valid) {
         return '[Vector3 invalid]';
     }
     return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
 };
+
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.8.3',
+    full: '0.8.4',
     major: 0,
     minor: 8,
-    dot: 3
+    dot: 4
 }
+
 },{}],14:[function(require,module,exports){
 (function (process){
 var Frame = require('../Frame'),
     EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
-var BaseConnection = module.exports = function (options) {
+var BaseConnection = module.exports = function(options) {
     'use strict';
 
     this.options = _.defaults(options || {}, {
@@ -2962,13 +2983,13 @@ var BaseConnection = module.exports = function (options) {
     this.port = this.options.port;
 };
 
-BaseConnection.prototype.getUrl = function () {
+BaseConnection.prototype.getUrl = function() {
     'use strict';
 
     return 'ws://' + this.host + ':' + this.port + '/';
 };
 
-BaseConnection.prototype.handleOpen = function () {
+BaseConnection.prototype.handleOpen = function() {
     'use strict';
 
     if (!this.connected) {
@@ -2978,7 +2999,7 @@ BaseConnection.prototype.handleOpen = function () {
     }
 };
 
-BaseConnection.prototype.handleClose = function (code, reason) {
+BaseConnection.prototype.handleClose = function(code, reason) {
     'use strict';
 
     if (!this.connected) return;
@@ -2986,18 +3007,18 @@ BaseConnection.prototype.handleClose = function (code, reason) {
     this.startReconnection();
 };
 
-BaseConnection.prototype.startReconnection = function () {
+BaseConnection.prototype.startReconnection = function() {
     'use strict';
 
     var connection = this;
     if (!this.reconnectionTimer) {
-        (this.reconnectionTimer = setInterval(function () {
+        (this.reconnectionTimer = setInterval(function() {
             connection.reconnect()
         }, 500));
     }
 };
 
-BaseConnection.prototype.stopReconnection = function () {
+BaseConnection.prototype.stopReconnection = function() {
     'use strict';
 
     this.reconnectionTimer = clearInterval(this.reconnectionTimer);
@@ -3005,7 +3026,7 @@ BaseConnection.prototype.stopReconnection = function () {
 
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
-BaseConnection.prototype.disconnect = function (allowReconnect) {
+BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
 
     if (!allowReconnect) this.stopReconnection();
@@ -3019,7 +3040,7 @@ BaseConnection.prototype.disconnect = function (allowReconnect) {
     return true;
 };
 
-BaseConnection.prototype.reconnect = function () {
+BaseConnection.prototype.reconnect = function() {
     'use strict';
 
     if (this.connected) {
@@ -3030,7 +3051,7 @@ BaseConnection.prototype.reconnect = function () {
     }
 };
 
-BaseConnection.prototype.handleData = function (data) {
+BaseConnection.prototype.handleData = function(data) {
     'use strict';
 
     var message, messageEvent, frame, deviceInfo;
@@ -3066,14 +3087,14 @@ BaseConnection.prototype.handleData = function (data) {
     }
 };
 
-BaseConnection.prototype.connect = function () {
+BaseConnection.prototype.connect = function() {
     'use strict';
 
     if (this.socket) return;
 
     this.emit('ready');
 
-    var inNode = (typeof (process) !== 'undefined' && process.versions && process.versions.node),
+    var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
         connectionType;
 
@@ -3084,28 +3105,29 @@ BaseConnection.prototype.connect = function () {
         this.socket = new WebSocket(this.getUrl());
     }
 
-    this.socket.onopen = function () {
+    this.socket.onopen = function() {
         connection.handleOpen();
     };
-    this.socket.onclose = function (data) {
+    this.socket.onclose = function(data) {
         connection.handleClose(data['code'], data['reason']);
     };
-    this.socket.onmessage = function (message) {
+    this.socket.onmessage = function(message) {
         connection.handleData(message.data)
     };
-    this.socket.onerror = function (data) {
+    this.socket.onerror = function(data) {
         connection.handleClose('connectError', data['data'])
     };
 
     return true;
 };
 
-BaseConnection.prototype.send = function (data) {
+BaseConnection.prototype.send = function(data) {
     'use strict';
     this.socket.send(JSON.stringify(data));
 };
 
 _.extend(BaseConnection.prototype, EventEmitter.prototype);
+
 }).call(this,require('_process'))
 },{"../Frame":6,"_process":2,"events":1,"underscore":3,"ws":4}],15:[function(require,module,exports){
 if (typeof(window) !== 'undefined' && typeof(window.requestAnimationFrame) !== 'function') {
