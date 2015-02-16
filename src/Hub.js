@@ -4,18 +4,18 @@ var EventEmitter = require('events').EventEmitter,
     Myo = require('./Myo'),
     _ = require('underscore');
 
-var Hub = module.exports = function (opt) {
+var Hub = module.exports = function(opt) {
 
-    if(opt) {
-        if(typeof opt !== 'object') {
+    if (opt) {
+        if (typeof opt !== 'object') {
             throw new Error('Constructor parameter needs to be an object');
             return;
         }
-        if(!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
+        if (!opt.hasOwnProperty('host') || typeof opt.host !== 'string') {
             throw new Error('Host needs to be of type string');
             return;
         }
-        if(!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
+        if (!opt.hasOwnProperty('port') || opt.port !== parseInt(opt.port, 10)) {
             throw new Error('Port needs to be of type integer');
             return;
         }
@@ -33,28 +33,28 @@ var Hub = module.exports = function (opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function (data) {
+    this.connection.on('deviceInfo', function(data) {
         hub.myo = new Myo(hub.connection);
     });
 
     // Forward events
-    this.connection.on('frame', function (frame) {
+    this.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
     });
-    this.connection.on('pose', function (pose) {
+    this.connection.on('pose', function(pose) {
         hub.emit('pose', pose);
     });
-    this.connection.on('event', function (event) {
+    this.connection.on('event', function(event) {
         hub.emit(event.type);
     });
-    this.connection.on('ready', function () {
+    this.connection.on('ready', function() {
         hub.emit('ready');
     });
-    this.connection.on('connect', function () {
+    this.connection.on('connect', function() {
         hub.emit('connect');
     });
-    this.connection.on('disconnect', function () {
+    this.connection.on('disconnect', function() {
         hub.emit('disconnect');
     });
 };
@@ -75,7 +75,7 @@ var Hub = module.exports = function (opt) {
  * parameter is specified, the newest frame. If a frame is not available at
  * the specified history position, an invalid Frame is returned.
  **/
-Hub.prototype.frame = function (num) {
+Hub.prototype.frame = function(num) {
     return this.history.get(num) || null;
 };
 
@@ -85,7 +85,7 @@ Hub.prototype.frame = function (num) {
  * <p>If timeout_ms is zero, this function blocks until a Myo is found. This function must
  * not be run concurrently with run() or runOnce().</p>
  */
-Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
+Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
     var myo = this.connection.send({
         'waitForMyo': timeoutMilliseconds
     });
@@ -101,7 +101,7 @@ Hub.prototype.waitForMyo = function (timeoutMilliseconds) {
 /**
  * Run the event loop for the specified duration (in milliseconds).
  */
-Hub.prototype.run = function (durationMilliseconds) {
+Hub.prototype.run = function(durationMilliseconds) {
     this.connection.send({
         'run': durationMilliseconds
     });
@@ -111,7 +111,7 @@ Hub.prototype.run = function (durationMilliseconds) {
  * Run the event loop until a single event occurs, or the specified
  * duration (in milliseconds) has elapsed.
  */
-Hub.prototype.runOnce = function (durationMilliseconds) {
+Hub.prototype.runOnce = function(durationMilliseconds) {
     this.connection.send({
         'runOnce': durationMilliseconds
     });

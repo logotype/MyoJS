@@ -2,7 +2,7 @@ var Frame = require('../Frame'),
     EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
-var BaseConnection = module.exports = function (options) {
+var BaseConnection = module.exports = function(options) {
     'use strict';
 
     this.options = _.defaults(options || {}, {
@@ -14,13 +14,13 @@ var BaseConnection = module.exports = function (options) {
     this.port = this.options.port;
 };
 
-BaseConnection.prototype.getUrl = function () {
+BaseConnection.prototype.getUrl = function() {
     'use strict';
 
     return 'ws://' + this.host + ':' + this.port + '/';
 };
 
-BaseConnection.prototype.handleOpen = function () {
+BaseConnection.prototype.handleOpen = function() {
     'use strict';
 
     if (!this.connected) {
@@ -30,7 +30,7 @@ BaseConnection.prototype.handleOpen = function () {
     }
 };
 
-BaseConnection.prototype.handleClose = function (code, reason) {
+BaseConnection.prototype.handleClose = function(code, reason) {
     'use strict';
 
     if (!this.connected) return;
@@ -38,18 +38,18 @@ BaseConnection.prototype.handleClose = function (code, reason) {
     this.startReconnection();
 };
 
-BaseConnection.prototype.startReconnection = function () {
+BaseConnection.prototype.startReconnection = function() {
     'use strict';
 
     var connection = this;
     if (!this.reconnectionTimer) {
-        (this.reconnectionTimer = setInterval(function () {
+        (this.reconnectionTimer = setInterval(function() {
             connection.reconnect()
         }, 500));
     }
 };
 
-BaseConnection.prototype.stopReconnection = function () {
+BaseConnection.prototype.stopReconnection = function() {
     'use strict';
 
     this.reconnectionTimer = clearInterval(this.reconnectionTimer);
@@ -57,7 +57,7 @@ BaseConnection.prototype.stopReconnection = function () {
 
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
-BaseConnection.prototype.disconnect = function (allowReconnect) {
+BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
 
     if (!allowReconnect) this.stopReconnection();
@@ -71,7 +71,7 @@ BaseConnection.prototype.disconnect = function (allowReconnect) {
     return true;
 };
 
-BaseConnection.prototype.reconnect = function () {
+BaseConnection.prototype.reconnect = function() {
     'use strict';
 
     if (this.connected) {
@@ -82,7 +82,7 @@ BaseConnection.prototype.reconnect = function () {
     }
 };
 
-BaseConnection.prototype.handleData = function (data) {
+BaseConnection.prototype.handleData = function(data) {
     'use strict';
 
     var message, messageEvent, frame, deviceInfo;
@@ -118,14 +118,14 @@ BaseConnection.prototype.handleData = function (data) {
     }
 };
 
-BaseConnection.prototype.connect = function () {
+BaseConnection.prototype.connect = function() {
     'use strict';
 
     if (this.socket) return;
 
     this.emit('ready');
 
-    var inNode = (typeof (process) !== 'undefined' && process.versions && process.versions.node),
+    var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
         connectionType;
 
@@ -136,23 +136,23 @@ BaseConnection.prototype.connect = function () {
         this.socket = new WebSocket(this.getUrl());
     }
 
-    this.socket.onopen = function () {
+    this.socket.onopen = function() {
         connection.handleOpen();
     };
-    this.socket.onclose = function (data) {
+    this.socket.onclose = function(data) {
         connection.handleClose(data['code'], data['reason']);
     };
-    this.socket.onmessage = function (message) {
+    this.socket.onmessage = function(message) {
         connection.handleData(message.data)
     };
-    this.socket.onerror = function (data) {
+    this.socket.onerror = function(data) {
         connection.handleClose('connectError', data['data'])
     };
 
     return true;
 };
 
-BaseConnection.prototype.send = function (data) {
+BaseConnection.prototype.send = function(data) {
     'use strict';
     this.socket.send(JSON.stringify(data));
 };

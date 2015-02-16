@@ -5,18 +5,18 @@ var Hub = require('./Hub'),
     Vector3 = require('./Vector3'),
     _ = require('underscore');
 
-var Frame = module.exports = function (data) {
+var Frame = module.exports = function(data) {
 
-    if(!data) {
+    if (!data) {
         throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== 'object') {
+    if (typeof data !== 'object') {
         throw new Error('Constructor parameter needs to be an object');
     }
-    if(!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
+    if (!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
         throw new Error('Frame id needs to be of type integer');
     }
-    if(!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
+    if (!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
         throw new Error('Timestamp needs to be of type integer');
     }
 
@@ -100,6 +100,6 @@ var Frame = module.exports = function (data) {
  * @return
  *
  */
-Frame.prototype.toString = function () {
+Frame.prototype.toString = function() {
     return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
 };

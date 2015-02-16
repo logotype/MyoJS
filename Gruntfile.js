@@ -1,16 +1,39 @@
 module.exports = function(grunt){
-    var filename = "myojs-<%= pkg.version %>";
-    var banner = "/*! \
+    var filename = 'myojs-<%= pkg.version %>';
+    var banner = '/*! \
 \n * MyoJS v<%= pkg.version %>\
 \n * https://github.com/logotype/myojs.git\
 \n * \
 \n * Copyright 2015 Victor Norgren\
 \n * Released under the MIT license\
-\n */";
+\n */';
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
-        // This updates the Version.js to match pkg.version
+        pkg: grunt.file.readJSON('package.json'),
+        'jsbeautifier' : {
+            files : ['src/**/*.js'],
+            options: {
+                js: {
+                    braceStyle: 'collapse',
+                    breakChainedMethods: false,
+                    e4x: false,
+                    evalCode: false,
+                    indentChar: ' ',
+                    indentLevel: 0,
+                    indentSize: 4,
+                    indentWithTabs: false,
+                    jslintHappy: false,
+                    keepArrayIndentation: false,
+                    keepFunctionIndentation: false,
+                    maxPreserveNewlines: 10,
+                    preserveNewlines: true,
+                    spaceBeforeConditional: true,
+                    spaceInParen: false,
+                    unescapeStrings: false,
+                    wrapLineLength: 0
+                }
+            }
+        },
         'string-replace': {
             build: {
                 files: {
@@ -18,31 +41,21 @@ module.exports = function(grunt){
                     './': 'bower.json',
                     'examples/': 'examples/*.html'
                 },
-                options:{
+                options: {
                     replacements: [
-                        // Version.js
                         {
                             pattern: /(full:\s)'.*'/,
                             replacement: "$1'<%= pkg.version %>'"
-                        },
-                        {
+                        }, {
                             pattern: /(major:\s)\d/,
                             replacement: "$1<%= pkg.version.split('.')[0] %>"
-                        },
-                        {
+                        }, {
                             pattern: /(minor:\s)\d/,
                             replacement: "$1<%= pkg.version.split('.')[1] %>"
-                        },
-                        {
+                        }, {
                             pattern: /(dot:\s)\d.*/,
                             replacement: "$1<%= pkg.version.split('.')[2][0] %>"
                         },
-                        // bower.json
-                        {
-                            pattern: /"version": ".*"/,
-                            replacement: '"version": "<%= pkg.version %>"'
-                        },
-                        // examples
                         {
                             pattern: /myo.*\.js/,
                             replacement: filename + '.js'
@@ -51,24 +64,24 @@ module.exports = function(grunt){
                 }
             }
         },
-        clean: {
+        'clean': {
             build: {
                 src: ['./myo-*.js']
             }
         },
-        browserify: {
+        'browserify': {
             build: {
                 src: 'template/entry.js',
                 dest: filename + '.js'
             }
         },
-        uglify: {
+        'uglify': {
             build: {
-                src: filename  + '.js',
+                src: filename + '.js',
                 dest: filename + '.min.js'
             }
         },
-        usebanner: {
+        'usebanner': {
             build: {
                 options: {
                     banner: banner
@@ -76,7 +89,7 @@ module.exports = function(grunt){
                 src: [filename + '.js', filename + '.min.js']
             }
         },
-        watch: {
+        'watch': {
             files: 'src/**/*',
             tasks: ['default'],
             test: {
@@ -85,7 +98,19 @@ module.exports = function(grunt){
             }
 
         },
-        exec: {
+        'mocha_istanbul': {
+            coverage: {
+                src: 'test',
+                options: {
+                    reporter: 'dot',
+                    print: 'summary',
+                    coverage: true,
+                    root: './src',
+                    reportFormats: ['lcovonly', 'html']
+                }
+            }
+        },
+        'exec': {
             'test-node': './node_modules/.bin/mocha src/Index.js test/*.js -i -R dot'
         }
     });
@@ -96,6 +121,7 @@ module.exports = function(grunt){
         'string-replace',
         'clean',
         'browserify',
+        'jsbeautifier',
         'uglify',
         'usebanner'
     ]);
@@ -103,7 +129,7 @@ module.exports = function(grunt){
 
     grunt.registerTask('test', [
         'default',
-        'test-only'
+        'mocha_istanbul'
     ]);
 
     grunt.registerTask('test-only', [

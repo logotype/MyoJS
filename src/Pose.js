@@ -1,14 +1,14 @@
-var Pose = module.exports = function (data) {
+var Pose = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Pose object.
      */
     this.valid = data.hasOwnProperty('invalid') ? false : true;
 
-    if(this.valid) {
-        if(typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+    if (this.valid) {
+        if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
             throw new Error('Constructor parameter needs to be an object');
         }
-        if(!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
+        if (!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
             throw new Error('Pose type needs to be of type integer');
         }
     }
@@ -49,7 +49,7 @@ var Pose = module.exports = function (data) {
     this.DOUBLE_TAP = 5;
 };
 
-Pose.prototype.isEqualTo = function (other) {
+Pose.prototype.isEqualTo = function(other) {
     return this.type == other.type;
 };
 
@@ -61,7 +61,9 @@ Pose.prototype.isEqualTo = function (other) {
  *
  */
 Pose.invalid = function() {
-    return new Pose({ invalid: true });
+    return new Pose({
+        invalid: true
+    });
 };
 
 /**
@@ -69,8 +71,8 @@ Pose.invalid = function() {
  * @return
  *
  */
-Pose.prototype.toString = function () {
-    if(!this.valid) {
+Pose.prototype.toString = function() {
+    if (!this.valid) {
         return '[Pose invalid]';
     }
     switch (this.type) {

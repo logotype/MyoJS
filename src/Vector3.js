@@ -1,9 +1,9 @@
-var Vector3 = module.exports = function (data) {
+var Vector3 = module.exports = function(data) {
 
-    if(!data) {
+    if (!data) {
         throw new Error('Missing constructor arguments');
     }
-    if(typeof data !== 'object') {
+    if (typeof data !== 'object') {
         throw new Error('Constructor parameter needs to be an object');
     }
 
@@ -12,11 +12,11 @@ var Vector3 = module.exports = function (data) {
      */
     this.valid = data.hasOwnProperty('invalid') ? false : true;
 
-    if(this.valid) {
-        if(!data || Object.prototype.toString.call(data) !== '[object Array]') {
+    if (this.valid) {
+        if (!data || Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
-        if(isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
+        if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
             throw new Error('Component values needs to be integers or numbers');
         }
         this.x = data[0];
@@ -34,12 +34,8 @@ var Vector3 = module.exports = function (data) {
  * @return A Vector3 object with all components negated.
  *
  */
-Vector3.prototype.opposite = function () {
-    return new Vector3([
-        -this.x,
-        -this.y,
-        -this.z
-    ]);
+Vector3.prototype.opposite = function() {
+    return new Vector3([-this.x, -this.y, -this.z]);
 };
 
 /**
@@ -48,7 +44,7 @@ Vector3.prototype.opposite = function () {
  * @return
  *
  */
-Vector3.prototype.plus = function (other) {
+Vector3.prototype.plus = function(other) {
     return new Vector3([
         this.x + other.x,
         this.y + other.y,
@@ -62,7 +58,7 @@ Vector3.prototype.plus = function (other) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.plusAssign = function (other) {
+Vector3.prototype.plusAssign = function(other) {
     this.x += other.x;
     this.y += other.y;
     this.z += other.z;
@@ -75,7 +71,7 @@ Vector3.prototype.plusAssign = function (other) {
  * @return
  *
  */
-Vector3.prototype.minus = function (other) {
+Vector3.prototype.minus = function(other) {
     return new Vector3([
         this.x - other.x,
         this.y - other.y,
@@ -89,7 +85,7 @@ Vector3.prototype.minus = function (other) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.minusAssign = function (other) {
+Vector3.prototype.minusAssign = function(other) {
     this.x -= other.x;
     this.y -= other.y;
     this.z -= other.z;
@@ -102,7 +98,7 @@ Vector3.prototype.minusAssign = function (other) {
  * @return
  *
  */
-Vector3.prototype.multiply = function (scalar) {
+Vector3.prototype.multiply = function(scalar) {
     return new Vector3([
         this.x * scalar,
         this.y * scalar,
@@ -116,7 +112,7 @@ Vector3.prototype.multiply = function (scalar) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.multiplyAssign = function (scalar) {
+Vector3.prototype.multiplyAssign = function(scalar) {
     this.x *= scalar;
     this.y *= scalar;
     this.z *= scalar;
@@ -129,7 +125,7 @@ Vector3.prototype.multiplyAssign = function (scalar) {
  * @return
  *
  */
-Vector3.prototype.divide = function (scalar) {
+Vector3.prototype.divide = function(scalar) {
     return new Vector3([
         this.x / scalar,
         this.y / scalar,
@@ -143,7 +139,7 @@ Vector3.prototype.divide = function (scalar) {
  * @return This Vector3.
  *
  */
-Vector3.prototype.divideAssign = function (scalar) {
+Vector3.prototype.divideAssign = function(scalar) {
     this.x /= scalar;
     this.y /= scalar;
     this.z /= scalar;
@@ -156,7 +152,7 @@ Vector3.prototype.divideAssign = function (scalar) {
  * @return True; if equal, False otherwise.
  *
  */
-Vector3.prototype.isEqualTo = function (other) {
+Vector3.prototype.isEqualTo = function(other) {
     if (this.x != other.x || this.y != other.y || this.z != other.z)
         return false;
     else
@@ -177,7 +173,7 @@ Vector3.prototype.isEqualTo = function (other) {
  * @return The angle between this vector and the specified vector in radians.
  *
  */
-Vector3.prototype.angleTo = function (other) {
+Vector3.prototype.angleTo = function(other) {
     var denom = this.magnitudeSquared() * other.magnitudeSquared();
     if (denom <= 0)
         return 0;
@@ -197,11 +193,9 @@ Vector3.prototype.angleTo = function (other) {
  * @return The cross product of this vector and the specified vector.
  *
  */
-Vector3.prototype.cross = function (other) {
+Vector3.prototype.cross = function(other) {
     return new Vector3([
-        (this.y * other.z) - (this.z * other.y),
-        (this.z * other.x) - (this.x * other.z),
-        (this.x * other.y) - (this.y * other.x)
+        (this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)
     ]);
 };
 
@@ -213,7 +207,7 @@ Vector3.prototype.cross = function (other) {
  * @return The distance from this point to the specified point.
  *
  */
-Vector3.prototype.distanceTo = function (other) {
+Vector3.prototype.distanceTo = function(other) {
     return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y) + (this.z - other.z) * (this.z - other.z));
 };
 
@@ -226,7 +220,7 @@ Vector3.prototype.distanceTo = function (other) {
  * @return The dot product of this vector and the specified vector.
  *
  */
-Vector3.prototype.dot = function (other) {
+Vector3.prototype.dot = function(other) {
     return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
 };
 
@@ -235,7 +229,7 @@ Vector3.prototype.dot = function (other) {
  * @return If any component is NaN or infinite, then this returns false.
  *
  */
-Vector3.prototype.isValid = function () {
+Vector3.prototype.isValid = function() {
     return (this.x <= Number.MAX_VALUE && this.x >= -Number.MAX_VALUE) && (this.y <= Number.MAX_VALUE && this.y >= -Number.MAX_VALUE) && (this.z <= Number.MAX_VALUE && this.z >= -Number.MAX_VALUE);
 };
 
@@ -248,7 +242,7 @@ Vector3.prototype.isValid = function () {
  * @return The length of this vector.
  *
  */
-Vector3.prototype.magnitude = function () {
+Vector3.prototype.magnitude = function() {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 };
 
@@ -257,7 +251,7 @@ Vector3.prototype.magnitude = function () {
  * @return The square of the length of this vector.
  *
  */
-Vector3.prototype.magnitudeSquared = function () {
+Vector3.prototype.magnitudeSquared = function() {
     return this.x * this.x + this.y * this.y + this.z * this.z;
 };
 
@@ -268,7 +262,7 @@ Vector3.prototype.magnitudeSquared = function () {
  * @return A Vector object with a length of one, pointing in the same direction as this Vector object.
  *
  */
-Vector3.prototype.normalized = function () {
+Vector3.prototype.normalized = function() {
     var denom = this.magnitudeSquared();
     if (denom <= 0)
         return new Vector3([
@@ -296,7 +290,7 @@ Vector3.prototype.normalized = function () {
  * @return The angle of this vector above or below the horizon (x-z plane).
  *
  */
-Vector3.prototype.pitch = function () {
+Vector3.prototype.pitch = function() {
     return Math.atan2(this.y, -this.z);
 };
 
@@ -312,7 +306,7 @@ Vector3.prototype.pitch = function () {
  * @return The angle of this vector to the right or left of the negative z-axis.
  *
  */
-Vector3.prototype.yaw = function () {
+Vector3.prototype.yaw = function() {
     return Math.atan2(this.x, -this.z);
 };
 
@@ -332,7 +326,7 @@ Vector3.prototype.yaw = function () {
  * @return The angle of this vector to the right or left of the y-axis.
  *
  */
-Vector3.prototype.roll = function () {
+Vector3.prototype.roll = function() {
     return Math.atan2(this.x, -this.y);
 };
 
@@ -341,7 +335,7 @@ Vector3.prototype.roll = function () {
  * @return
  *
  */
-Vector3.prototype.zero = function () {
+Vector3.prototype.zero = function() {
     return new Vector3([
         0,
         0,
@@ -354,7 +348,7 @@ Vector3.prototype.zero = function () {
  * @return
  *
  */
-Vector3.prototype.xAxis = function () {
+Vector3.prototype.xAxis = function() {
     return new Vector3([
         1,
         0,
@@ -367,7 +361,7 @@ Vector3.prototype.xAxis = function () {
  * @return
  *
  */
-Vector3.prototype.yAxis = function () {
+Vector3.prototype.yAxis = function() {
     return new Vector3([
         0,
         1,
@@ -380,7 +374,7 @@ Vector3.prototype.yAxis = function () {
  * @return
  *
  */
-Vector3.prototype.zAxis = function () {
+Vector3.prototype.zAxis = function() {
     return new Vector3([
         0,
         0,
@@ -393,9 +387,8 @@ Vector3.prototype.zAxis = function () {
  * @return
  *
  */
-Vector3.prototype.left = function () {
-    return new Vector3([
-        -1,
+Vector3.prototype.left = function() {
+    return new Vector3([-1,
         0,
         0
     ]);
@@ -406,7 +399,7 @@ Vector3.prototype.left = function () {
  * @return
  *
  */
-Vector3.prototype.right = function () {
+Vector3.prototype.right = function() {
     return this.xAxis();
 };
 
@@ -415,10 +408,9 @@ Vector3.prototype.right = function () {
  * @return
  *
  */
-Vector3.prototype.down = function () {
+Vector3.prototype.down = function() {
     return new Vector3([
-        0,
-        -1,
+        0, -1,
         0
     ]);
 };
@@ -428,7 +420,7 @@ Vector3.prototype.down = function () {
  * @return
  *
  */
-Vector3.prototype.up = function () {
+Vector3.prototype.up = function() {
     return this.yAxis();
 };
 
@@ -437,11 +429,10 @@ Vector3.prototype.up = function () {
  * @return
  *
  */
-Vector3.prototype.forward = function () {
+Vector3.prototype.forward = function() {
     return new Vector3([
         0,
-        0,
-        -1
+        0, -1
     ]);
 };
 
@@ -450,7 +441,7 @@ Vector3.prototype.forward = function () {
  * @return
  *
  */
-Vector3.prototype.backward = function () {
+Vector3.prototype.backward = function() {
     return this.zAxis();
 };
 
@@ -462,7 +453,9 @@ Vector3.prototype.backward = function () {
  *
  */
 Vector3.invalid = function() {
-    return new Vector3({ invalid: true });
+    return new Vector3({
+        invalid: true
+    });
 };
 
 /**
@@ -470,8 +463,8 @@ Vector3.invalid = function() {
  * @return
  *
  */
-Vector3.prototype.toString = function () {
-    if(!this.valid) {
+Vector3.prototype.toString = function() {
+    if (!this.valid) {
         return '[Vector3 invalid]';
     }
     return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';

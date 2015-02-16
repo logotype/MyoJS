@@ -1,8 +1,8 @@
 var EventEmitter = require('events').EventEmitter;
 
-var Myo = module.exports = function (context) {
+var Myo = module.exports = function(context) {
 
-    if(!context) {
+    if (!context) {
         throw new Error("Missing context");
     }
     /**
@@ -48,7 +48,7 @@ var Myo = module.exports = function (context) {
  * <p>An onRssi event will likely be generated with the value of the RSSI.</p>
  *
  */
-Myo.prototype.requestRssi = function () {
+Myo.prototype.requestRssi = function() {
     this.context.send({
         'requestRssi': true
     });
@@ -59,16 +59,25 @@ Myo.prototype.requestRssi = function () {
  * @param length
  *
  */
-Myo.prototype.vibrate = function (length) {
+Myo.prototype.vibrate = function(length) {
     switch (length) {
         case this.VIBRATION_SHORT:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_SHORT]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_SHORT]
+            });
             break;
         case this.VIBRATION_MEDIUM:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_MEDIUM]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_MEDIUM]
+            });
             break;
         case this.VIBRATION_LONG:
-            this.context.send({'command':'vibrate', 'args' : [this.VIBRATION_LONG]});
+            this.context.send({
+                'command': 'vibrate',
+                'args': [this.VIBRATION_LONG]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
@@ -81,13 +90,19 @@ Myo.prototype.vibrate = function (length) {
  * Can be called when a Myo is paired.
  *
  */
-Myo.prototype.unlock = function (option) {
+Myo.prototype.unlock = function(option) {
     switch (option) {
         case this.UNLOCK_TIMED:
-            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_TIMED]});
+            this.context.send({
+                'command': 'unlock',
+                'args': [this.UNLOCK_TIMED]
+            });
             break;
         case this.UNLOCK_HOLD:
-            this.context.send({'command':'unlock', 'args' : [this.UNLOCK_HOLD]});
+            this.context.send({
+                'command': 'unlock',
+                'args': [this.UNLOCK_HOLD]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
@@ -100,8 +115,10 @@ Myo.prototype.unlock = function (option) {
  * Can be called when a Myo is paired.
  *
  */
-Myo.prototype.lock = function () {
-    this.context.send({'command':'lock'});
+Myo.prototype.lock = function() {
+    this.context.send({
+        'command': 'lock'
+    });
 };
 
 /**
@@ -109,10 +126,13 @@ Myo.prototype.lock = function () {
  * Can be called when a Myo is paired. Will cause Myo to vibrate.
  *
  */
-Myo.prototype.notifyUserAction = function (action) {
+Myo.prototype.notifyUserAction = function(action) {
     switch (action) {
         case this.USER_ACTION_SINGLE:
-            this.context.send({'command':'notifyUserAction', 'args' : [this.USER_ACTION_SINGLE]});
+            this.context.send({
+                'command': 'notifyUserAction',
+                'args': [this.USER_ACTION_SINGLE]
+            });
             break;
         default:
             throw new Error('Valid values are: Myo.USER_ACTION_SINGLE');
