@@ -39,15 +39,22 @@ BaseConnection.prototype.handleOpen = function() {
         this.send({
             'command': 'requestDeviceInfo'
         });
+        return 'connecting';
+    } else {
+        return 'connected';
     }
 };
 
 BaseConnection.prototype.handleClose = function(code, reason) {
     'use strict';
 
-    if (!this.connected) return;
-    this.disconnect();
-    this.startReconnection();
+    if (this.connected) {
+        this.disconnect();
+        this.startReconnection();
+        return 'disconnecting';
+    } else {
+        return 'disconnected';
+    }
 };
 
 BaseConnection.prototype.startReconnection = function() {
@@ -55,9 +62,12 @@ BaseConnection.prototype.startReconnection = function() {
 
     var connection = this;
     if (!this.reconnectionTimer) {
-        (this.reconnectionTimer = setInterval(function() {
+        this.reconnectionTimer = setInterval(function() {
             connection.reconnect()
-        }, 500));
+        }, 500);
+        return 'reconnecting';
+    } else {
+        return 'already reconnecting';
     }
 };
 

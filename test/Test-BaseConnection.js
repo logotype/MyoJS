@@ -62,8 +62,28 @@ describe('BaseConnection', function(){
             var output = '';
             var baseConnection = new MyoJS.BaseConnection();
             MyoJS.BaseConnection.prototype.send = function(message) { output = JSON.stringify(message) };
-            baseConnection.handleOpen();
+            assert.equal(baseConnection.handleOpen(), 'connecting');
             assert.equal(output, '{"command":"requestDeviceInfo"}');
+        });
+        it('should not call context when connected', function(){
+            var output = '';
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.connected = true;
+            MyoJS.BaseConnection.prototype.send = function(message) { output = JSON.stringify(message) };
+            assert.equal(baseConnection.handleOpen(), 'connected');
+            assert.notEqual(output, '{"command":"requestDeviceInfo"}');
+        });
+    });
+    describe('#handleClose', function(){
+        it('should return "disconnecting" if connected', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.connected = true;
+            assert.equal(baseConnection.handleClose(), 'disconnecting');
+        });
+        it('should return "disconnecting" if connected', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.connected = false;
+            assert.equal(baseConnection.handleClose(), 'disconnected');
         });
     });
     describe('#handleData', function(){
@@ -161,6 +181,18 @@ describe('BaseConnection', function(){
             });
 
             baseConnection.handleData(frameDumpWithDeviceInfo);
+        });
+    });
+    describe('#startReconnection', function(){
+        it('should return "reconnecting" if no reconnectionTimer', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.reconnectionTimer = null;
+            assert.equal(baseConnection.startReconnection(), 'reconnecting');
+        });
+        it('should return "already reconnecting" if having reconnectionTimer', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.reconnectionTimer = 1234;
+            assert.equal(baseConnection.startReconnection(), 'already reconnecting');
         });
     });
     describe('#stopReconnection', function(){
