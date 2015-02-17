@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "0.10.33"
 before_install: npm install -g grunt-cli
+addons:
+  code_climate:
+    repo_token: 6c326651206753f240fa5f1c0fed1bdbfae8325f5bb31e294c0228c0a95e2882
 script: grunt test
-env:
-  - CODECLIMATE_REPO_TOKEN=6c326651206753f240fa5f1c0fed1bdbfae8325f5bb31e294c0228c0a95e2882 codeclimate < coverage/lcov.info
+after_script:
+  - cat coverage/lcov.info | codeclimate

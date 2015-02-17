@@ -1968,7 +1968,7 @@ var EventEmitter = require('events').EventEmitter,
 
 var Hub = module.exports = function(opt) {
 
-    this.connectionType = require("./connection/BaseConnection");
+    this.connectionType = require('./connection/BaseConnection');
     this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);
     this.historyType = require('./CircularBuffer');
@@ -2091,7 +2091,7 @@ var EventEmitter = require('events').EventEmitter;
 var Myo = module.exports = function(context) {
 
     if (!context) {
-        throw new Error("Missing context");
+        throw new Error('Missing context');
     }
     /**
      * A vibration lasting a small amount of time (VibrationLengthShort)
@@ -3071,14 +3071,14 @@ BaseConnection.prototype.handleData = function(data) {
     var message, frameObject, frame, deviceInfo;
 
     if (!data) {
-        throw new Error("No data received");
+        throw new Error('No data received');
     }
 
     // TODO Profile performance of this try/catch block
     try {
         message = JSON.parse(data);
     } catch (exception) {
-        throw new Error("Invalid JSON");
+        throw new Error('Invalid JSON');
     }
 
     // Wait for deviceInfo until connected
@@ -3155,7 +3155,7 @@ BaseConnection.prototype.send = function(data) {
     try {
         this.socket.send(JSON.stringify(data));
     } catch (exception) {
-        throw new Error("Invalid JSON");
+        throw new Error('Invalid JSON');
     }
 };
 

@@ -3,7 +3,7 @@ var EventEmitter = require('events').EventEmitter;
 var Myo = module.exports = function(context) {
 
     if (!context) {
-        throw new Error("Missing context");
+        throw new Error('Missing context');
     }
     /**
      * A vibration lasting a small amount of time (VibrationLengthShort)

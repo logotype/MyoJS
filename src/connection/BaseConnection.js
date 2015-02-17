@@ -110,14 +110,14 @@ BaseConnection.prototype.handleData = function(data) {
     var message, frameObject, frame, deviceInfo;
 
     if (!data) {
-        throw new Error("No data received");
+        throw new Error('No data received');
     }
 
     // TODO Profile performance of this try/catch block
     try {
         message = JSON.parse(data);
     } catch (exception) {
-        throw new Error("Invalid JSON");
+        throw new Error('Invalid JSON');
     }
 
     // Wait for deviceInfo until connected
@@ -194,7 +194,7 @@ BaseConnection.prototype.send = function(data) {
     try {
         this.socket.send(JSON.stringify(data));
     } catch (exception) {
-        throw new Error("Invalid JSON");
+        throw new Error('Invalid JSON');
     }
 };
 
