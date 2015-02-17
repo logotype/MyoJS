@@ -266,12 +266,13 @@ Vector3.prototype.magnitudeSquared = function() {
  */
 Vector3.prototype.normalized = function() {
     var denom = this.magnitudeSquared();
-    if (denom <= 0)
+    if (denom <= 0) {
         return new Vector3([
             0,
             0,
             0
         ]);
+    }
 
     denom = 1 / Math.sqrt(denom);
     return new Vector3([

@@ -1838,7 +1838,7 @@ var CircularBuffer = module.exports = function(size) {
 
 CircularBuffer.prototype.get = function(i) {
     if (i === undefined) {
-        i = 0
+        i = 0;
     }
     if (i >= this.size) {
         return undefined;
@@ -2087,8 +2087,6 @@ module.exports = {
 };
 
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
-var EventEmitter = require('events').EventEmitter;
-
 var Myo = module.exports = function(context) {
 
     if (!context) {
@@ -2226,7 +2224,7 @@ Myo.prototype.notifyUserAction = function(action) {
     }
 };
 
-},{"events":1}],10:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var Pose = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Pose object.
@@ -2731,12 +2729,13 @@ Vector3.prototype.magnitudeSquared = function() {
  */
 Vector3.prototype.normalized = function() {
     var denom = this.magnitudeSquared();
-    if (denom <= 0)
+    if (denom <= 0) {
         return new Vector3([
             0,
             0,
             0
         ]);
+    }
 
     denom = 1 / Math.sqrt(denom);
     return new Vector3([
@@ -2945,6 +2944,7 @@ module.exports = {
     minor: 8,
     dot: 4
 };
+
 },{}],14:[function(require,module,exports){
 (function (process){
 var Frame = require('../Frame'),
@@ -3107,7 +3107,9 @@ BaseConnection.prototype.handleData = function(data) {
 BaseConnection.prototype.connect = function() {
     'use strict';
 
-    if (this.socket) return;
+    if (this.socket) {
+        return;
+    }
 
     this.emit('ready');
 
@@ -3129,10 +3131,10 @@ BaseConnection.prototype.connect = function() {
         connection.handleClose(data.code, data.reason);
     };
     this.socket.onmessage = function(message) {
-        connection.handleData(message.data)
+        connection.handleData(message.data);
     };
     this.socket.onerror = function(data) {
-        connection.handleClose('connectError', data.data)
+        connection.handleClose('connectError', data.data);
     };
 
     return true;

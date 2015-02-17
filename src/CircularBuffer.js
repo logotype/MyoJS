@@ -6,7 +6,7 @@ var CircularBuffer = module.exports = function(size) {
 
 CircularBuffer.prototype.get = function(i) {
     if (i === undefined) {
-        i = 0
+        i = 0;
     }
     if (i >= this.size) {
         return undefined;

@@ -1,5 +1,3 @@
-var EventEmitter = require('events').EventEmitter;
-
 var Myo = module.exports = function(context) {
 
     if (!context) {

@@ -158,7 +158,9 @@ BaseConnection.prototype.handleData = function(data) {
 BaseConnection.prototype.connect = function() {
     'use strict';
 
-    if (this.socket) return;
+    if (this.socket) {
+        return;
+    }
 
     this.emit('ready');
 
