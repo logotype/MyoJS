@@ -62,15 +62,15 @@ Quaternion.prototype.toEuler = function() {
     sqx = this.x * this.x;
     sqy = this.y * this.y;
     sqz = this.z * this.z;
-    unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+    unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor
     test = this.x * this.y + this.z * this.w;
-    if (test > 0.499 * unit) { // singularity at north pole
+    if (test > 0.499 * unit /* Singularity at north pole */ ) {
         heading = 2 * Math.atan2(this.x, this.w);
         attitude = Math.PI / 2;
         bank = 0;
         return;
     }
-    if (test < -0.499 * unit) { // singularity at south pole
+    if (test < -0.499 * unit /* Singularity at south pole */ ) {
         heading = -2 * Math.atan2(this.x, this.w);
         attitude = -Math.PI / 2;
         bank = 0;
@@ -80,16 +80,11 @@ Quaternion.prototype.toEuler = function() {
     attitude = Math.asin(2 * test / unit);
     bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
 
-    /*
-     * Heading = rotation about y axis
-     * Attitude = rotation about z axis
-     * Bank = rotation about x axis
-     */
     return {
-        heading: heading,
-        attitude: attitude,
-        bank: bank
-    }
+        heading: heading, // Heading = rotation about y axis
+        attitude: attitude, // Attitude = rotation about z axis
+        bank: bank // Bank = rotation about x axis
+    };
 };
 
 /**

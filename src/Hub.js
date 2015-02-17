@@ -1,6 +1,4 @@
 var EventEmitter = require('events').EventEmitter,
-    BaseConnection = require('./connection/BaseConnection').BaseConnection,
-    CircularBuffer = require('./CircularBuffer'),
     Myo = require('./Myo'),
     _ = require('underscore');
 
@@ -18,7 +16,7 @@ var Hub = module.exports = function(opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function(data) {
+    this.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
 

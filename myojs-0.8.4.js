@@ -1837,9 +1837,15 @@ var CircularBuffer = module.exports = function(size) {
 };
 
 CircularBuffer.prototype.get = function(i) {
-    if (i == undefined) i = 0;
-    if (i >= this.size) return undefined;
-    if (i >= this._buf.length) return undefined;
+    if (i === undefined) {
+        i = 0
+    }
+    if (i >= this.size) {
+        return undefined;
+    }
+    if (i >= this._buf.length) {
+        return undefined;
+    }
     return this._buf[(this.pos - i - 1) % this.size];
 };
 
@@ -1849,12 +1855,9 @@ CircularBuffer.prototype.push = function(o) {
 };
 
 },{}],6:[function(require,module,exports){
-var Hub = require('./Hub'),
-    Myo = require('./Myo'),
-    Pose = require('./Pose'),
+var Pose = require('./Pose'),
     Quaternion = require('./Quaternion'),
-    Vector3 = require('./Vector3'),
-    _ = require('underscore');
+    Vector3 = require('./Vector3');
 
 var Frame = module.exports = function(data) {
 
@@ -1888,16 +1891,16 @@ var Frame = module.exports = function(data) {
      */
     this.timestamp = data.timestamp;
 
-    if (data['euler']) {
-        this.euler = data['euler'];
+    if (data.euler) {
+        this.euler = data.euler;
     }
 
-    if (data['rssi']) {
-        this.rssi = data['rssi'];
+    if (data.rssi) {
+        this.rssi = data.rssi;
     }
 
-    if (data['event']) {
-        this.event = data['event'];
+    if (data.event) {
+        this.event = data.event;
     }
 
     /**
@@ -1906,8 +1909,8 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data['pose']) {
-        this.pose = new Pose(data['pose']);
+    if (data.pose) {
+        this.pose = new Pose(data.pose);
     } else {
         this.pose = Pose.invalid();
     }
@@ -1918,20 +1921,20 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data['rotation']) {
-        this.rotation = new Quaternion(data['rotation']);
+    if (data.rotation) {
+        this.rotation = new Quaternion(data.rotation);
     } else {
         this.rotation = Quaternion.invalid();
     }
 
-    if (data['accel']) {
-        this.accel = new Vector3(data['accel']);
+    if (data.accel) {
+        this.accel = new Vector3(data.accel);
     } else {
         this.accel = Vector3.invalid();
     }
 
-    if (data['gyro']) {
-        this.gyro = new Vector3(data['gyro']);
+    if (data.gyro) {
+        this.gyro = new Vector3(data.gyro);
     } else {
         this.gyro = Vector3.invalid();
     }
@@ -1939,8 +1942,8 @@ var Frame = module.exports = function(data) {
     /**
      * EMG data
      */
-    if (data['emg']) {
-        this.emg = data['emg'];
+    if (data.emg) {
+        this.emg = data.emg;
     } else {
         this.emg = [];
     }
@@ -1959,10 +1962,8 @@ Frame.prototype.toString = function() {
     return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
 };
 
-},{"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"underscore":3}],7:[function(require,module,exports){
+},{"./Pose":10,"./Quaternion":11,"./Vector3":12}],7:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
-    BaseConnection = require('./connection/BaseConnection').BaseConnection,
-    CircularBuffer = require('./CircularBuffer'),
     Myo = require('./Myo'),
     _ = require('underscore');
 
@@ -1980,7 +1981,7 @@ var Hub = module.exports = function(opt) {
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function(data) {
+    this.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
 
@@ -2169,7 +2170,6 @@ Myo.prototype.vibrate = function(length) {
             break;
         default:
             throw new Error('Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
-            break;
     }
 };
 
@@ -2194,7 +2194,6 @@ Myo.prototype.unlock = function(option) {
             break;
         default:
             throw new Error('Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
-            break;
     }
 };
 
@@ -2224,7 +2223,6 @@ Myo.prototype.notifyUserAction = function(action) {
             break;
         default:
             throw new Error('Valid values are: Myo.USER_ACTION_SINGLE');
-            break;
     }
 };
 
@@ -2281,7 +2279,7 @@ var Pose = module.exports = function(data) {
 };
 
 Pose.prototype.isEqualTo = function(other) {
-    return this.type == other.type;
+    return this.type === other.type;
 };
 
 /**
@@ -2309,22 +2307,16 @@ Pose.prototype.toString = function() {
     switch (this.type) {
         case this.POSE_REST:
             return '[Pose type:' + this.type.toString() + ' POSE_REST]';
-            break;
         case this.POSE_FIST:
             return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
-            break;
         case this.POSE_WAVE_IN:
             return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
-            break;
         case this.POSE_WAVE_OUT:
             return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
-            break;
         case this.POSE_FINGERS_SPREAD:
             return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
-            break;
         case this.DOUBLE_TAP:
             return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
-            break;
         default:
             break;
     }
@@ -2396,15 +2388,15 @@ Quaternion.prototype.toEuler = function() {
     sqx = this.x * this.x;
     sqy = this.y * this.y;
     sqz = this.z * this.z;
-    unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+    unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor
     test = this.x * this.y + this.z * this.w;
-    if (test > 0.499 * unit) { // singularity at north pole
+    if (test > 0.499 * unit /* Singularity at north pole */ ) {
         heading = 2 * Math.atan2(this.x, this.w);
         attitude = Math.PI / 2;
         bank = 0;
         return;
     }
-    if (test < -0.499 * unit) { // singularity at south pole
+    if (test < -0.499 * unit /* Singularity at south pole */ ) {
         heading = -2 * Math.atan2(this.x, this.w);
         attitude = -Math.PI / 2;
         bank = 0;
@@ -2414,16 +2406,11 @@ Quaternion.prototype.toEuler = function() {
     attitude = Math.asin(2 * test / unit);
     bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
 
-    /*
-     * Heading = rotation about y axis
-     * Attitude = rotation about z axis
-     * Bank = rotation about x axis
-     */
     return {
-        heading: heading,
-        attitude: attitude,
-        bank: bank
-    }
+        heading: heading, // Heading = rotation about y axis
+        attitude: attitude, // Attitude = rotation about z axis
+        bank: bank // Bank = rotation about x axis
+    };
 };
 
 /**
@@ -2631,10 +2618,11 @@ Vector3.prototype.divideAssign = function(scalar) {
  *
  */
 Vector3.prototype.isEqualTo = function(other) {
-    if (this.x != other.x || this.y != other.y || this.z != other.z)
+    if (this.x !== other.x || this.y !== other.y || this.z !== other.z) {
         return false;
-    else
+    } else {
         return true;
+    }
 };
 
 /**
@@ -2642,7 +2630,7 @@ Vector3.prototype.isEqualTo = function(other) {
  *
  * <p>The angle is measured in the plane formed by the two vectors.
  * The angle returned is always the smaller of the two conjugate angles.
- * Thus <code>A.angleTo(B) == B.angleTo(A)</code> and is always a positive value less
+ * Thus <code>A.angleTo(B) === B.angleTo(A)</code> and is always a positive value less
  * than or equal to pi radians (180 degrees).</p>
  *
  * <p>If either vector has zero length, then this function returns zero.</p>
@@ -2653,10 +2641,11 @@ Vector3.prototype.isEqualTo = function(other) {
  */
 Vector3.prototype.angleTo = function(other) {
     var denom = this.magnitudeSquared() * other.magnitudeSquared();
-    if (denom <= 0)
+    if (denom <= 0) {
         return 0;
-
-    return Math.acos(this.dot(other) / Math.sqrt(denom));
+    } else {
+        return Math.acos(this.dot(other) / Math.sqrt(denom));
+    }
 };
 
 /**
@@ -2665,7 +2654,7 @@ Vector3.prototype.angleTo = function(other) {
  * The cross product is a vector orthogonal to both original vectors.
  * It has a magnitude equal to the area of a parallelogram having the
  * two vectors as sides. The direction of the returned vector is
- * determined by the right-hand rule. Thus <code>A.cross(B) == -B.cross(A)</code>.
+ * determined by the right-hand rule. Thus <code>A.cross(B) === -B.cross(A)</code>.
  *
  * @param other A Vector object.
  * @return The cross product of this vector and the specified vector.
@@ -2955,8 +2944,7 @@ module.exports = {
     major: 0,
     minor: 8,
     dot: 4
-}
-
+};
 },{}],14:[function(require,module,exports){
 (function (process){
 var Frame = require('../Frame'),
@@ -3024,7 +3012,7 @@ BaseConnection.prototype.startReconnection = function() {
     var connection = this;
     if (!this.reconnectionTimer) {
         this.reconnectionTimer = setInterval(function() {
-            connection.reconnect()
+            connection.reconnect();
         }, 500);
         return 'reconnecting';
     } else {
@@ -3043,8 +3031,12 @@ BaseConnection.prototype.stopReconnection = function() {
 BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
 
-    if (!allowReconnect) this.stopReconnection();
-    if (!this.socket) return;
+    if (!allowReconnect) {
+        this.stopReconnection();
+    }
+    if (!this.socket) {
+        return;
+    }
     this.socket.close();
     delete this.socket;
     if (this.connected) {
@@ -3083,16 +3075,18 @@ BaseConnection.prototype.handleData = function(data) {
 
     // Wait for deviceInfo until connected
     if (!this.connected && message.hasOwnProperty('frame')) {
-        frame = message['frame'];
+        frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
-            deviceInfo = frame['deviceInfo'];
+            deviceInfo = frame.deviceInfo;
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');
         }
     }
 
-    if (!this.connected) return;
+    if (!this.connected) {
+        return;
+    }
 
     if (message.hasOwnProperty('frame')) {
         frameObject = new Frame(message.frame);
@@ -3132,13 +3126,13 @@ BaseConnection.prototype.connect = function() {
         connection.handleOpen();
     };
     this.socket.onclose = function(data) {
-        connection.handleClose(data['code'], data['reason']);
+        connection.handleClose(data.code, data.reason);
     };
     this.socket.onmessage = function(message) {
         connection.handleData(message.data)
     };
     this.socket.onerror = function(data) {
-        connection.handleClose('connectError', data['data'])
+        connection.handleClose('connectError', data.data)
     };
 
     return true;

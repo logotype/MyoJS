@@ -81,7 +81,6 @@ Myo.prototype.vibrate = function(length) {
             break;
         default:
             throw new Error('Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
-            break;
     }
 };
 
@@ -106,7 +105,6 @@ Myo.prototype.unlock = function(option) {
             break;
         default:
             throw new Error('Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
-            break;
     }
 };
 
@@ -136,6 +134,5 @@ Myo.prototype.notifyUserAction = function(action) {
             break;
         default:
             throw new Error('Valid values are: Myo.USER_ACTION_SINGLE');
-            break;
     }
 };

@@ -50,7 +50,7 @@ var Pose = module.exports = function(data) {
 };
 
 Pose.prototype.isEqualTo = function(other) {
-    return this.type == other.type;
+    return this.type === other.type;
 };
 
 /**
@@ -78,22 +78,16 @@ Pose.prototype.toString = function() {
     switch (this.type) {
         case this.POSE_REST:
             return '[Pose type:' + this.type.toString() + ' POSE_REST]';
-            break;
         case this.POSE_FIST:
             return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
-            break;
         case this.POSE_WAVE_IN:
             return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
-            break;
         case this.POSE_WAVE_OUT:
             return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
-            break;
         case this.POSE_FINGERS_SPREAD:
             return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
-            break;
         case this.DOUBLE_TAP:
             return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
-            break;
         default:
             break;
     }

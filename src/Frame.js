@@ -1,9 +1,6 @@
-var Hub = require('./Hub'),
-    Myo = require('./Myo'),
-    Pose = require('./Pose'),
+var Pose = require('./Pose'),
     Quaternion = require('./Quaternion'),
-    Vector3 = require('./Vector3'),
-    _ = require('underscore');
+    Vector3 = require('./Vector3');
 
 var Frame = module.exports = function(data) {
 
@@ -37,16 +34,16 @@ var Frame = module.exports = function(data) {
      */
     this.timestamp = data.timestamp;
 
-    if (data['euler']) {
-        this.euler = data['euler'];
+    if (data.euler) {
+        this.euler = data.euler;
     }
 
-    if (data['rssi']) {
-        this.rssi = data['rssi'];
+    if (data.rssi) {
+        this.rssi = data.rssi;
     }
 
-    if (data['event']) {
-        this.event = data['event'];
+    if (data.event) {
+        this.event = data.event;
     }
 
     /**
@@ -55,8 +52,8 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data['pose']) {
-        this.pose = new Pose(data['pose']);
+    if (data.pose) {
+        this.pose = new Pose(data.pose);
     } else {
         this.pose = Pose.invalid();
     }
@@ -67,20 +64,20 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Pose.prototype
      * @type {Pose}
      */
-    if (data['rotation']) {
-        this.rotation = new Quaternion(data['rotation']);
+    if (data.rotation) {
+        this.rotation = new Quaternion(data.rotation);
     } else {
         this.rotation = Quaternion.invalid();
     }
 
-    if (data['accel']) {
-        this.accel = new Vector3(data['accel']);
+    if (data.accel) {
+        this.accel = new Vector3(data.accel);
     } else {
         this.accel = Vector3.invalid();
     }
 
-    if (data['gyro']) {
-        this.gyro = new Vector3(data['gyro']);
+    if (data.gyro) {
+        this.gyro = new Vector3(data.gyro);
     } else {
         this.gyro = Vector3.invalid();
     }
@@ -88,8 +85,8 @@ var Frame = module.exports = function(data) {
     /**
      * EMG data
      */
-    if (data['emg']) {
-        this.emg = data['emg'];
+    if (data.emg) {
+        this.emg = data.emg;
     } else {
         this.emg = [];
     }

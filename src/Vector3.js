@@ -153,10 +153,11 @@ Vector3.prototype.divideAssign = function(scalar) {
  *
  */
 Vector3.prototype.isEqualTo = function(other) {
-    if (this.x != other.x || this.y != other.y || this.z != other.z)
+    if (this.x !== other.x || this.y !== other.y || this.z !== other.z) {
         return false;
-    else
+    } else {
         return true;
+    }
 };
 
 /**
@@ -164,7 +165,7 @@ Vector3.prototype.isEqualTo = function(other) {
  *
  * <p>The angle is measured in the plane formed by the two vectors.
  * The angle returned is always the smaller of the two conjugate angles.
- * Thus <code>A.angleTo(B) == B.angleTo(A)</code> and is always a positive value less
+ * Thus <code>A.angleTo(B) === B.angleTo(A)</code> and is always a positive value less
  * than or equal to pi radians (180 degrees).</p>
  *
  * <p>If either vector has zero length, then this function returns zero.</p>
@@ -175,10 +176,11 @@ Vector3.prototype.isEqualTo = function(other) {
  */
 Vector3.prototype.angleTo = function(other) {
     var denom = this.magnitudeSquared() * other.magnitudeSquared();
-    if (denom <= 0)
+    if (denom <= 0) {
         return 0;
-
-    return Math.acos(this.dot(other) / Math.sqrt(denom));
+    } else {
+        return Math.acos(this.dot(other) / Math.sqrt(denom));
+    }
 };
 
 /**
@@ -187,7 +189,7 @@ Vector3.prototype.angleTo = function(other) {
  * The cross product is a vector orthogonal to both original vectors.
  * It has a magnitude equal to the area of a parallelogram having the
  * two vectors as sides. The direction of the returned vector is
- * determined by the right-hand rule. Thus <code>A.cross(B) == -B.cross(A)</code>.
+ * determined by the right-hand rule. Thus <code>A.cross(B) === -B.cross(A)</code>.
  *
  * @param other A Vector object.
  * @return The cross product of this vector and the specified vector.

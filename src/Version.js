@@ -4,4 +4,4 @@ module.exports = {
     major: 0,
     minor: 8,
     dot: 4
-}
+};

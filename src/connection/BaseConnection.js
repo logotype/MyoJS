@@ -63,7 +63,7 @@ BaseConnection.prototype.startReconnection = function() {
     var connection = this;
     if (!this.reconnectionTimer) {
         this.reconnectionTimer = setInterval(function() {
-            connection.reconnect()
+            connection.reconnect();
         }, 500);
         return 'reconnecting';
     } else {
@@ -82,8 +82,12 @@ BaseConnection.prototype.stopReconnection = function() {
 BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
 
-    if (!allowReconnect) this.stopReconnection();
-    if (!this.socket) return;
+    if (!allowReconnect) {
+        this.stopReconnection();
+    }
+    if (!this.socket) {
+        return;
+    }
     this.socket.close();
     delete this.socket;
     if (this.connected) {
@@ -122,16 +126,18 @@ BaseConnection.prototype.handleData = function(data) {
 
     // Wait for deviceInfo until connected
     if (!this.connected && message.hasOwnProperty('frame')) {
-        frame = message['frame'];
+        frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
-            deviceInfo = frame['deviceInfo'];
+            deviceInfo = frame.deviceInfo;
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');
         }
     }
 
-    if (!this.connected) return;
+    if (!this.connected) {
+        return;
+    }
 
     if (message.hasOwnProperty('frame')) {
         frameObject = new Frame(message.frame);
@@ -171,13 +177,13 @@ BaseConnection.prototype.connect = function() {
         connection.handleOpen();
     };
     this.socket.onclose = function(data) {
-        connection.handleClose(data['code'], data['reason']);
+        connection.handleClose(data.code, data.reason);
     };
     this.socket.onmessage = function(message) {
-        connection.handleData(message.data)
+        connection.handleData(message.data);
     };
     this.socket.onerror = function(data) {
-        connection.handleClose('connectError', data['data'])
+        connection.handleClose('connectError', data.data);
     };
 
     return true;
