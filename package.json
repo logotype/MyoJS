@@ -13,6 +13,7 @@
     "ws": "latest"
   },
   "devDependencies": {
+    "codeclimate-test-reporter": "latest",
     "mocha": "latest",
     "chai": "latest",
     "browserify": "latest",
