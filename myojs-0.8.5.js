@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.8.4
+ * MyoJS v0.8.5
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -1984,8 +1984,6 @@ var Hub = module.exports = function(opt) {
     this.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
-
-    // Forward events
     this.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
@@ -2939,10 +2937,10 @@ Vector3.prototype.toString = function() {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.8.4',
+    full: '0.8.5',
     major: 0,
     minor: 8,
-    dot: 4
+    dot: 5
 };
 
 },{}],14:[function(require,module,exports){

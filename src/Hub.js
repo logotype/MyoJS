@@ -19,8 +19,6 @@ var Hub = module.exports = function(opt) {
     this.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
-
-    // Forward events
     this.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
