@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.8.5
+ * MyoJS v0.8.6
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -2937,10 +2937,10 @@ Vector3.prototype.toString = function() {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.8.5',
+    full: '0.8.6',
     major: 0,
     minor: 8,
-    dot: 5
+    dot: 6
 };
 
 },{}],14:[function(require,module,exports){
@@ -2992,7 +2992,7 @@ BaseConnection.prototype.handleOpen = function() {
     }
 };
 
-BaseConnection.prototype.handleClose = function(code, reason) {
+BaseConnection.prototype.handleClose = function() {
     'use strict';
 
     if (this.connected) {
@@ -3113,11 +3113,11 @@ BaseConnection.prototype.connect = function() {
 
     var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
-        connectionType;
+        ConnectionType;
 
     if (inNode) {
-        connectionType = require('ws');
-        this.socket = new connectionType(this.getUrl());
+        ConnectionType = require('ws');
+        this.socket = new ConnectionType(this.getUrl());
     } else {
         this.socket = new WebSocket(this.getUrl());
     }

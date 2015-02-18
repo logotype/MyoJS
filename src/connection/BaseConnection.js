@@ -45,7 +45,7 @@ BaseConnection.prototype.handleOpen = function() {
     }
 };
 
-BaseConnection.prototype.handleClose = function(code, reason) {
+BaseConnection.prototype.handleClose = function() {
     'use strict';
 
     if (this.connected) {
@@ -166,11 +166,11 @@ BaseConnection.prototype.connect = function() {
 
     var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
-        connectionType;
+        ConnectionType;
 
     if (inNode) {
-        connectionType = require('ws');
-        this.socket = new connectionType(this.getUrl());
+        ConnectionType = require('ws');
+        this.socket = new ConnectionType(this.getUrl());
     } else {
         this.socket = new WebSocket(this.getUrl());
     }
