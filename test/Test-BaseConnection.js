@@ -222,4 +222,90 @@ describe('BaseConnection', function(){
             baseConnection.connect();
         });
     });
+    describe('#reconnect', function(){
+        it('should call "stopReconnection" if connected', function(){
+            var didStopReconnection = false;
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.stopReconnection = function() {
+                didStopReconnection = true;
+            };
+            baseConnection.connected = true;
+
+            baseConnection.reconnect();
+            assert.equal(didStopReconnection, true);
+        });
+        it('should call "disconnect(true)" and "connect" if disconnected', function(){
+            var didDisconnect = false;
+            var didConnect = false;
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.disconnect = function() {
+                didDisconnect = true;
+            };
+            baseConnection.connect = function() {
+                didConnect = true;
+            };
+            baseConnection.connected = false;
+
+            baseConnection.reconnect();
+            assert.equal(didDisconnect, true);
+            assert.equal(didConnect, true);
+        });
+    });
+    describe('#disconnect', function(){
+        it('should emit a "disconnect" event if connected', function(done){
+            var didCloseSocket = false;
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.socket = {};
+            baseConnection.socket.close = function() {
+                didCloseSocket = true;
+            };
+            baseConnection.connected = true;
+
+            var errTimeout = setTimeout(function () {
+                assert(false, '"disconnect" event never fired');
+                done();
+            }, 10);
+
+            baseConnection.on('disconnect', function(data) {
+                clearTimeout(errTimeout);
+                assert(true);
+                done();
+            });
+
+            baseConnection.disconnect();
+            assert.equal(didCloseSocket, true);
+        });
+        it('should not emit a "disconnect" event if disconnected', function(done){
+            var didCloseSocket = false;
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.socket = {};
+            baseConnection.socket.close = function() {
+                didCloseSocket = true;
+            };
+
+            var errTimeout = setTimeout(function () {
+                assert(true, '"disconnect" event never fired');
+                done();
+            }, 10);
+
+            baseConnection.on('disconnect', function(data) {
+                clearTimeout(errTimeout);
+                assert(false);
+                done();
+            });
+
+            baseConnection.disconnect();
+            assert.equal(didCloseSocket, true);
+        });
+        it('should call "stopReconnection" if not allowing reconnections', function(){
+            var didStopReconnection = false;
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.stopReconnection = function() {
+                didStopReconnection = true;
+            };
+            baseConnection.disconnect(false);
+            assert.equal(baseConnection.reconnectionTimer, null);
+            assert.equal(didStopReconnection, true);
+        });
+    });
 });
