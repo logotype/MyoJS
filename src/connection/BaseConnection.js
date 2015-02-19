@@ -24,6 +24,7 @@ var BaseConnection = module.exports = function(options) {
 
     this.host = this.options.host;
     this.port = this.options.port;
+    this.connected = false;
 };
 
 BaseConnection.prototype.getUrl = function() {
@@ -132,6 +133,7 @@ BaseConnection.prototype.handleData = function(data) {
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');
+            return;
         }
     }
 
@@ -197,13 +199,7 @@ BaseConnection.prototype.send = function(data) {
     if (typeof data !== 'object' || typeof data === 'string') {
         throw new Error('Parameter needs to be an object');
     }
-
-    // TODO Profile performance of this try/catch block
-    try {
-        this.socket.send(JSON.stringify(data));
-    } catch (exception) {
-        throw new Error('Invalid JSON');
-    }
+    this.socket.send(JSON.stringify(data));
 };
 
 _.extend(BaseConnection.prototype, EventEmitter.prototype);
