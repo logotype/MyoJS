@@ -38,6 +38,7 @@ describe('Frame', function(){
         it('should have timestamp', function(){ assert.equal(frame.timestamp, 1423842951, 'timestamp found') });
         it('should have rssi', function(){ assert.equal(frame.rssi, 53, 'rssi found') });
         it('should make a valid frame type', function(){ assert.equal(frame.type, 'frame', 'frame type is matching') });
+        it('should make a onConnect event', function(){ assert.equal(frame.event.type, 'onConnect', 'event type is matching') });
 
         describe('frame.euler', function() {
             it('should have euler roll', function(){ assert.equal(frame.euler.roll, 1.34422, 'roll is matching') });

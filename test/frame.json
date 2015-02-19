@@ -1,5 +1,5 @@
 { "rotation": [ 0.5286255, 0.4711304, 0.4807739, 0.5170288 ],
-  "event" : { "type" : "onConnect" },
+  "event" : { "type": "onArmSync", "arm": "armRight", "xDirection": "xDirectionTowardWrist" },
   "pose" : { "type" : 5 },
   "emg": [ -6, 0, -1, 0, 40, 1, 2, -2 ],
   "euler": { "roll": 1.573615, "pitch": -0.02112432, "yaw": 1.476841 },

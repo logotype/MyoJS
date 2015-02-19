@@ -1,4 +1,4 @@
-var Myo = require('../template/entry'),
+var Myo = require('../src/Index'),
     hub = new Myo.Hub();
 
 hub.on('ready', function() { console.log('ready'); });

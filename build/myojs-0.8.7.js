@@ -2072,7 +2072,7 @@ _.extend(Hub.prototype, EventEmitter.prototype);
  * Myo is the global namespace of the Myo API.
  * @namespace Myo
  */
-module.exports = {
+Myo = module.exports = {
     BaseConnection: require('./connection/BaseConnection'),
     Hub: require('./Hub'),
     Myo: require('./Myo'),
@@ -3152,17 +3152,4 @@ BaseConnection.prototype.send = function(data) {
 _.extend(BaseConnection.prototype, EventEmitter.prototype);
 
 }).call(this,require('_process'))
-},{"../Frame":6,"_process":2,"events":1,"underscore":3,"ws":4}],15:[function(require,module,exports){
-if (typeof(window) !== 'undefined' && typeof(window.requestAnimationFrame) !== 'function') {
-  window.requestAnimationFrame = (
-    window.webkitRequestAnimationFrame   ||
-    window.mozRequestAnimationFrame      ||
-    window.oRequestAnimationFrame        ||
-    window.msRequestAnimationFrame       ||
-    function(callback) { setTimeout(callback, 1000 / 60); }
-  );
-}
-
-Myo = module.exports = require('../src/Index');
-
-},{"../src/Index":8}]},{},[15]);
+},{"../Frame":6,"_process":2,"events":1,"underscore":3,"ws":4}]},{},[8]);

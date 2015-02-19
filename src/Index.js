@@ -2,7 +2,7 @@
  * Myo is the global namespace of the Myo API.
  * @namespace Myo
  */
-module.exports = {
+Myo = module.exports = {
     BaseConnection: require('./connection/BaseConnection'),
     Hub: require('./Hub'),
     Myo: require('./Myo'),

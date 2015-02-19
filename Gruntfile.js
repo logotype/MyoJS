@@ -70,7 +70,7 @@ module.exports = function(grunt){
         },
         'browserify': {
             build: {
-                src: 'template/entry.js',
+                src: './src/Index.js',
                 dest: './build/' + filename + '.js'
             }
         },
