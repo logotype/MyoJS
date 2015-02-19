@@ -38,7 +38,6 @@ module.exports = function(grunt){
             build: {
                 files: {
                     'src/': 'src/Version.js',
-                    './': 'bower.json',
                     'examples/': 'examples/*.html'
                 },
                 options: {
@@ -66,19 +65,19 @@ module.exports = function(grunt){
         },
         'clean': {
             build: {
-                src: ['./myo-*.js']
+                src: ['./build/']
             }
         },
         'browserify': {
             build: {
                 src: 'template/entry.js',
-                dest: filename + '.js'
+                dest: './build/' + filename + '.js'
             }
         },
         'uglify': {
             build: {
-                src: filename + '.js',
-                dest: filename + '.min.js'
+                src: './build/' + filename + '.js',
+                dest: './build/' + filename + '.min.js'
             }
         },
         'usebanner': {
@@ -86,7 +85,7 @@ module.exports = function(grunt){
                 options: {
                     banner: banner
                 },
-                src: [filename + '.js', filename + '.min.js']
+                src: ['./build/' + filename + '.js', './build/' + filename + '.min.js']
             }
         },
         'watch': {
