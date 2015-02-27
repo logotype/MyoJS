@@ -125,7 +125,6 @@ module.exports = function(grunt){
         'usebanner'
     ]);
 
-
     grunt.registerTask('test', [
         'default',
         'mocha_istanbul'

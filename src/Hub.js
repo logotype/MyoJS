@@ -5,7 +5,6 @@ var EventEmitter = require('events').EventEmitter,
 var Hub = module.exports = function(opt) {
 
     this.connectionType = require('./connection/BaseConnection');
-    this.myoType = require('./Myo');
     this.connection = new this.connectionType(opt);
     this.historyType = require('./CircularBuffer');
     this.history = new this.historyType(200);

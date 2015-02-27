@@ -31,7 +31,7 @@ var Vector3 = module.exports = function(data) {
 
 /**
  * A copy of this vector pointing in the opposite direction.
- * @return A Vector3 object with all components negated.
+ * @return {Vector3} A Vector3 object with all components negated.
  *
  */
 Vector3.prototype.opposite = function() {
@@ -41,7 +41,7 @@ Vector3.prototype.opposite = function() {
 /**
  * Add vectors component-wise.
  * @param other
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.plus = function(other) {
@@ -55,7 +55,7 @@ Vector3.prototype.plus = function(other) {
 /**
  * Add vectors component-wise and assign the value.
  * @param other
- * @return This Vector3.
+ * @return {Vector3} This Vector3.
  *
  */
 Vector3.prototype.plusAssign = function(other) {
@@ -68,7 +68,7 @@ Vector3.prototype.plusAssign = function(other) {
 /**
  * A copy of this vector pointing in the opposite direction (conjugate).
  * @param other
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.minus = function(other) {
@@ -82,7 +82,7 @@ Vector3.prototype.minus = function(other) {
 /**
  * A copy of this vector pointing in the opposite direction and assign the value.
  * @param other
- * @return This Vector3.
+ * @return {Vector3} This Vector3.
  *
  */
 Vector3.prototype.minusAssign = function(other) {
@@ -95,7 +95,7 @@ Vector3.prototype.minusAssign = function(other) {
 /**
  * Multiply vector by a scalar.
  * @param scalar
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.multiply = function(scalar) {
@@ -109,7 +109,7 @@ Vector3.prototype.multiply = function(scalar) {
 /**
  * Multiply vector by a scalar and assign the quotient.
  * @param scalar
- * @return This Vector3.
+ * @return {Vector3} This Vector3.
  *
  */
 Vector3.prototype.multiplyAssign = function(scalar) {
@@ -122,7 +122,7 @@ Vector3.prototype.multiplyAssign = function(scalar) {
 /**
  * Divide vector by a scalar.
  * @param scalar
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.divide = function(scalar) {
@@ -136,7 +136,7 @@ Vector3.prototype.divide = function(scalar) {
 /**
  * Divide vector by a scalar and assign the value.
  * @param scalar
- * @return This Vector3.
+ * @return {Vector3} This Vector3.
  *
  */
 Vector3.prototype.divideAssign = function(scalar) {
@@ -149,15 +149,11 @@ Vector3.prototype.divideAssign = function(scalar) {
 /**
  * Compare Vector equality/inequality component-wise.
  * @param other The Vector3 to compare with.
- * @return True; if equal, False otherwise.
+ * @return {boolean} true; if equal, false otherwise.
  *
  */
 Vector3.prototype.isEqualTo = function(other) {
-    if (this.x !== other.x || this.y !== other.y || this.z !== other.z) {
-        return false;
-    } else {
-        return true;
-    }
+    return !(this.x !== other.x || this.y !== other.y || this.z !== other.z);
 };
 
 /**
@@ -171,7 +167,7 @@ Vector3.prototype.isEqualTo = function(other) {
  * <p>If either vector has zero length, then this function returns zero.</p>
  *
  * @param other A Vector object.
- * @return The angle between this vector and the specified vector in radians.
+ * @return {number} The angle between this vector and the specified vector in radians.
  *
  */
 Vector3.prototype.angleTo = function(other) {
@@ -192,7 +188,7 @@ Vector3.prototype.angleTo = function(other) {
  * determined by the right-hand rule. Thus <code>A.cross(B) === -B.cross(A)</code>.
  *
  * @param other A Vector object.
- * @return The cross product of this vector and the specified vector.
+ * @return {Vector3} The cross product of this vector and the specified vector.
  *
  */
 Vector3.prototype.cross = function(other) {
@@ -206,7 +202,7 @@ Vector3.prototype.cross = function(other) {
  * object and a point represented by the specified Vector object.
  *
  * @param other A Vector object.
- * @return The distance from this point to the specified point.
+ * @return {number} The distance from this point to the specified point.
  *
  */
 Vector3.prototype.distanceTo = function(other) {
@@ -219,7 +215,7 @@ Vector3.prototype.distanceTo = function(other) {
  * onto the specified vector.
  *
  * @param other A Vector object.
- * @return The dot product of this vector and the specified vector.
+ * @return {number} The dot product of this vector and the specified vector.
  *
  */
 Vector3.prototype.dot = function(other) {
@@ -228,7 +224,7 @@ Vector3.prototype.dot = function(other) {
 
 /**
  * Returns true if all of the vector's components are finite.
- * @return If any component is NaN or infinite, then this returns false.
+ * @return {boolean} If any component is NaN or infinite, then this returns false.
  *
  */
 Vector3.prototype.isValid = function() {
@@ -241,7 +237,7 @@ Vector3.prototype.isValid = function() {
  * origin and the point represented by the (x, y, z) components
  * of this Vector object.
  *
- * @return The length of this vector.
+ * @return {number} The length of this vector.
  *
  */
 Vector3.prototype.magnitude = function() {
@@ -250,7 +246,7 @@ Vector3.prototype.magnitude = function() {
 
 /**
  * The square of the magnitude, or length, of this vector.
- * @return The square of the length of this vector.
+ * @return {number} The square of the length of this vector.
  *
  */
 Vector3.prototype.magnitudeSquared = function() {
@@ -261,7 +257,7 @@ Vector3.prototype.magnitudeSquared = function() {
  * A normalized copy of this vector.
  * A normalized vector has the same direction as the original
  * vector, but with a length of one.
- * @return A Vector object with a length of one, pointing in the same direction as this Vector object.
+ * @return {Vector3} A Vector object with a length of one, pointing in the same direction as this Vector object.
  *
  */
 Vector3.prototype.normalized = function() {
@@ -290,7 +286,7 @@ Vector3.prototype.normalized = function() {
  * returned angle is between 0 and pi radians (180 degrees); if it
  * points downward, the angle is between 0 and -pi radians.
  *
- * @return The angle of this vector above or below the horizon (x-z plane).
+ * @return {number} The angle of this vector above or below the horizon (x-z plane).
  *
  */
 Vector3.prototype.pitch = function() {
@@ -306,7 +302,7 @@ Vector3.prototype.pitch = function() {
  * radians (180 degrees); if it points to the left, the angle is
  * between 0 and -pi radians.
  *
- * @return The angle of this vector to the right or left of the negative z-axis.
+ * @return {number} The angle of this vector to the right or left of the negative z-axis.
  *
  */
 Vector3.prototype.yaw = function() {
@@ -326,7 +322,7 @@ Vector3.prototype.yaw = function() {
  * the palm, then this function returns the tilt or roll of the palm
  * plane compared to the horizontal (x-z) plane.
  *
- * @return The angle of this vector to the right or left of the y-axis.
+ * @return {number} The angle of this vector to the right or left of the y-axis.
  *
  */
 Vector3.prototype.roll = function() {
@@ -335,7 +331,7 @@ Vector3.prototype.roll = function() {
 
 /**
  * The zero vector: (0, 0, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.zero = function() {
@@ -348,7 +344,7 @@ Vector3.prototype.zero = function() {
 
 /**
  * The x-axis unit vector: (1, 0, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.xAxis = function() {
@@ -361,7 +357,7 @@ Vector3.prototype.xAxis = function() {
 
 /**
  * The y-axis unit vector: (0, 1, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.yAxis = function() {
@@ -374,7 +370,7 @@ Vector3.prototype.yAxis = function() {
 
 /**
  * The z-axis unit vector: (0, 0, 1)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.zAxis = function() {
@@ -387,7 +383,7 @@ Vector3.prototype.zAxis = function() {
 
 /**
  * The unit vector pointing left along the negative x-axis: (-1, 0, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.left = function() {
@@ -399,7 +395,7 @@ Vector3.prototype.left = function() {
 
 /**
  * The unit vector pointing right along the positive x-axis: (1, 0, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.right = function() {
@@ -408,7 +404,7 @@ Vector3.prototype.right = function() {
 
 /**
  * The unit vector pointing down along the negative y-axis: (0, -1, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.down = function() {
@@ -420,7 +416,7 @@ Vector3.prototype.down = function() {
 
 /**
  * The unit vector pointing up along the positive x-axis: (0, 1, 0)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.up = function() {
@@ -429,7 +425,7 @@ Vector3.prototype.up = function() {
 
 /**
  * The unit vector pointing forward along the negative z-axis: (0, 0, -1)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.forward = function() {
@@ -441,7 +437,7 @@ Vector3.prototype.forward = function() {
 
 /**
  * The unit vector pointing backward along the positive z-axis: (0, 0, 1)
- * @return
+ * @return {Vector3}
  *
  */
 Vector3.prototype.backward = function() {
@@ -453,6 +449,7 @@ Vector3.prototype.backward = function() {
  *
  * You can use this Vector3 instance in comparisons testing
  * whether a given Vector3 instance is valid or invalid.
+ * @return {Vector3}
  *
  */
 Vector3.invalid = function() {
@@ -463,7 +460,7 @@ Vector3.invalid = function() {
 
 /**
  * Returns a string containing this vector in a human readable format: (x, y, z).
- * @return
+ * @return {String}
  *
  */
 Vector3.prototype.toString = function() {

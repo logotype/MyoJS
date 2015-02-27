@@ -129,7 +129,7 @@ BaseConnection.prototype.handleData = function(data) {
     if (!this.connected && message.hasOwnProperty('frame')) {
         frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
-            deviceInfo = frame.deviceInfo;
+            deviceInfo = frame['deviceInfo'];
             this.emit('deviceInfo', deviceInfo);
             this.connected = true;
             this.emit('connect');

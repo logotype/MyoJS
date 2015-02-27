@@ -27,7 +27,7 @@ var Quaternion = module.exports = function(data) {
  * A normalized copy of this quaternion.
  * A normalized quaternion has the same direction as the original
  * quaternion, but with a length of one.
- * @return A Quaternion object with a length of one, pointing in the same direction as this Quaternion object.
+ * @return {Quaternion} A Quaternion object with a length of one, pointing in the same direction as this Quaternion object.
  *
  */
 Quaternion.prototype.normalized = function() {
@@ -69,16 +69,16 @@ Quaternion.prototype.toEuler = function() {
         attitude = Math.PI / 2;
         bank = 0;
         return;
-    }
-    if (test < -0.499 * unit /* Singularity at south pole */ ) {
+    } else if (test < -0.499 * unit /* Singularity at south pole */ ) {
         heading = -2 * Math.atan2(this.x, this.w);
         attitude = -Math.PI / 2;
         bank = 0;
         return;
+    } else {
+        heading = Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, sqx - sqy - sqz + sqw);
+        attitude = Math.asin(2 * test / unit);
+        bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
     }
-    heading = Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, sqx - sqy - sqz + sqw);
-    attitude = Math.asin(2 * test / unit);
-    bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
 
     return {
         heading: heading, // Heading = rotation about y axis

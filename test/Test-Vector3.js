@@ -116,6 +116,9 @@ describe('Vector3', function(){
         it('should return the angle between this vector and the specified vector in radians', function(){
             assert.closeTo(new MyoJS.Vector3([1, 2, 3]).angleTo(new MyoJS.Vector3([4, 5, 6])), 0.2257261285527342, 0.0001);
         });
+        it('should return 0 when the denominator is less or equal to 0', function(){
+            assert.equal(new MyoJS.Vector3([-1, -1, -1]).angleTo(new MyoJS.Vector3([0, 0, 0])), 0);
+        });
     });
     describe('#distanceTo', function(){
         it('should return the distance between the point represented by this Vector object and a point represented by the specified Vector object', function(){
@@ -164,6 +167,26 @@ describe('Vector3', function(){
             assert.closeTo(vec1.x, 0.4546455778, 0.0001);
             assert.closeTo(vec1.y, 0.8335168927, 0.0001);
             assert.closeTo(vec1.z, 0.3139219466, 0.0001);
+        });
+        it('should return a zero vector when the denominator is less or equal to 0', function(){
+            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().x, 0);
+            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().y, 0);
+            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().z, 0);
+        });
+    });
+    describe('#pitch', function(){
+        it('should return the correct pitch for a given vector', function(){
+            assert.closeTo(new MyoJS.Vector3([42, 77, 29]).pitch(), 1.930989471212727, 0.0001);
+        });
+    });
+    describe('#yaw', function(){
+        it('should return the correct yaw for a given vector', function(){
+            assert.closeTo(new MyoJS.Vector3([42, 77, 29]).yaw(), 2.175101833661126, 0.0001);
+        });
+    });
+    describe('#roll', function(){
+        it('should return the correct yaw for a given vector', function(){
+            assert.closeTo(new MyoJS.Vector3([42, 77, 29]).roll(), 2.642245931909663, 0.0001);
         });
     });
 });
