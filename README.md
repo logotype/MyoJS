@@ -6,7 +6,7 @@ The Myo armband measures the electrical activity from your muscles to detect wha
 
 [thalmic.com](http://www.thalmic.com)
 
-[![Build Status](https://travis-ci.org/logotype/MyoJS.svg?branch=master)](https://travis-ci.org/logotype/MyoJS) [![Code Climate](https://codeclimate.com/github/logotype/MyoJS/badges/gpa.svg)](https://codeclimate.com/github/logotype/MyoJS) [![Test Coverage](https://codeclimate.com/github/logotype/MyoJS/badges/coverage.svg)](https://codeclimate.com/github/logotype/MyoJS)
+[![Build Status](https://travis-ci.org/logotype/MyoJS.svg?branch=master)](https://travis-ci.org/logotype/MyoJS) [![NPM Version](https://badge.fury.io/js/myojs.svg)](http://badge.fury.io/js/myojs) [![Code Climate](https://codeclimate.com/github/logotype/MyoJS/badges/gpa.svg)](https://codeclimate.com/github/logotype/MyoJS) [![Test Coverage](https://codeclimate.com/github/logotype/MyoJS/badges/coverage.svg)](https://codeclimate.com/github/logotype/MyoJS)
 
 Quick start
 -----------
