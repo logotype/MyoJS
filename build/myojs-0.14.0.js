@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.13.0
+ * MyoJS v0.14.0
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -3099,9 +3099,9 @@ Vector3.prototype.toString = function() {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.13.0',
+    full: '0.14.0',
     major: 0,
-    minor: 13,
+    minor: 1443,
     dot: 0
 };
 
