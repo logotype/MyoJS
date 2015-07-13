@@ -101,7 +101,7 @@ module.exports = function(grunt){
             coverage: {
                 src: 'test',
                 options: {
-                    reporter: 'dot',
+                    reporter: 'spec',
                     print: 'summary',
                     coverage: true,
                     root: './src',

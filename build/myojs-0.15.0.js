@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.14.0
+ * MyoJS v0.15.0
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -1997,27 +1997,36 @@ if (WebSocket) ws.prototype = WebSocket.prototype;
 
 },{}],5:[function(require,module,exports){
 var CircularBuffer = module.exports = function(size) {
-    this.pos = 0;
-    this._buf = [];
-    this.size = size;
+    'use strict';
+    var self = this;
+
+    self.pos = 0;
+    self._buf = [];
+    self.size = size;
 };
 
 CircularBuffer.prototype.get = function(i) {
+    'use strict';
+    var self = this;
+
     if (i === undefined) {
         i = 0;
     }
-    if (i >= this.size) {
+    if (i >= self.size) {
         return undefined;
     }
-    if (i >= this._buf.length) {
+    if (i >= self._buf.length) {
         return undefined;
     }
-    return this._buf[(this.pos - i - 1) % this.size];
+    return self._buf[(self.pos - i - 1) % self.size];
 };
 
 CircularBuffer.prototype.push = function(o) {
-    this._buf[this.pos % this.size] = o;
-    return this.pos++;
+    'use strict';
+    var self = this;
+
+    self._buf[self.pos % self.size] = o;
+    return self.pos++;
 };
 
 },{}],6:[function(require,module,exports){
@@ -2026,6 +2035,8 @@ var Pose = require('./Pose'),
     Vector3 = require('./Vector3');
 
 var Frame = module.exports = function(data) {
+    'use strict';
+    var self = this;
 
     if (!data) {
         throw new Error('Missing constructor arguments');
@@ -2036,8 +2047,8 @@ var Frame = module.exports = function(data) {
     if (!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
         throw new Error('Frame id needs to be of type integer');
     }
-    if (!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
-        throw new Error('Timestamp needs to be of type integer');
+    if (!data.hasOwnProperty('timestamp') || typeof data.timestamp !== 'string') {
+        throw new Error('Timestamp needs to be of type string');
     }
 
     /**
@@ -2047,26 +2058,26 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Frame.prototype
      * @type {number}
      */
-    this.id = data.id;
+    self.id = data.id;
 
     /**
      * The frame capture time in microseconds elapsed since the Myo started.
      * @member timestamp
      * @memberof Myo.Frame.prototype
-     * @type {number}
+     * @type {string}
      */
-    this.timestamp = data.timestamp;
+    self.timestamp = data.timestamp;
 
     if (data.euler) {
-        this.euler = data.euler;
+        self.euler = data.euler;
     }
 
     if (data.rssi) {
-        this.rssi = data.rssi;
+        self.rssi = data.rssi;
     }
 
     if (data.event) {
-        this.event = data.event;
+        self.event = data.event;
     }
 
     /**
@@ -2076,9 +2087,9 @@ var Frame = module.exports = function(data) {
      * @type {Pose}
      */
     if (data.pose) {
-        this.pose = new Pose(data.pose);
+        self.pose = new Pose(data.pose);
     } else {
-        this.pose = Pose.invalid();
+        self.pose = Pose.invalid();
     }
 
     /**
@@ -2088,34 +2099,34 @@ var Frame = module.exports = function(data) {
      * @type {Pose}
      */
     if (data.rotation) {
-        this.rotation = new Quaternion(data.rotation);
+        self.rotation = new Quaternion(data.rotation);
     } else {
-        this.rotation = Quaternion.invalid();
+        self.rotation = Quaternion.invalid();
     }
 
     if (data.accel) {
-        this.accel = new Vector3(data.accel);
+        self.accel = new Vector3(data.accel);
     } else {
-        this.accel = Vector3.invalid();
+        self.accel = Vector3.invalid();
     }
 
     if (data.gyro) {
-        this.gyro = new Vector3(data.gyro);
+        self.gyro = new Vector3(data.gyro);
     } else {
-        this.gyro = Vector3.invalid();
+        self.gyro = Vector3.invalid();
     }
 
     /**
      * EMG data
      */
     if (data.emg) {
-        this.emg = data.emg;
+        self.emg = data.emg;
     } else {
-        this.emg = [];
+        self.emg = [];
     }
 
-    this.data = data;
-    this.type = 'frame';
+    self.data = data;
+    self.type = 'frame';
 };
 
 
@@ -2125,7 +2136,10 @@ var Frame = module.exports = function(data) {
  *
  */
 Frame.prototype.toString = function() {
-    return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
+    'use strict';
+    var self = this;
+
+    return '[Frame id:' + self.id + ' timestamp:' + self.timestamp + ' accel:' + self.accel.toString() + ']';
 };
 
 },{"./Pose":10,"./Quaternion":11,"./Vector3":12}],7:[function(require,module,exports){
@@ -2134,38 +2148,40 @@ var EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
 var Hub = module.exports = function(opt) {
+    'use strict';
+    var self = this;
 
-    this.connectionType = require('./connection/BaseConnection');
-    this.connection = new this.connectionType(opt);
-    this.historyType = require('./CircularBuffer');
-    this.history = new this.historyType(200);
-    this.myos = [];
+    self.connectionType = require('./connection/BaseConnection');
+    self.connection = new self.connectionType(opt);
+    self.historyType = require('./CircularBuffer');
+    self.history = new self.historyType(200);
+    self.myos = [];
 
-    this.connection.connect();
+    self.connection.connect();
 
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function() {
+    self.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
-    this.connection.on('frame', function(frame) {
+    self.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
     });
-    this.connection.on('pose', function(pose) {
+    self.connection.on('pose', function(pose) {
         hub.emit('pose', pose);
     });
-    this.connection.on('event', function(event) {
+    self.connection.on('event', function(event) {
         hub.emit(event.type);
     });
-    this.connection.on('ready', function() {
+    self.connection.on('ready', function() {
         hub.emit('ready');
     });
-    this.connection.on('connect', function() {
+    self.connection.on('connect', function() {
         hub.emit('connect');
     });
-    this.connection.on('disconnect', function() {
+    self.connection.on('disconnect', function() {
         hub.emit('disconnect');
     });
 };
@@ -2187,7 +2203,10 @@ var Hub = module.exports = function(opt) {
  * the specified history position, an invalid Frame is returned.
  **/
 Hub.prototype.frame = function(num) {
-    return this.history.get(num) || null;
+    'use strict';
+    var self = this;
+
+    return self.history.get(num) || null;
 };
 
 /**
@@ -2197,10 +2216,13 @@ Hub.prototype.frame = function(num) {
  * not be run concurrently with run() or runOnce().</p>
  */
 Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!timeoutMilliseconds || timeoutMilliseconds !== parseInt(timeoutMilliseconds, 10)) {
         throw new Error('timeoutMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'waitForMyo': timeoutMilliseconds
     });
 };
@@ -2209,10 +2231,13 @@ Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
  * Run the event loop for the specified duration (in milliseconds).
  */
 Hub.prototype.run = function(durationMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
         throw new Error('durationMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'run': durationMilliseconds
     });
 };
@@ -2222,10 +2247,13 @@ Hub.prototype.run = function(durationMilliseconds) {
  * duration (in milliseconds) has elapsed.
  */
 Hub.prototype.runOnce = function(durationMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
         throw new Error('durationMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'runOnce': durationMilliseconds
     });
 };
@@ -2251,6 +2279,8 @@ Myo = module.exports = {
 
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
 var Myo = module.exports = function(context) {
+    'use strict';
+    var self = this;
 
     if (!context) {
         throw new Error('Missing context');
@@ -2258,38 +2288,38 @@ var Myo = module.exports = function(context) {
     /**
      * A vibration lasting a small amount of time (VibrationLengthShort)
      */
-    this.VIBRATION_SHORT = 0;
+    self.VIBRATION_SHORT = 0;
 
     /**
      * A vibration lasting a moderate amount of time (VibrationLengthMedium)
      */
-    this.VIBRATION_MEDIUM = 1;
+    self.VIBRATION_MEDIUM = 1;
 
     /**
      * A vibration lasting a long amount of time (VibrationLengthLong)
      */
-    this.VIBRATION_LONG = 2;
+    self.VIBRATION_LONG = 2;
 
     /**
      * Unlock for a fixed period of time.
      */
-    this.UNLOCK_TIMED = 0;
+    self.UNLOCK_TIMED = 0;
 
     /**
      * Unlock until explicitly told to re-lock.
      */
-    this.UNLOCK_HOLD = 1;
+    self.UNLOCK_HOLD = 1;
 
     /**
      * User did a single, discrete action, such as pausing a video.
      */
-    this.USER_ACTION_SINGLE = 0;
+    self.USER_ACTION_SINGLE = 0;
 
     /**
      * @private
      *
      */
-    this.context = context;
+    self.context = context;
 };
 
 /**
@@ -2299,7 +2329,10 @@ var Myo = module.exports = function(context) {
  *
  */
 Myo.prototype.requestRssi = function() {
-    this.context.send({
+    'use strict';
+    var self = this;
+
+    self.context.send({
         'requestRssi': true
     });
 };
@@ -2310,23 +2343,26 @@ Myo.prototype.requestRssi = function() {
  *
  */
 Myo.prototype.vibrate = function(length) {
+    'use strict';
+    var self = this;
+
     switch (length) {
-        case this.VIBRATION_SHORT:
-            this.context.send({
+        case self.VIBRATION_SHORT:
+            self.context.send({
                 'command': 'vibrate',
-                'args': [this.VIBRATION_SHORT]
+                'args': [self.VIBRATION_SHORT]
             });
             break;
-        case this.VIBRATION_MEDIUM:
-            this.context.send({
+        case self.VIBRATION_MEDIUM:
+            self.context.send({
                 'command': 'vibrate',
-                'args': [this.VIBRATION_MEDIUM]
+                'args': [self.VIBRATION_MEDIUM]
             });
             break;
-        case this.VIBRATION_LONG:
-            this.context.send({
+        case self.VIBRATION_LONG:
+            self.context.send({
                 'command': 'vibrate',
-                'args': [this.VIBRATION_LONG]
+                'args': [self.VIBRATION_LONG]
             });
             break;
         default:
@@ -2340,17 +2376,20 @@ Myo.prototype.vibrate = function(length) {
  *
  */
 Myo.prototype.unlock = function(option) {
+    'use strict';
+    var self = this;
+
     switch (option) {
-        case this.UNLOCK_TIMED:
-            this.context.send({
+        case self.UNLOCK_TIMED:
+            self.context.send({
                 'command': 'unlock',
-                'args': [this.UNLOCK_TIMED]
+                'args': [self.UNLOCK_TIMED]
             });
             break;
-        case this.UNLOCK_HOLD:
-            this.context.send({
+        case self.UNLOCK_HOLD:
+            self.context.send({
                 'command': 'unlock',
-                'args': [this.UNLOCK_HOLD]
+                'args': [self.UNLOCK_HOLD]
             });
             break;
         default:
@@ -2364,7 +2403,10 @@ Myo.prototype.unlock = function(option) {
  *
  */
 Myo.prototype.lock = function() {
-    this.context.send({
+    'use strict';
+    var self = this;
+
+    self.context.send({
         'command': 'lock'
     });
 };
@@ -2375,11 +2417,14 @@ Myo.prototype.lock = function() {
  *
  */
 Myo.prototype.notifyUserAction = function(action) {
+    'use strict';
+    var self = this;
+
     switch (action) {
-        case this.USER_ACTION_SINGLE:
-            this.context.send({
+        case self.USER_ACTION_SINGLE:
+            self.context.send({
                 'command': 'notifyUserAction',
-                'args': [this.USER_ACTION_SINGLE]
+                'args': [self.USER_ACTION_SINGLE]
             });
             break;
         default:
@@ -2389,12 +2434,15 @@ Myo.prototype.notifyUserAction = function(action) {
 
 },{}],10:[function(require,module,exports){
 var Pose = module.exports = function(data) {
+    'use strict';
+    var self = this;
+
     /**
      * Indicates whether this is a valid Pose object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
             throw new Error('Constructor parameter needs to be an object');
         }
@@ -2406,41 +2454,44 @@ var Pose = module.exports = function(data) {
     /**
      * The pose being recognized.
      */
-    this.type = data.type;
+    self.type = data.type;
 
     /**
      * Rest pose.
      */
-    this.POSE_REST = 0;
+    self.POSE_REST = 0;
 
     /**
      * User is making a fist.
      */
-    this.POSE_FIST = 1;
+    self.POSE_FIST = 1;
 
     /**
      * User has an open palm rotated towards the posterior of their wrist.
      */
-    this.POSE_WAVE_IN = 2;
+    self.POSE_WAVE_IN = 2;
 
     /**
      * User has an open palm rotated towards the anterior of their wrist.
      */
-    this.POSE_WAVE_OUT = 3;
+    self.POSE_WAVE_OUT = 3;
 
     /**
      * User has an open palm with their fingers spread away from each other.
      */
-    this.POSE_FINGERS_SPREAD = 4;
+    self.POSE_FINGERS_SPREAD = 4;
 
     /**
      * User tapped their thumb and middle finger together twice in succession.
      */
-    this.DOUBLE_TAP = 5;
+    self.DOUBLE_TAP = 5;
 };
 
 Pose.prototype.isEqualTo = function(other) {
-    return this.type === other.type;
+    'use strict';
+    var self = this;
+
+    return self.type === other.type;
 };
 
 /**
@@ -2451,6 +2502,7 @@ Pose.prototype.isEqualTo = function(other) {
  *
  */
 Pose.invalid = function() {
+    'use strict';
     return new Pose({
         invalid: true
     });
@@ -2462,51 +2514,57 @@ Pose.invalid = function() {
  *
  */
 Pose.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Pose invalid]';
     }
-    switch (this.type) {
-        case this.POSE_REST:
-            return '[Pose type:' + this.type.toString() + ' POSE_REST]';
-        case this.POSE_FIST:
-            return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
-        case this.POSE_WAVE_IN:
-            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
-        case this.POSE_WAVE_OUT:
-            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
-        case this.POSE_FINGERS_SPREAD:
-            return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
-        case this.DOUBLE_TAP:
-            return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
+    switch (self.type) {
+        case self.POSE_REST:
+            return '[Pose type:' + self.type.toString() + ' POSE_REST]';
+        case self.POSE_FIST:
+            return '[Pose type:' + self.type.toString() + ' POSE_FIST]';
+        case self.POSE_WAVE_IN:
+            return '[Pose type:' + self.type.toString() + ' POSE_WAVE_IN]';
+        case self.POSE_WAVE_OUT:
+            return '[Pose type:' + self.type.toString() + ' POSE_WAVE_OUT]';
+        case self.POSE_FINGERS_SPREAD:
+            return '[Pose type:' + self.type.toString() + ' POSE_FINGERS_SPREAD]';
+        case self.DOUBLE_TAP:
+            return '[Pose type:' + self.type.toString() + ' DOUBLE_TAP]';
         default:
             break;
     }
-    return '[Pose type:' + this.type.toString() + ']';
+    return '[Pose type:' + self.type.toString() + ']';
 };
 
 },{}],11:[function(require,module,exports){
 var Quaternion = module.exports = function(data) {
+    'use strict';
+    var self = this;
+
     /**
      * Indicates whether this is a valid Quaternion object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
         if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
             throw new Error('Component values needs to be integers or numbers');
         }
-        this.x = data[0];
-        this.y = data[1];
-        this.z = data[2];
-        this.w = data[3];
+        self.x = data[0];
+        self.y = data[1];
+        self.z = data[2];
+        self.w = data[3];
     } else {
-        this.x = NaN;
-        this.y = NaN;
-        this.z = NaN;
-        this.w = NaN;
+        self.x = NaN;
+        self.y = NaN;
+        self.z = NaN;
+        self.w = NaN;
     }
 };
 
@@ -2518,12 +2576,15 @@ var Quaternion = module.exports = function(data) {
  *
  */
 Quaternion.prototype.normalized = function() {
-    var magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    'use strict';
+    var self = this,
+        magnitude = Math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w);
+
     return new Quaternion([
-        this.x / magnitude,
-        this.y / magnitude,
-        this.z / magnitude,
-        this.w / magnitude
+        self.x / magnitude,
+        self.y / magnitude,
+        self.z / magnitude,
+        self.w / magnitude
     ]);
 };
 
@@ -2532,8 +2593,11 @@ Quaternion.prototype.normalized = function() {
  *
  */
 Quaternion.prototype.conjugate = function() {
-    return new Quaternion([-this.x, -this.y, -this.z,
-        this.w
+    'use strict';
+    var self = this;
+
+    return new Quaternion([-self.x, -self.y, -self.z,
+        self.w
     ]);
 };
 
@@ -2543,28 +2607,30 @@ Quaternion.prototype.conjugate = function() {
  *
  */
 Quaternion.prototype.toEuler = function() {
-    var test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
+    'use strict';
+    var self = this,
+        test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
 
-    sqw = this.w * this.w;
-    sqx = this.x * this.x;
-    sqy = this.y * this.y;
-    sqz = this.z * this.z;
+    sqw = self.w * self.w;
+    sqx = self.x * self.x;
+    sqy = self.y * self.y;
+    sqz = self.z * self.z;
     unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor
-    test = this.x * this.y + this.z * this.w;
+    test = self.x * self.y + self.z * self.w;
     if (test > 0.499 * unit /* Singularity at north pole */ ) {
-        heading = 2 * Math.atan2(this.x, this.w);
+        heading = 2 * Math.atan2(self.x, self.w);
         attitude = Math.PI / 2;
         bank = 0;
         return;
     } else if (test < -0.499 * unit /* Singularity at south pole */ ) {
-        heading = -2 * Math.atan2(this.x, this.w);
+        heading = -2 * Math.atan2(self.x, self.w);
         attitude = -Math.PI / 2;
         bank = 0;
         return;
     } else {
-        heading = Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, sqx - sqy - sqz + sqw);
+        heading = Math.atan2(2 * self.y * self.w - 2 * self.x * self.z, sqx - sqy - sqz + sqw);
         attitude = Math.asin(2 * test / unit);
-        bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
+        bank = Math.atan2(2 * self.x * self.w - 2 * self.y * self.z, -sqx + sqy - sqz + sqw);
     }
 
     return {
@@ -2579,7 +2645,10 @@ Quaternion.prototype.toEuler = function() {
  *
  */
 Quaternion.prototype.roll = function() {
-    return Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, 1 - 2 * this.y * this.y - 2 * this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(2 * self.y * self.w - 2 * self.x * self.z, 1 - 2 * self.y * self.y - 2 * self.z * self.z);
 };
 
 /**
@@ -2587,7 +2656,10 @@ Quaternion.prototype.roll = function() {
  *
  */
 Quaternion.prototype.pitch = function() {
-    return Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, 1 - 2 * this.x * this.x - 2 * this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(2 * self.x * self.w - 2 * self.y * self.z, 1 - 2 * self.x * self.x - 2 * self.z * self.z);
 };
 
 /**
@@ -2595,7 +2667,10 @@ Quaternion.prototype.pitch = function() {
  *
  */
 Quaternion.prototype.yaw = function() {
-    return Math.asin(2 * this.x * this.y + 2 * this.z * this.w);
+    'use strict';
+    var self = this;
+
+    return Math.asin(2 * self.x * self.y + 2 * self.z * self.w);
 };
 
 /**
@@ -2606,6 +2681,7 @@ Quaternion.prototype.yaw = function() {
  *
  */
 Quaternion.invalid = function() {
+    'use strict';
     return new Quaternion({
         invalid: true
     });
@@ -2617,14 +2693,19 @@ Quaternion.invalid = function() {
  *
  */
 Quaternion.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Quaternion invalid]';
     }
-    return '[Quaternion x:' + this.x + ' y:' + this.y + ' z:' + this.z + ' w:' + this.w + ']';
+    return '[Quaternion x:' + self.x + ' y:' + self.y + ' z:' + self.z + ' w:' + self.w + ']';
 };
 
 },{}],12:[function(require,module,exports){
 var Vector3 = module.exports = function(data) {
+    'use strict';
+    var self = this;
 
     if (!data) {
         throw new Error('Missing constructor arguments');
@@ -2636,22 +2717,22 @@ var Vector3 = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Vector3 object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (!data || Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
         if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
             throw new Error('Component values needs to be integers or numbers');
         }
-        this.x = data[0];
-        this.y = data[1];
-        this.z = data[2];
+        self.x = data[0];
+        self.y = data[1];
+        self.z = data[2];
     } else {
-        this.x = NaN;
-        this.y = NaN;
-        this.z = NaN;
+        self.x = NaN;
+        self.y = NaN;
+        self.z = NaN;
     }
 };
 
@@ -2661,7 +2742,10 @@ var Vector3 = module.exports = function(data) {
  *
  */
 Vector3.prototype.opposite = function() {
-    return new Vector3([-this.x, -this.y, -this.z]);
+    'use strict';
+    var self = this;
+
+    return new Vector3([-self.x, -self.y, -self.z]);
 };
 
 /**
@@ -2671,10 +2755,13 @@ Vector3.prototype.opposite = function() {
  *
  */
 Vector3.prototype.plus = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x + other.x,
-        this.y + other.y,
-        this.z + other.z
+        self.x + other.x,
+        self.y + other.y,
+        self.z + other.z
     ]);
 };
 
@@ -2685,10 +2772,13 @@ Vector3.prototype.plus = function(other) {
  *
  */
 Vector3.prototype.plusAssign = function(other) {
-    this.x += other.x;
-    this.y += other.y;
-    this.z += other.z;
-    return this;
+    'use strict';
+    var self = this;
+
+    self.x += other.x;
+    self.y += other.y;
+    self.z += other.z;
+    return self;
 };
 
 /**
@@ -2698,10 +2788,13 @@ Vector3.prototype.plusAssign = function(other) {
  *
  */
 Vector3.prototype.minus = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x - other.x,
-        this.y - other.y,
-        this.z - other.z
+        self.x - other.x,
+        self.y - other.y,
+        self.z - other.z
     ]);
 };
 
@@ -2712,9 +2805,12 @@ Vector3.prototype.minus = function(other) {
  *
  */
 Vector3.prototype.minusAssign = function(other) {
-    this.x -= other.x;
-    this.y -= other.y;
-    this.z -= other.z;
+    'use strict';
+    var self = this;
+
+    self.x -= other.x;
+    self.y -= other.y;
+    self.z -= other.z;
     return this;
 };
 
@@ -2725,10 +2821,13 @@ Vector3.prototype.minusAssign = function(other) {
  *
  */
 Vector3.prototype.multiply = function(scalar) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x * scalar,
-        this.y * scalar,
-        this.z * scalar
+        self.x * scalar,
+        self.y * scalar,
+        self.z * scalar
     ]);
 };
 
@@ -2739,9 +2838,12 @@ Vector3.prototype.multiply = function(scalar) {
  *
  */
 Vector3.prototype.multiplyAssign = function(scalar) {
-    this.x *= scalar;
-    this.y *= scalar;
-    this.z *= scalar;
+    'use strict';
+    var self = this;
+
+    self.x *= scalar;
+    self.y *= scalar;
+    self.z *= scalar;
     return this;
 };
 
@@ -2752,10 +2854,13 @@ Vector3.prototype.multiplyAssign = function(scalar) {
  *
  */
 Vector3.prototype.divide = function(scalar) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x / scalar,
-        this.y / scalar,
-        this.z / scalar
+        self.x / scalar,
+        self.y / scalar,
+        self.z / scalar
     ]);
 };
 
@@ -2766,9 +2871,12 @@ Vector3.prototype.divide = function(scalar) {
  *
  */
 Vector3.prototype.divideAssign = function(scalar) {
-    this.x /= scalar;
-    this.y /= scalar;
-    this.z /= scalar;
+    'use strict';
+    var self = this;
+
+    self.x /= scalar;
+    self.y /= scalar;
+    self.z /= scalar;
     return this;
 };
 
@@ -2779,7 +2887,10 @@ Vector3.prototype.divideAssign = function(scalar) {
  *
  */
 Vector3.prototype.isEqualTo = function(other) {
-    return !(this.x !== other.x || this.y !== other.y || this.z !== other.z);
+    'use strict';
+    var self = this;
+
+    return !(self.x !== other.x || self.y !== other.y || self.z !== other.z);
 };
 
 /**
@@ -2797,11 +2908,13 @@ Vector3.prototype.isEqualTo = function(other) {
  *
  */
 Vector3.prototype.angleTo = function(other) {
-    var denom = this.magnitudeSquared() * other.magnitudeSquared();
+    'use strict';
+    var self = this,
+        denom = self.magnitudeSquared() * other.magnitudeSquared();
     if (denom <= 0) {
         return 0;
     } else {
-        return Math.acos(this.dot(other) / Math.sqrt(denom));
+        return Math.acos(self.dot(other) / Math.sqrt(denom));
     }
 };
 
@@ -2818,8 +2931,11 @@ Vector3.prototype.angleTo = function(other) {
  *
  */
 Vector3.prototype.cross = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        (this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)
+        (self.y * other.z) - (self.z * other.y), (self.z * other.x) - (self.x * other.z), (self.x * other.y) - (self.y * other.x)
     ]);
 };
 
@@ -2832,7 +2948,10 @@ Vector3.prototype.cross = function(other) {
  *
  */
 Vector3.prototype.distanceTo = function(other) {
-    return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y) + (this.z - other.z) * (this.z - other.z));
+    'use strict';
+    var self = this;
+
+    return Math.sqrt((self.x - other.x) * (self.x - other.x) + (self.y - other.y) * (self.y - other.y) + (self.z - other.z) * (self.z - other.z));
 };
 
 /**
@@ -2845,7 +2964,10 @@ Vector3.prototype.distanceTo = function(other) {
  *
  */
 Vector3.prototype.dot = function(other) {
-    return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
+    'use strict';
+    var self = this;
+
+    return (self.x * other.x) + (self.y * other.y) + (self.z * other.z);
 };
 
 /**
@@ -2854,7 +2976,10 @@ Vector3.prototype.dot = function(other) {
  *
  */
 Vector3.prototype.isValid = function() {
-    return (this.x <= Number.MAX_VALUE && this.x >= -Number.MAX_VALUE) && (this.y <= Number.MAX_VALUE && this.y >= -Number.MAX_VALUE) && (this.z <= Number.MAX_VALUE && this.z >= -Number.MAX_VALUE);
+    'use strict';
+    var self = this;
+
+    return (self.x <= Number.MAX_VALUE && self.x >= -Number.MAX_VALUE) && (self.y <= Number.MAX_VALUE && self.y >= -Number.MAX_VALUE) && (self.z <= Number.MAX_VALUE && self.z >= -Number.MAX_VALUE);
 };
 
 /**
@@ -2867,7 +2992,10 @@ Vector3.prototype.isValid = function() {
  *
  */
 Vector3.prototype.magnitude = function() {
-    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z);
 };
 
 /**
@@ -2876,7 +3004,10 @@ Vector3.prototype.magnitude = function() {
  *
  */
 Vector3.prototype.magnitudeSquared = function() {
-    return this.x * this.x + this.y * this.y + this.z * this.z;
+    'use strict';
+    var self = this;
+
+    return self.x * self.x + self.y * self.y + self.z * self.z;
 };
 
 /**
@@ -2887,7 +3018,9 @@ Vector3.prototype.magnitudeSquared = function() {
  *
  */
 Vector3.prototype.normalized = function() {
-    var denom = this.magnitudeSquared();
+    'use strict';
+    var self = this,
+        denom = self.magnitudeSquared();
     if (denom <= 0) {
         return new Vector3([
             0,
@@ -2898,9 +3031,9 @@ Vector3.prototype.normalized = function() {
 
     denom = 1 / Math.sqrt(denom);
     return new Vector3([
-        this.x * denom,
-        this.y * denom,
-        this.z * denom
+        self.x * denom,
+        self.y * denom,
+        self.z * denom
     ]);
 };
 
@@ -2916,7 +3049,10 @@ Vector3.prototype.normalized = function() {
  *
  */
 Vector3.prototype.pitch = function() {
-    return Math.atan2(this.y, -this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.y, -self.z);
 };
 
 /**
@@ -2932,7 +3068,10 @@ Vector3.prototype.pitch = function() {
  *
  */
 Vector3.prototype.yaw = function() {
-    return Math.atan2(this.x, -this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.x, -self.z);
 };
 
 /**
@@ -2952,7 +3091,10 @@ Vector3.prototype.yaw = function() {
  *
  */
 Vector3.prototype.roll = function() {
-    return Math.atan2(this.x, -this.y);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.x, -self.y);
 };
 
 /**
@@ -2961,6 +3103,7 @@ Vector3.prototype.roll = function() {
  *
  */
 Vector3.prototype.zero = function() {
+    'use strict';
     return new Vector3([
         0,
         0,
@@ -2974,6 +3117,7 @@ Vector3.prototype.zero = function() {
  *
  */
 Vector3.prototype.xAxis = function() {
+    'use strict';
     return new Vector3([
         1,
         0,
@@ -2987,6 +3131,7 @@ Vector3.prototype.xAxis = function() {
  *
  */
 Vector3.prototype.yAxis = function() {
+    'use strict';
     return new Vector3([
         0,
         1,
@@ -3000,6 +3145,7 @@ Vector3.prototype.yAxis = function() {
  *
  */
 Vector3.prototype.zAxis = function() {
+    'use strict';
     return new Vector3([
         0,
         0,
@@ -3013,6 +3159,7 @@ Vector3.prototype.zAxis = function() {
  *
  */
 Vector3.prototype.left = function() {
+    'use strict';
     return new Vector3([-1,
         0,
         0
@@ -3025,7 +3172,10 @@ Vector3.prototype.left = function() {
  *
  */
 Vector3.prototype.right = function() {
-    return this.xAxis();
+    'use strict';
+    var self = this;
+
+    return self.xAxis();
 };
 
 /**
@@ -3034,6 +3184,7 @@ Vector3.prototype.right = function() {
  *
  */
 Vector3.prototype.down = function() {
+    'use strict';
     return new Vector3([
         0, -1,
         0
@@ -3046,7 +3197,10 @@ Vector3.prototype.down = function() {
  *
  */
 Vector3.prototype.up = function() {
-    return this.yAxis();
+    'use strict';
+    var self = this;
+
+    return self.yAxis();
 };
 
 /**
@@ -3055,6 +3209,7 @@ Vector3.prototype.up = function() {
  *
  */
 Vector3.prototype.forward = function() {
+    'use strict';
     return new Vector3([
         0,
         0, -1
@@ -3067,7 +3222,10 @@ Vector3.prototype.forward = function() {
  *
  */
 Vector3.prototype.backward = function() {
-    return this.zAxis();
+    'use strict';
+    var self = this;
+
+    return self.zAxis();
 };
 
 /**
@@ -3079,6 +3237,7 @@ Vector3.prototype.backward = function() {
  *
  */
 Vector3.invalid = function() {
+    'use strict';
     return new Vector3({
         invalid: true
     });
@@ -3090,18 +3249,21 @@ Vector3.invalid = function() {
  *
  */
 Vector3.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Vector3 invalid]';
     }
-    return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
+    return '[Vector3 x:' + self.x + ' y:' + self.y + ' z:' + self.z + ']';
 };
 
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.14.0',
+    full: '0.15.0',
     major: 0,
-    minor: 1443,
+    minor: 15554444444444444444443,
     dot: 0
 };
 
@@ -3113,6 +3275,7 @@ var Frame = require('../Frame'),
 
 var BaseConnection = module.exports = function(options) {
     'use strict';
+    var self = this;
 
     if (options) {
         if (typeof options !== 'object') {
@@ -3126,27 +3289,29 @@ var BaseConnection = module.exports = function(options) {
         }
     }
 
-    this.options = _.defaults(options || {}, {
+    self.options = _.defaults(options || {}, {
         host: '127.0.0.1',
         port: 6450
     });
 
-    this.host = this.options.host;
-    this.port = this.options.port;
-    this.connected = false;
+    self.host = self.options.host;
+    self.port = self.options.port;
+    self.connected = false;
 };
 
 BaseConnection.prototype.getUrl = function() {
     'use strict';
+    var self = this;
 
-    return 'ws://' + this.host + ':' + this.port + '/';
+    return 'ws://' + self.host + ':' + self.port + '/';
 };
 
 BaseConnection.prototype.handleOpen = function() {
     'use strict';
+    var self = this;
 
-    if (!this.connected) {
-        this.send({
+    if (!self.connected) {
+        self.send({
             'command': 'requestDeviceInfo'
         });
         return 'connecting';
@@ -3157,10 +3322,11 @@ BaseConnection.prototype.handleOpen = function() {
 
 BaseConnection.prototype.handleClose = function() {
     'use strict';
+    var self = this;
 
-    if (this.connected) {
-        this.disconnect();
-        this.startReconnection();
+    if (self.connected) {
+        self.disconnect();
+        self.startReconnection();
         return 'disconnecting';
     } else {
         return 'disconnected';
@@ -3169,10 +3335,10 @@ BaseConnection.prototype.handleClose = function() {
 
 BaseConnection.prototype.startReconnection = function() {
     'use strict';
-
-    var connection = this;
-    if (!this.reconnectionTimer) {
-        this.reconnectionTimer = setInterval(function() {
+    var self = this,
+        connection = this;
+    if (!self.reconnectionTimer) {
+        self.reconnectionTimer = setInterval(function() {
             connection.reconnect();
         }, 500);
         return 'reconnecting';
@@ -3183,45 +3349,48 @@ BaseConnection.prototype.startReconnection = function() {
 
 BaseConnection.prototype.stopReconnection = function() {
     'use strict';
+    var self = this;
 
-    this.reconnectionTimer = clearInterval(this.reconnectionTimer);
+    self.reconnectionTimer = clearInterval(self.reconnectionTimer);
 };
 
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
 BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
+    var self = this;
 
     if (!allowReconnect) {
-        this.stopReconnection();
+        self.stopReconnection();
     }
-    if (!this.socket) {
+    if (!self.socket) {
         return;
     }
-    this.socket.close();
-    delete this.socket;
-    if (this.connected) {
-        this.connected = false;
-        this.emit('disconnect');
+    self.socket.close();
+    delete self.socket;
+    if (self.connected) {
+        self.connected = false;
+        self.emit('disconnect');
     }
     return true;
 };
 
 BaseConnection.prototype.reconnect = function() {
     'use strict';
+    var self = this;
 
-    if (this.connected) {
-        this.stopReconnection();
+    if (self.connected) {
+        self.stopReconnection();
     } else {
-        this.disconnect(true);
-        this.connect();
+        self.disconnect(true);
+        self.connect();
     }
 };
 
 BaseConnection.prototype.handleData = function(data) {
     'use strict';
-
-    var message, frameObject, frame, deviceInfo;
+    var self = this,
+        message, frameObject, frame, deviceInfo;
 
     if (!data) {
         throw new Error('No data received');
@@ -3235,45 +3404,46 @@ BaseConnection.prototype.handleData = function(data) {
     }
 
     // Wait for deviceInfo until connected
-    if (!this.connected && message.hasOwnProperty('frame')) {
+    if (!self.connected && message.hasOwnProperty('frame')) {
         frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
             deviceInfo = frame['deviceInfo'];
-            this.emit('deviceInfo', deviceInfo);
-            this.connected = true;
-            this.emit('connect');
+            self.emit('deviceInfo', deviceInfo);
+            self.connected = true;
+            self.emit('connect');
             return;
         }
     }
 
-    if (!this.connected) {
+    if (!self.connected) {
         return;
     }
 
     if (message.hasOwnProperty('frame')) {
         frameObject = new Frame(message.frame);
-        this.emit(frameObject.type, frameObject);
+        self.emit(frameObject.type, frameObject);
 
         // Emit pose if existing
         if (frameObject.pose) {
-            this.emit('pose', frameObject.pose);
+            self.emit('pose', frameObject.pose);
         }
 
         // Emit event if existing
         if (frameObject.event) {
-            this.emit('event', frameObject.event);
+            self.emit('event', frameObject.event);
         }
     }
 };
 
 BaseConnection.prototype.connect = function() {
     'use strict';
+    var self = this;
 
-    if (this.socket) {
+    if (self.socket) {
         return;
     }
 
-    this.emit('ready');
+    self.emit('ready');
 
     var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
@@ -3281,21 +3451,21 @@ BaseConnection.prototype.connect = function() {
 
     if (inNode) {
         ConnectionType = require('ws');
-        this.socket = new ConnectionType(this.getUrl());
+        self.socket = new ConnectionType(self.getUrl());
     } else {
-        this.socket = new WebSocket(this.getUrl());
+        self.socket = new WebSocket(self.getUrl());
     }
 
-    this.socket.onopen = function() {
+    self.socket.onopen = function() {
         connection.handleOpen();
     };
-    this.socket.onclose = function(data) {
+    self.socket.onclose = function(data) {
         connection.handleClose(data.code, data.reason);
     };
-    this.socket.onmessage = function(message) {
+    self.socket.onmessage = function(message) {
         connection.handleData(message.data);
     };
-    this.socket.onerror = function(data) {
+    self.socket.onerror = function(data) {
         connection.handleClose('connectError', data.data);
     };
 
@@ -3304,11 +3474,12 @@ BaseConnection.prototype.connect = function() {
 
 BaseConnection.prototype.send = function(data) {
     'use strict';
+    var self = this;
 
     if (typeof data !== 'object' || typeof data === 'string') {
         throw new Error('Parameter needs to be an object');
     }
-    this.socket.send(JSON.stringify(data));
+    self.socket.send(JSON.stringify(data));
 };
 
 _.extend(BaseConnection.prototype, EventEmitter.prototype);

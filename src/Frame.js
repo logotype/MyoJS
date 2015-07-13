@@ -3,6 +3,8 @@ var Pose = require('./Pose'),
     Vector3 = require('./Vector3');
 
 var Frame = module.exports = function(data) {
+    'use strict';
+    var self = this;
 
     if (!data) {
         throw new Error('Missing constructor arguments');
@@ -13,8 +15,8 @@ var Frame = module.exports = function(data) {
     if (!data.hasOwnProperty('id') || data.id !== parseInt(data.id, 10)) {
         throw new Error('Frame id needs to be of type integer');
     }
-    if (!data.hasOwnProperty('timestamp') || data.timestamp !== parseInt(data.timestamp, 10)) {
-        throw new Error('Timestamp needs to be of type integer');
+    if (!data.hasOwnProperty('timestamp') || typeof data.timestamp !== 'string') {
+        throw new Error('Timestamp needs to be of type string');
     }
 
     /**
@@ -24,26 +26,26 @@ var Frame = module.exports = function(data) {
      * @memberof Myo.Frame.prototype
      * @type {number}
      */
-    this.id = data.id;
+    self.id = data.id;
 
     /**
      * The frame capture time in microseconds elapsed since the Myo started.
      * @member timestamp
      * @memberof Myo.Frame.prototype
-     * @type {number}
+     * @type {string}
      */
-    this.timestamp = data.timestamp;
+    self.timestamp = data.timestamp;
 
     if (data.euler) {
-        this.euler = data.euler;
+        self.euler = data.euler;
     }
 
     if (data.rssi) {
-        this.rssi = data.rssi;
+        self.rssi = data.rssi;
     }
 
     if (data.event) {
-        this.event = data.event;
+        self.event = data.event;
     }
 
     /**
@@ -53,9 +55,9 @@ var Frame = module.exports = function(data) {
      * @type {Pose}
      */
     if (data.pose) {
-        this.pose = new Pose(data.pose);
+        self.pose = new Pose(data.pose);
     } else {
-        this.pose = Pose.invalid();
+        self.pose = Pose.invalid();
     }
 
     /**
@@ -65,34 +67,34 @@ var Frame = module.exports = function(data) {
      * @type {Pose}
      */
     if (data.rotation) {
-        this.rotation = new Quaternion(data.rotation);
+        self.rotation = new Quaternion(data.rotation);
     } else {
-        this.rotation = Quaternion.invalid();
+        self.rotation = Quaternion.invalid();
     }
 
     if (data.accel) {
-        this.accel = new Vector3(data.accel);
+        self.accel = new Vector3(data.accel);
     } else {
-        this.accel = Vector3.invalid();
+        self.accel = Vector3.invalid();
     }
 
     if (data.gyro) {
-        this.gyro = new Vector3(data.gyro);
+        self.gyro = new Vector3(data.gyro);
     } else {
-        this.gyro = Vector3.invalid();
+        self.gyro = Vector3.invalid();
     }
 
     /**
      * EMG data
      */
     if (data.emg) {
-        this.emg = data.emg;
+        self.emg = data.emg;
     } else {
-        this.emg = [];
+        self.emg = [];
     }
 
-    this.data = data;
-    this.type = 'frame';
+    self.data = data;
+    self.type = 'frame';
 };
 
 
@@ -102,5 +104,8 @@ var Frame = module.exports = function(data) {
  *
  */
 Frame.prototype.toString = function() {
-    return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
+    'use strict';
+    var self = this;
+
+    return '[Frame id:' + self.id + ' timestamp:' + self.timestamp + ' accel:' + self.accel.toString() + ']';
 };

@@ -2,7 +2,7 @@ var MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
     _ = require('underscore');
 
-var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : 1423842951, "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
+var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : "1423842951", "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
 
 describe('Frame', function(){
     describe('Constructor validation', function(){
@@ -23,7 +23,7 @@ describe('Frame', function(){
                 var invalidFrame = JSON.parse(frameDump);
                 delete invalidFrame.frame.timestamp;
                 new MyoJS.Frame(invalidFrame.frame);
-            }, Error, 'Timestamp needs to be of type integer');
+            }, Error, 'Timestamp needs to be of type string');
         });
         it('should throw an error when passing string as argument', function(){
             assert.throws(function() {

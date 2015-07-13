@@ -1,5 +1,4 @@
-var EventEmitter = require('events').EventEmitter,
-    MyoJS = require('../src/Index.js'),
+var MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
 
 describe('Myo', function(){

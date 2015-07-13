@@ -1,4 +1,6 @@
 var Vector3 = module.exports = function(data) {
+    'use strict';
+    var self = this;
 
     if (!data) {
         throw new Error('Missing constructor arguments');
@@ -10,22 +12,22 @@ var Vector3 = module.exports = function(data) {
     /**
      * Indicates whether this is a valid Vector3 object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (!data || Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
         if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2])) {
             throw new Error('Component values needs to be integers or numbers');
         }
-        this.x = data[0];
-        this.y = data[1];
-        this.z = data[2];
+        self.x = data[0];
+        self.y = data[1];
+        self.z = data[2];
     } else {
-        this.x = NaN;
-        this.y = NaN;
-        this.z = NaN;
+        self.x = NaN;
+        self.y = NaN;
+        self.z = NaN;
     }
 };
 
@@ -35,7 +37,10 @@ var Vector3 = module.exports = function(data) {
  *
  */
 Vector3.prototype.opposite = function() {
-    return new Vector3([-this.x, -this.y, -this.z]);
+    'use strict';
+    var self = this;
+
+    return new Vector3([-self.x, -self.y, -self.z]);
 };
 
 /**
@@ -45,10 +50,13 @@ Vector3.prototype.opposite = function() {
  *
  */
 Vector3.prototype.plus = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x + other.x,
-        this.y + other.y,
-        this.z + other.z
+        self.x + other.x,
+        self.y + other.y,
+        self.z + other.z
     ]);
 };
 
@@ -59,10 +67,13 @@ Vector3.prototype.plus = function(other) {
  *
  */
 Vector3.prototype.plusAssign = function(other) {
-    this.x += other.x;
-    this.y += other.y;
-    this.z += other.z;
-    return this;
+    'use strict';
+    var self = this;
+
+    self.x += other.x;
+    self.y += other.y;
+    self.z += other.z;
+    return self;
 };
 
 /**
@@ -72,10 +83,13 @@ Vector3.prototype.plusAssign = function(other) {
  *
  */
 Vector3.prototype.minus = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x - other.x,
-        this.y - other.y,
-        this.z - other.z
+        self.x - other.x,
+        self.y - other.y,
+        self.z - other.z
     ]);
 };
 
@@ -86,9 +100,12 @@ Vector3.prototype.minus = function(other) {
  *
  */
 Vector3.prototype.minusAssign = function(other) {
-    this.x -= other.x;
-    this.y -= other.y;
-    this.z -= other.z;
+    'use strict';
+    var self = this;
+
+    self.x -= other.x;
+    self.y -= other.y;
+    self.z -= other.z;
     return this;
 };
 
@@ -99,10 +116,13 @@ Vector3.prototype.minusAssign = function(other) {
  *
  */
 Vector3.prototype.multiply = function(scalar) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x * scalar,
-        this.y * scalar,
-        this.z * scalar
+        self.x * scalar,
+        self.y * scalar,
+        self.z * scalar
     ]);
 };
 
@@ -113,9 +133,12 @@ Vector3.prototype.multiply = function(scalar) {
  *
  */
 Vector3.prototype.multiplyAssign = function(scalar) {
-    this.x *= scalar;
-    this.y *= scalar;
-    this.z *= scalar;
+    'use strict';
+    var self = this;
+
+    self.x *= scalar;
+    self.y *= scalar;
+    self.z *= scalar;
     return this;
 };
 
@@ -126,10 +149,13 @@ Vector3.prototype.multiplyAssign = function(scalar) {
  *
  */
 Vector3.prototype.divide = function(scalar) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        this.x / scalar,
-        this.y / scalar,
-        this.z / scalar
+        self.x / scalar,
+        self.y / scalar,
+        self.z / scalar
     ]);
 };
 
@@ -140,9 +166,12 @@ Vector3.prototype.divide = function(scalar) {
  *
  */
 Vector3.prototype.divideAssign = function(scalar) {
-    this.x /= scalar;
-    this.y /= scalar;
-    this.z /= scalar;
+    'use strict';
+    var self = this;
+
+    self.x /= scalar;
+    self.y /= scalar;
+    self.z /= scalar;
     return this;
 };
 
@@ -153,7 +182,10 @@ Vector3.prototype.divideAssign = function(scalar) {
  *
  */
 Vector3.prototype.isEqualTo = function(other) {
-    return !(this.x !== other.x || this.y !== other.y || this.z !== other.z);
+    'use strict';
+    var self = this;
+
+    return !(self.x !== other.x || self.y !== other.y || self.z !== other.z);
 };
 
 /**
@@ -171,11 +203,13 @@ Vector3.prototype.isEqualTo = function(other) {
  *
  */
 Vector3.prototype.angleTo = function(other) {
-    var denom = this.magnitudeSquared() * other.magnitudeSquared();
+    'use strict';
+    var self = this,
+        denom = self.magnitudeSquared() * other.magnitudeSquared();
     if (denom <= 0) {
         return 0;
     } else {
-        return Math.acos(this.dot(other) / Math.sqrt(denom));
+        return Math.acos(self.dot(other) / Math.sqrt(denom));
     }
 };
 
@@ -192,8 +226,11 @@ Vector3.prototype.angleTo = function(other) {
  *
  */
 Vector3.prototype.cross = function(other) {
+    'use strict';
+    var self = this;
+
     return new Vector3([
-        (this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)
+        (self.y * other.z) - (self.z * other.y), (self.z * other.x) - (self.x * other.z), (self.x * other.y) - (self.y * other.x)
     ]);
 };
 
@@ -206,7 +243,10 @@ Vector3.prototype.cross = function(other) {
  *
  */
 Vector3.prototype.distanceTo = function(other) {
-    return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y) + (this.z - other.z) * (this.z - other.z));
+    'use strict';
+    var self = this;
+
+    return Math.sqrt((self.x - other.x) * (self.x - other.x) + (self.y - other.y) * (self.y - other.y) + (self.z - other.z) * (self.z - other.z));
 };
 
 /**
@@ -219,7 +259,10 @@ Vector3.prototype.distanceTo = function(other) {
  *
  */
 Vector3.prototype.dot = function(other) {
-    return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
+    'use strict';
+    var self = this;
+
+    return (self.x * other.x) + (self.y * other.y) + (self.z * other.z);
 };
 
 /**
@@ -228,7 +271,10 @@ Vector3.prototype.dot = function(other) {
  *
  */
 Vector3.prototype.isValid = function() {
-    return (this.x <= Number.MAX_VALUE && this.x >= -Number.MAX_VALUE) && (this.y <= Number.MAX_VALUE && this.y >= -Number.MAX_VALUE) && (this.z <= Number.MAX_VALUE && this.z >= -Number.MAX_VALUE);
+    'use strict';
+    var self = this;
+
+    return (self.x <= Number.MAX_VALUE && self.x >= -Number.MAX_VALUE) && (self.y <= Number.MAX_VALUE && self.y >= -Number.MAX_VALUE) && (self.z <= Number.MAX_VALUE && self.z >= -Number.MAX_VALUE);
 };
 
 /**
@@ -241,7 +287,10 @@ Vector3.prototype.isValid = function() {
  *
  */
 Vector3.prototype.magnitude = function() {
-    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z);
 };
 
 /**
@@ -250,7 +299,10 @@ Vector3.prototype.magnitude = function() {
  *
  */
 Vector3.prototype.magnitudeSquared = function() {
-    return this.x * this.x + this.y * this.y + this.z * this.z;
+    'use strict';
+    var self = this;
+
+    return self.x * self.x + self.y * self.y + self.z * self.z;
 };
 
 /**
@@ -261,7 +313,9 @@ Vector3.prototype.magnitudeSquared = function() {
  *
  */
 Vector3.prototype.normalized = function() {
-    var denom = this.magnitudeSquared();
+    'use strict';
+    var self = this,
+        denom = self.magnitudeSquared();
     if (denom <= 0) {
         return new Vector3([
             0,
@@ -272,9 +326,9 @@ Vector3.prototype.normalized = function() {
 
     denom = 1 / Math.sqrt(denom);
     return new Vector3([
-        this.x * denom,
-        this.y * denom,
-        this.z * denom
+        self.x * denom,
+        self.y * denom,
+        self.z * denom
     ]);
 };
 
@@ -290,7 +344,10 @@ Vector3.prototype.normalized = function() {
  *
  */
 Vector3.prototype.pitch = function() {
-    return Math.atan2(this.y, -this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.y, -self.z);
 };
 
 /**
@@ -306,7 +363,10 @@ Vector3.prototype.pitch = function() {
  *
  */
 Vector3.prototype.yaw = function() {
-    return Math.atan2(this.x, -this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.x, -self.z);
 };
 
 /**
@@ -326,7 +386,10 @@ Vector3.prototype.yaw = function() {
  *
  */
 Vector3.prototype.roll = function() {
-    return Math.atan2(this.x, -this.y);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(self.x, -self.y);
 };
 
 /**
@@ -335,6 +398,7 @@ Vector3.prototype.roll = function() {
  *
  */
 Vector3.prototype.zero = function() {
+    'use strict';
     return new Vector3([
         0,
         0,
@@ -348,6 +412,7 @@ Vector3.prototype.zero = function() {
  *
  */
 Vector3.prototype.xAxis = function() {
+    'use strict';
     return new Vector3([
         1,
         0,
@@ -361,6 +426,7 @@ Vector3.prototype.xAxis = function() {
  *
  */
 Vector3.prototype.yAxis = function() {
+    'use strict';
     return new Vector3([
         0,
         1,
@@ -374,6 +440,7 @@ Vector3.prototype.yAxis = function() {
  *
  */
 Vector3.prototype.zAxis = function() {
+    'use strict';
     return new Vector3([
         0,
         0,
@@ -387,6 +454,7 @@ Vector3.prototype.zAxis = function() {
  *
  */
 Vector3.prototype.left = function() {
+    'use strict';
     return new Vector3([-1,
         0,
         0
@@ -399,7 +467,10 @@ Vector3.prototype.left = function() {
  *
  */
 Vector3.prototype.right = function() {
-    return this.xAxis();
+    'use strict';
+    var self = this;
+
+    return self.xAxis();
 };
 
 /**
@@ -408,6 +479,7 @@ Vector3.prototype.right = function() {
  *
  */
 Vector3.prototype.down = function() {
+    'use strict';
     return new Vector3([
         0, -1,
         0
@@ -420,7 +492,10 @@ Vector3.prototype.down = function() {
  *
  */
 Vector3.prototype.up = function() {
-    return this.yAxis();
+    'use strict';
+    var self = this;
+
+    return self.yAxis();
 };
 
 /**
@@ -429,6 +504,7 @@ Vector3.prototype.up = function() {
  *
  */
 Vector3.prototype.forward = function() {
+    'use strict';
     return new Vector3([
         0,
         0, -1
@@ -441,7 +517,10 @@ Vector3.prototype.forward = function() {
  *
  */
 Vector3.prototype.backward = function() {
-    return this.zAxis();
+    'use strict';
+    var self = this;
+
+    return self.zAxis();
 };
 
 /**
@@ -453,6 +532,7 @@ Vector3.prototype.backward = function() {
  *
  */
 Vector3.invalid = function() {
+    'use strict';
     return new Vector3({
         invalid: true
     });
@@ -464,8 +544,11 @@ Vector3.invalid = function() {
  *
  */
 Vector3.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Vector3 invalid]';
     }
-    return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
+    return '[Vector3 x:' + self.x + ' y:' + self.y + ' z:' + self.z + ']';
 };

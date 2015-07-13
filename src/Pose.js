@@ -1,10 +1,13 @@
 var Pose = module.exports = function(data) {
+    'use strict';
+    var self = this;
+
     /**
      * Indicates whether this is a valid Pose object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
             throw new Error('Constructor parameter needs to be an object');
         }
@@ -16,41 +19,44 @@ var Pose = module.exports = function(data) {
     /**
      * The pose being recognized.
      */
-    this.type = data.type;
+    self.type = data.type;
 
     /**
      * Rest pose.
      */
-    this.POSE_REST = 0;
+    self.POSE_REST = 0;
 
     /**
      * User is making a fist.
      */
-    this.POSE_FIST = 1;
+    self.POSE_FIST = 1;
 
     /**
      * User has an open palm rotated towards the posterior of their wrist.
      */
-    this.POSE_WAVE_IN = 2;
+    self.POSE_WAVE_IN = 2;
 
     /**
      * User has an open palm rotated towards the anterior of their wrist.
      */
-    this.POSE_WAVE_OUT = 3;
+    self.POSE_WAVE_OUT = 3;
 
     /**
      * User has an open palm with their fingers spread away from each other.
      */
-    this.POSE_FINGERS_SPREAD = 4;
+    self.POSE_FINGERS_SPREAD = 4;
 
     /**
      * User tapped their thumb and middle finger together twice in succession.
      */
-    this.DOUBLE_TAP = 5;
+    self.DOUBLE_TAP = 5;
 };
 
 Pose.prototype.isEqualTo = function(other) {
-    return this.type === other.type;
+    'use strict';
+    var self = this;
+
+    return self.type === other.type;
 };
 
 /**
@@ -61,6 +67,7 @@ Pose.prototype.isEqualTo = function(other) {
  *
  */
 Pose.invalid = function() {
+    'use strict';
     return new Pose({
         invalid: true
     });
@@ -72,24 +79,27 @@ Pose.invalid = function() {
  *
  */
 Pose.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Pose invalid]';
     }
-    switch (this.type) {
-        case this.POSE_REST:
-            return '[Pose type:' + this.type.toString() + ' POSE_REST]';
-        case this.POSE_FIST:
-            return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
-        case this.POSE_WAVE_IN:
-            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
-        case this.POSE_WAVE_OUT:
-            return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
-        case this.POSE_FINGERS_SPREAD:
-            return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
-        case this.DOUBLE_TAP:
-            return '[Pose type:' + this.type.toString() + ' DOUBLE_TAP]';
+    switch (self.type) {
+        case self.POSE_REST:
+            return '[Pose type:' + self.type.toString() + ' POSE_REST]';
+        case self.POSE_FIST:
+            return '[Pose type:' + self.type.toString() + ' POSE_FIST]';
+        case self.POSE_WAVE_IN:
+            return '[Pose type:' + self.type.toString() + ' POSE_WAVE_IN]';
+        case self.POSE_WAVE_OUT:
+            return '[Pose type:' + self.type.toString() + ' POSE_WAVE_OUT]';
+        case self.POSE_FINGERS_SPREAD:
+            return '[Pose type:' + self.type.toString() + ' POSE_FINGERS_SPREAD]';
+        case self.DOUBLE_TAP:
+            return '[Pose type:' + self.type.toString() + ' DOUBLE_TAP]';
         default:
             break;
     }
-    return '[Pose type:' + this.type.toString() + ']';
+    return '[Pose type:' + self.type.toString() + ']';
 };

@@ -3,38 +3,40 @@ var EventEmitter = require('events').EventEmitter,
     _ = require('underscore');
 
 var Hub = module.exports = function(opt) {
+    'use strict';
+    var self = this;
 
-    this.connectionType = require('./connection/BaseConnection');
-    this.connection = new this.connectionType(opt);
-    this.historyType = require('./CircularBuffer');
-    this.history = new this.historyType(200);
-    this.myos = [];
+    self.connectionType = require('./connection/BaseConnection');
+    self.connection = new self.connectionType(opt);
+    self.historyType = require('./CircularBuffer');
+    self.history = new self.historyType(200);
+    self.myos = [];
 
-    this.connection.connect();
+    self.connection.connect();
 
     var hub = this;
 
     // Forward events
-    this.connection.on('deviceInfo', function() {
+    self.connection.on('deviceInfo', function() {
         hub.myo = new Myo(hub.connection);
     });
-    this.connection.on('frame', function(frame) {
+    self.connection.on('frame', function(frame) {
         hub.history.push(frame);
         hub.emit('frame', frame);
     });
-    this.connection.on('pose', function(pose) {
+    self.connection.on('pose', function(pose) {
         hub.emit('pose', pose);
     });
-    this.connection.on('event', function(event) {
+    self.connection.on('event', function(event) {
         hub.emit(event.type);
     });
-    this.connection.on('ready', function() {
+    self.connection.on('ready', function() {
         hub.emit('ready');
     });
-    this.connection.on('connect', function() {
+    self.connection.on('connect', function() {
         hub.emit('connect');
     });
-    this.connection.on('disconnect', function() {
+    self.connection.on('disconnect', function() {
         hub.emit('disconnect');
     });
 };
@@ -56,7 +58,10 @@ var Hub = module.exports = function(opt) {
  * the specified history position, an invalid Frame is returned.
  **/
 Hub.prototype.frame = function(num) {
-    return this.history.get(num) || null;
+    'use strict';
+    var self = this;
+
+    return self.history.get(num) || null;
 };
 
 /**
@@ -66,10 +71,13 @@ Hub.prototype.frame = function(num) {
  * not be run concurrently with run() or runOnce().</p>
  */
 Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!timeoutMilliseconds || timeoutMilliseconds !== parseInt(timeoutMilliseconds, 10)) {
         throw new Error('timeoutMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'waitForMyo': timeoutMilliseconds
     });
 };
@@ -78,10 +86,13 @@ Hub.prototype.waitForMyo = function(timeoutMilliseconds) {
  * Run the event loop for the specified duration (in milliseconds).
  */
 Hub.prototype.run = function(durationMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
         throw new Error('durationMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'run': durationMilliseconds
     });
 };
@@ -91,10 +102,13 @@ Hub.prototype.run = function(durationMilliseconds) {
  * duration (in milliseconds) has elapsed.
  */
 Hub.prototype.runOnce = function(durationMilliseconds) {
+    'use strict';
+    var self = this;
+
     if (!durationMilliseconds || durationMilliseconds !== parseInt(durationMilliseconds, 10)) {
         throw new Error('durationMilliseconds needs to be of type integer');
     }
-    this.connection.send({
+    self.connection.send({
         'runOnce': durationMilliseconds
     });
 };

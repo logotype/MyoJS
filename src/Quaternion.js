@@ -1,25 +1,28 @@
 var Quaternion = module.exports = function(data) {
+    'use strict';
+    var self = this;
+
     /**
      * Indicates whether this is a valid Quaternion object.
      */
-    this.valid = data.hasOwnProperty('invalid') ? false : true;
+    self.valid = !data.hasOwnProperty('invalid');
 
-    if (this.valid) {
+    if (self.valid) {
         if (Object.prototype.toString.call(data) !== '[object Array]') {
             throw new Error('Components needs to be an array');
         }
         if (isNaN(data[0]) || isNaN(data[1]) || isNaN(data[2]) || isNaN(data[3])) {
             throw new Error('Component values needs to be integers or numbers');
         }
-        this.x = data[0];
-        this.y = data[1];
-        this.z = data[2];
-        this.w = data[3];
+        self.x = data[0];
+        self.y = data[1];
+        self.z = data[2];
+        self.w = data[3];
     } else {
-        this.x = NaN;
-        this.y = NaN;
-        this.z = NaN;
-        this.w = NaN;
+        self.x = NaN;
+        self.y = NaN;
+        self.z = NaN;
+        self.w = NaN;
     }
 };
 
@@ -31,12 +34,15 @@ var Quaternion = module.exports = function(data) {
  *
  */
 Quaternion.prototype.normalized = function() {
-    var magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    'use strict';
+    var self = this,
+        magnitude = Math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w);
+
     return new Quaternion([
-        this.x / magnitude,
-        this.y / magnitude,
-        this.z / magnitude,
-        this.w / magnitude
+        self.x / magnitude,
+        self.y / magnitude,
+        self.z / magnitude,
+        self.w / magnitude
     ]);
 };
 
@@ -45,8 +51,11 @@ Quaternion.prototype.normalized = function() {
  *
  */
 Quaternion.prototype.conjugate = function() {
-    return new Quaternion([-this.x, -this.y, -this.z,
-        this.w
+    'use strict';
+    var self = this;
+
+    return new Quaternion([-self.x, -self.y, -self.z,
+        self.w
     ]);
 };
 
@@ -56,28 +65,30 @@ Quaternion.prototype.conjugate = function() {
  *
  */
 Quaternion.prototype.toEuler = function() {
-    var test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
+    'use strict';
+    var self = this,
+        test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
 
-    sqw = this.w * this.w;
-    sqx = this.x * this.x;
-    sqy = this.y * this.y;
-    sqz = this.z * this.z;
+    sqw = self.w * self.w;
+    sqx = self.x * self.x;
+    sqy = self.y * self.y;
+    sqz = self.z * self.z;
     unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor
-    test = this.x * this.y + this.z * this.w;
+    test = self.x * self.y + self.z * self.w;
     if (test > 0.499 * unit /* Singularity at north pole */ ) {
-        heading = 2 * Math.atan2(this.x, this.w);
+        heading = 2 * Math.atan2(self.x, self.w);
         attitude = Math.PI / 2;
         bank = 0;
         return;
     } else if (test < -0.499 * unit /* Singularity at south pole */ ) {
-        heading = -2 * Math.atan2(this.x, this.w);
+        heading = -2 * Math.atan2(self.x, self.w);
         attitude = -Math.PI / 2;
         bank = 0;
         return;
     } else {
-        heading = Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, sqx - sqy - sqz + sqw);
+        heading = Math.atan2(2 * self.y * self.w - 2 * self.x * self.z, sqx - sqy - sqz + sqw);
         attitude = Math.asin(2 * test / unit);
-        bank = Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, -sqx + sqy - sqz + sqw);
+        bank = Math.atan2(2 * self.x * self.w - 2 * self.y * self.z, -sqx + sqy - sqz + sqw);
     }
 
     return {
@@ -92,7 +103,10 @@ Quaternion.prototype.toEuler = function() {
  *
  */
 Quaternion.prototype.roll = function() {
-    return Math.atan2(2 * this.y * this.w - 2 * this.x * this.z, 1 - 2 * this.y * this.y - 2 * this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(2 * self.y * self.w - 2 * self.x * self.z, 1 - 2 * self.y * self.y - 2 * self.z * self.z);
 };
 
 /**
@@ -100,7 +114,10 @@ Quaternion.prototype.roll = function() {
  *
  */
 Quaternion.prototype.pitch = function() {
-    return Math.atan2(2 * this.x * this.w - 2 * this.y * this.z, 1 - 2 * this.x * this.x - 2 * this.z * this.z);
+    'use strict';
+    var self = this;
+
+    return Math.atan2(2 * self.x * self.w - 2 * self.y * self.z, 1 - 2 * self.x * self.x - 2 * self.z * self.z);
 };
 
 /**
@@ -108,7 +125,10 @@ Quaternion.prototype.pitch = function() {
  *
  */
 Quaternion.prototype.yaw = function() {
-    return Math.asin(2 * this.x * this.y + 2 * this.z * this.w);
+    'use strict';
+    var self = this;
+
+    return Math.asin(2 * self.x * self.y + 2 * self.z * self.w);
 };
 
 /**
@@ -119,6 +139,7 @@ Quaternion.prototype.yaw = function() {
  *
  */
 Quaternion.invalid = function() {
+    'use strict';
     return new Quaternion({
         invalid: true
     });
@@ -130,8 +151,11 @@ Quaternion.invalid = function() {
  *
  */
 Quaternion.prototype.toString = function() {
-    if (!this.valid) {
+    'use strict';
+    var self = this;
+
+    if (!self.valid) {
         return '[Quaternion invalid]';
     }
-    return '[Quaternion x:' + this.x + ' y:' + this.y + ' z:' + this.z + ' w:' + this.w + ']';
+    return '[Quaternion x:' + self.x + ' y:' + self.y + ' z:' + self.z + ' w:' + self.w + ']';
 };

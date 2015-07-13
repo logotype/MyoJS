@@ -1,7 +1,7 @@
 var WebSocketServer = require('ws').Server,
     MyoJS = require('../src/Index.js'),
     assert = require('chai').assert;
-var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : 1423842951, "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
+var frameDump = '{ "frame" : { "id" : 43928, "timestamp" : "1423842951", "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
 var frameDumpDeviceInfo = '{ "frame" : { "deviceInfo" : { "connected" : true }}}';
 describe('BaseConnection', function(){
     describe('Constructor: Test with valid host and port', function(){
@@ -195,7 +195,7 @@ describe('BaseConnection', function(){
                 });
             });
             baseConnection = new MyoJS.BaseConnection();
-            baseConnection.on('connect', function(data) {
+            baseConnection.on('connect', function() {
                 clearTimeout(errTimeout);
                 assert.equal(didRequestDeviceInfo, true);
                 assert.equal(baseConnection.connected, true, 'socket connection');
@@ -260,7 +260,7 @@ describe('BaseConnection', function(){
                 assert(false, 'Event never fired');
                 done();
             }, 10);
-            baseConnection.on('deviceInfo', function(data) {
+            baseConnection.on('deviceInfo', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -273,7 +273,7 @@ describe('BaseConnection', function(){
                 assert(false, '"connect" event never fired');
                 done();
             }, 10);
-            baseConnection.on('connect', function(data) {
+            baseConnection.on('connect', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -287,7 +287,7 @@ describe('BaseConnection', function(){
                 assert(false, '"frame" event never fired');
                 done();
             }, 10);
-            baseConnection.on('frame', function(data) {
+            baseConnection.on('frame', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -301,7 +301,7 @@ describe('BaseConnection', function(){
                 assert(false, '"pose" event never fired');
                 done();
             }, 10);
-            baseConnection.on('pose', function(data) {
+            baseConnection.on('pose', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -315,7 +315,7 @@ describe('BaseConnection', function(){
                 assert(false, '"event" event never fired');
                 done();
             }, 10);
-            baseConnection.on('event', function(data) {
+            baseConnection.on('event', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -337,7 +337,6 @@ describe('BaseConnection', function(){
     });
     describe('#stopReconnection', function(){
         it('should clear reconnection timer', function(){
-            var output = '';
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.reconnectionTimer = setInterval(function() {}, 1000);
             baseConnection.stopReconnection();
@@ -372,7 +371,7 @@ describe('BaseConnection', function(){
                 assert(false, '"connect" event never fired');
                 done();
             }, 1000);
-            baseConnection.on('connect', function(data) {
+            baseConnection.on('connect', function() {
                 clearTimeout(errTimeout);
                 assert(true, baseConnection.connected);
                 assert(true, didRequestDeviceInfo);
@@ -403,7 +402,7 @@ describe('BaseConnection', function(){
                 assert(false, '"disconnect" event never fired');
                 done();
             }, 10);
-            baseConnection.on('disconnect', function(data) {
+            baseConnection.on('disconnect', function() {
                 clearTimeout(errTimeout);
                 assert(true);
                 done();
@@ -433,7 +432,7 @@ describe('BaseConnection', function(){
                 assert(true, '"disconnect" event never fired');
                 done();
             }, 10);
-            baseConnection.on('disconnect', function(data) {
+            baseConnection.on('disconnect', function() {
                 clearTimeout(errTimeout);
                 assert(false);
                 done();

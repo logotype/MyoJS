@@ -4,6 +4,7 @@ var Frame = require('../Frame'),
 
 var BaseConnection = module.exports = function(options) {
     'use strict';
+    var self = this;
 
     if (options) {
         if (typeof options !== 'object') {
@@ -17,27 +18,29 @@ var BaseConnection = module.exports = function(options) {
         }
     }
 
-    this.options = _.defaults(options || {}, {
+    self.options = _.defaults(options || {}, {
         host: '127.0.0.1',
         port: 6450
     });
 
-    this.host = this.options.host;
-    this.port = this.options.port;
-    this.connected = false;
+    self.host = self.options.host;
+    self.port = self.options.port;
+    self.connected = false;
 };
 
 BaseConnection.prototype.getUrl = function() {
     'use strict';
+    var self = this;
 
-    return 'ws://' + this.host + ':' + this.port + '/';
+    return 'ws://' + self.host + ':' + self.port + '/';
 };
 
 BaseConnection.prototype.handleOpen = function() {
     'use strict';
+    var self = this;
 
-    if (!this.connected) {
-        this.send({
+    if (!self.connected) {
+        self.send({
             'command': 'requestDeviceInfo'
         });
         return 'connecting';
@@ -48,10 +51,11 @@ BaseConnection.prototype.handleOpen = function() {
 
 BaseConnection.prototype.handleClose = function() {
     'use strict';
+    var self = this;
 
-    if (this.connected) {
-        this.disconnect();
-        this.startReconnection();
+    if (self.connected) {
+        self.disconnect();
+        self.startReconnection();
         return 'disconnecting';
     } else {
         return 'disconnected';
@@ -60,10 +64,10 @@ BaseConnection.prototype.handleClose = function() {
 
 BaseConnection.prototype.startReconnection = function() {
     'use strict';
-
-    var connection = this;
-    if (!this.reconnectionTimer) {
-        this.reconnectionTimer = setInterval(function() {
+    var self = this,
+        connection = this;
+    if (!self.reconnectionTimer) {
+        self.reconnectionTimer = setInterval(function() {
             connection.reconnect();
         }, 500);
         return 'reconnecting';
@@ -74,45 +78,48 @@ BaseConnection.prototype.startReconnection = function() {
 
 BaseConnection.prototype.stopReconnection = function() {
     'use strict';
+    var self = this;
 
-    this.reconnectionTimer = clearInterval(this.reconnectionTimer);
+    self.reconnectionTimer = clearInterval(self.reconnectionTimer);
 };
 
 // By default, disconnect will prevent auto-reconnection.
 // Pass in true to allow the reconnection loop not be interrupted continue
 BaseConnection.prototype.disconnect = function(allowReconnect) {
     'use strict';
+    var self = this;
 
     if (!allowReconnect) {
-        this.stopReconnection();
+        self.stopReconnection();
     }
-    if (!this.socket) {
+    if (!self.socket) {
         return;
     }
-    this.socket.close();
-    delete this.socket;
-    if (this.connected) {
-        this.connected = false;
-        this.emit('disconnect');
+    self.socket.close();
+    delete self.socket;
+    if (self.connected) {
+        self.connected = false;
+        self.emit('disconnect');
     }
     return true;
 };
 
 BaseConnection.prototype.reconnect = function() {
     'use strict';
+    var self = this;
 
-    if (this.connected) {
-        this.stopReconnection();
+    if (self.connected) {
+        self.stopReconnection();
     } else {
-        this.disconnect(true);
-        this.connect();
+        self.disconnect(true);
+        self.connect();
     }
 };
 
 BaseConnection.prototype.handleData = function(data) {
     'use strict';
-
-    var message, frameObject, frame, deviceInfo;
+    var self = this,
+        message, frameObject, frame, deviceInfo;
 
     if (!data) {
         throw new Error('No data received');
@@ -126,45 +133,46 @@ BaseConnection.prototype.handleData = function(data) {
     }
 
     // Wait for deviceInfo until connected
-    if (!this.connected && message.hasOwnProperty('frame')) {
+    if (!self.connected && message.hasOwnProperty('frame')) {
         frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
             deviceInfo = frame['deviceInfo'];
-            this.emit('deviceInfo', deviceInfo);
-            this.connected = true;
-            this.emit('connect');
+            self.emit('deviceInfo', deviceInfo);
+            self.connected = true;
+            self.emit('connect');
             return;
         }
     }
 
-    if (!this.connected) {
+    if (!self.connected) {
         return;
     }
 
     if (message.hasOwnProperty('frame')) {
         frameObject = new Frame(message.frame);
-        this.emit(frameObject.type, frameObject);
+        self.emit(frameObject.type, frameObject);
 
         // Emit pose if existing
         if (frameObject.pose) {
-            this.emit('pose', frameObject.pose);
+            self.emit('pose', frameObject.pose);
         }
 
         // Emit event if existing
         if (frameObject.event) {
-            this.emit('event', frameObject.event);
+            self.emit('event', frameObject.event);
         }
     }
 };
 
 BaseConnection.prototype.connect = function() {
     'use strict';
+    var self = this;
 
-    if (this.socket) {
+    if (self.socket) {
         return;
     }
 
-    this.emit('ready');
+    self.emit('ready');
 
     var inNode = (typeof(process) !== 'undefined' && process.versions && process.versions.node),
         connection = this,
@@ -172,21 +180,21 @@ BaseConnection.prototype.connect = function() {
 
     if (inNode) {
         ConnectionType = require('ws');
-        this.socket = new ConnectionType(this.getUrl());
+        self.socket = new ConnectionType(self.getUrl());
     } else {
-        this.socket = new WebSocket(this.getUrl());
+        self.socket = new WebSocket(self.getUrl());
     }
 
-    this.socket.onopen = function() {
+    self.socket.onopen = function() {
         connection.handleOpen();
     };
-    this.socket.onclose = function(data) {
+    self.socket.onclose = function(data) {
         connection.handleClose(data.code, data.reason);
     };
-    this.socket.onmessage = function(message) {
+    self.socket.onmessage = function(message) {
         connection.handleData(message.data);
     };
-    this.socket.onerror = function(data) {
+    self.socket.onerror = function(data) {
         connection.handleClose('connectError', data.data);
     };
 
@@ -195,11 +203,12 @@ BaseConnection.prototype.connect = function() {
 
 BaseConnection.prototype.send = function(data) {
     'use strict';
+    var self = this;
 
     if (typeof data !== 'object' || typeof data === 'string') {
         throw new Error('Parameter needs to be an object');
     }
-    this.socket.send(JSON.stringify(data));
+    self.socket.send(JSON.stringify(data));
 };
 
 _.extend(BaseConnection.prototype, EventEmitter.prototype);
