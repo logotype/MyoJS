@@ -1,6 +1,6 @@
 {
   "name": "myojs",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "JavaScript client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
@@ -13,22 +13,23 @@
     "ws": "latest"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "latest",
-    "mocha": "latest",
-    "chai": "latest",
     "browserify": "latest",
-    "uglify-js": "latest",
+    "chai": "latest",
+    "codeclimate-test-reporter": "latest",
     "grunt": "latest",
-    "grunt-browserify": "latest",
-    "grunt-contrib-uglify": "latest",
     "grunt-banner": "latest",
+    "grunt-browserify": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-exec": "latest",
     "grunt-jsbeautifier": "latest",
     "grunt-mocha-istanbul": "latest",
     "grunt-string-replace": "latest",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-watch": "latest",
     "load-grunt-tasks": "latest",
-    "grunt-exec": "latest"
+    "mocha": "latest",
+    "uglify-js": "latest"
   },
   "keywords": [
     "myo",

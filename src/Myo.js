@@ -5,35 +5,6 @@ var Myo = module.exports = function(context) {
     if (!context) {
         throw new Error('Missing context');
     }
-    /**
-     * A vibration lasting a small amount of time (VibrationLengthShort)
-     */
-    self.VIBRATION_SHORT = 0;
-
-    /**
-     * A vibration lasting a moderate amount of time (VibrationLengthMedium)
-     */
-    self.VIBRATION_MEDIUM = 1;
-
-    /**
-     * A vibration lasting a long amount of time (VibrationLengthLong)
-     */
-    self.VIBRATION_LONG = 2;
-
-    /**
-     * Unlock for a fixed period of time.
-     */
-    self.UNLOCK_TIMED = 0;
-
-    /**
-     * Unlock until explicitly told to re-lock.
-     */
-    self.UNLOCK_HOLD = 1;
-
-    /**
-     * User did a single, discrete action, such as pausing a video.
-     */
-    self.USER_ACTION_SINGLE = 0;
 
     /**
      * @private
@@ -41,6 +12,36 @@ var Myo = module.exports = function(context) {
      */
     self.context = context;
 };
+
+/**
+ * A vibration lasting a small amount of time (VibrationLengthShort)
+ */
+Myo.VIBRATION_SHORT = 0;
+
+/**
+ * A vibration lasting a moderate amount of time (VibrationLengthMedium)
+ */
+Myo.VIBRATION_MEDIUM = 1;
+
+/**
+ * A vibration lasting a long amount of time (VibrationLengthLong)
+ */
+Myo.VIBRATION_LONG = 2;
+
+/**
+ * Unlock for a fixed period of time.
+ */
+Myo.UNLOCK_TIMED = 0;
+
+/**
+ * Unlock until explicitly told to re-lock.
+ */
+Myo.UNLOCK_HOLD = 1;
+
+/**
+ * User did a single, discrete action, such as pausing a video.
+ */
+Myo.USER_ACTION_SINGLE = 0;
 
 /**
  * Request the RSSI of the Myo.
@@ -67,22 +68,22 @@ Myo.prototype.vibrate = function(length) {
     var self = this;
 
     switch (length) {
-        case self.VIBRATION_SHORT:
+        case Myo.VIBRATION_SHORT:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_SHORT]
+                'args': [Myo.VIBRATION_SHORT]
             });
             break;
-        case self.VIBRATION_MEDIUM:
+        case Myo.VIBRATION_MEDIUM:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_MEDIUM]
+                'args': [Myo.VIBRATION_MEDIUM]
             });
             break;
-        case self.VIBRATION_LONG:
+        case Myo.VIBRATION_LONG:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_LONG]
+                'args': [Myo.VIBRATION_LONG]
             });
             break;
         default:
@@ -100,16 +101,16 @@ Myo.prototype.unlock = function(option) {
     var self = this;
 
     switch (option) {
-        case self.UNLOCK_TIMED:
+        case Myo.UNLOCK_TIMED:
             self.context.send({
                 'command': 'unlock',
-                'args': [self.UNLOCK_TIMED]
+                'args': [Myo.UNLOCK_TIMED]
             });
             break;
-        case self.UNLOCK_HOLD:
+        case Myo.UNLOCK_HOLD:
             self.context.send({
                 'command': 'unlock',
-                'args': [self.UNLOCK_HOLD]
+                'args': [Myo.UNLOCK_HOLD]
             });
             break;
         default:
@@ -141,10 +142,10 @@ Myo.prototype.notifyUserAction = function(action) {
     var self = this;
 
     switch (action) {
-        case self.USER_ACTION_SINGLE:
+        case Myo.USER_ACTION_SINGLE:
             self.context.send({
                 'command': 'notifyUserAction',
-                'args': [self.USER_ACTION_SINGLE]
+                'args': [Myo.USER_ACTION_SINGLE]
             });
             break;
         default:

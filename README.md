@@ -20,17 +20,17 @@ Create an instance of the `Hub` class:
     var hub = new Myo.Hub();
 
     hub.on('ready', function() {
-        console.log("ready");
+        console.log('ready');
     });
     hub.on('connect', function() {
-        console.log("connected");
+        console.log('connected');
     });
     hub.on('frame', function(frame) {
         // Get the most recent frame and report some basic information
-    	console.log("Frame id: " + frame.id + ", timestamp: " + frame.timestamp);
+    	console.log('Frame id: ' + frame.id + ', timestamp: ' + frame.timestamp);
     });
     hub.on('disconnect', function() {
-        console.log("disconnect");
+        console.log('disconnect');
     });
 ```
 

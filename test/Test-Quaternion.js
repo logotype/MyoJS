@@ -65,4 +65,12 @@ describe('Quaternion', function(){
             assert.closeTo(quaternion.w, 32, 0.0001);
         });
     });
+    describe('#toString', function(){
+        it('should return a String describing Quaternion invalid', function(){
+            assert.equal(new MyoJS.Quaternion.invalid().toString(), '[Quaternion invalid]');
+        });
+        it('should return a String describing Quaternion x, y, z and w', function(){
+            assert.equal(new MyoJS.Quaternion([1, 2, 3, 4]).toString(), '[Quaternion x:1 y:2 z:3 w:4]');
+        });
+    });
 });

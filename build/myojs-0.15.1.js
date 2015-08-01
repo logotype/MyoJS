@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.15.0
+ * MyoJS v0.15.1
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -2261,11 +2261,12 @@ Hub.prototype.runOnce = function(durationMilliseconds) {
 _.extend(Hub.prototype, EventEmitter.prototype);
 
 },{"./CircularBuffer":5,"./Myo":9,"./connection/BaseConnection":14,"events":1,"underscore":3}],8:[function(require,module,exports){
+(function (global){
 /**
  * Myo is the global namespace of the Myo API.
  * @namespace Myo
  */
-Myo = module.exports = {
+var Myo = module.exports = {
     BaseConnection: require('./connection/BaseConnection'),
     Hub: require('./Hub'),
     Myo: require('./Myo'),
@@ -2277,6 +2278,13 @@ Myo = module.exports = {
     Version: require('./Version.js')
 };
 
+/**
+ * Browserify exports global to the window object.
+ * @namespace Myo
+ */
+global.Myo = Myo;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./CircularBuffer":5,"./Frame":6,"./Hub":7,"./Myo":9,"./Pose":10,"./Quaternion":11,"./Vector3":12,"./Version.js":13,"./connection/BaseConnection":14}],9:[function(require,module,exports){
 var Myo = module.exports = function(context) {
     'use strict';
@@ -2285,35 +2293,6 @@ var Myo = module.exports = function(context) {
     if (!context) {
         throw new Error('Missing context');
     }
-    /**
-     * A vibration lasting a small amount of time (VibrationLengthShort)
-     */
-    self.VIBRATION_SHORT = 0;
-
-    /**
-     * A vibration lasting a moderate amount of time (VibrationLengthMedium)
-     */
-    self.VIBRATION_MEDIUM = 1;
-
-    /**
-     * A vibration lasting a long amount of time (VibrationLengthLong)
-     */
-    self.VIBRATION_LONG = 2;
-
-    /**
-     * Unlock for a fixed period of time.
-     */
-    self.UNLOCK_TIMED = 0;
-
-    /**
-     * Unlock until explicitly told to re-lock.
-     */
-    self.UNLOCK_HOLD = 1;
-
-    /**
-     * User did a single, discrete action, such as pausing a video.
-     */
-    self.USER_ACTION_SINGLE = 0;
 
     /**
      * @private
@@ -2321,6 +2300,36 @@ var Myo = module.exports = function(context) {
      */
     self.context = context;
 };
+
+/**
+ * A vibration lasting a small amount of time (VibrationLengthShort)
+ */
+Myo.VIBRATION_SHORT = 0;
+
+/**
+ * A vibration lasting a moderate amount of time (VibrationLengthMedium)
+ */
+Myo.VIBRATION_MEDIUM = 1;
+
+/**
+ * A vibration lasting a long amount of time (VibrationLengthLong)
+ */
+Myo.VIBRATION_LONG = 2;
+
+/**
+ * Unlock for a fixed period of time.
+ */
+Myo.UNLOCK_TIMED = 0;
+
+/**
+ * Unlock until explicitly told to re-lock.
+ */
+Myo.UNLOCK_HOLD = 1;
+
+/**
+ * User did a single, discrete action, such as pausing a video.
+ */
+Myo.USER_ACTION_SINGLE = 0;
 
 /**
  * Request the RSSI of the Myo.
@@ -2347,22 +2356,22 @@ Myo.prototype.vibrate = function(length) {
     var self = this;
 
     switch (length) {
-        case self.VIBRATION_SHORT:
+        case Myo.VIBRATION_SHORT:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_SHORT]
+                'args': [Myo.VIBRATION_SHORT]
             });
             break;
-        case self.VIBRATION_MEDIUM:
+        case Myo.VIBRATION_MEDIUM:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_MEDIUM]
+                'args': [Myo.VIBRATION_MEDIUM]
             });
             break;
-        case self.VIBRATION_LONG:
+        case Myo.VIBRATION_LONG:
             self.context.send({
                 'command': 'vibrate',
-                'args': [self.VIBRATION_LONG]
+                'args': [Myo.VIBRATION_LONG]
             });
             break;
         default:
@@ -2380,16 +2389,16 @@ Myo.prototype.unlock = function(option) {
     var self = this;
 
     switch (option) {
-        case self.UNLOCK_TIMED:
+        case Myo.UNLOCK_TIMED:
             self.context.send({
                 'command': 'unlock',
-                'args': [self.UNLOCK_TIMED]
+                'args': [Myo.UNLOCK_TIMED]
             });
             break;
-        case self.UNLOCK_HOLD:
+        case Myo.UNLOCK_HOLD:
             self.context.send({
                 'command': 'unlock',
-                'args': [self.UNLOCK_HOLD]
+                'args': [Myo.UNLOCK_HOLD]
             });
             break;
         default:
@@ -2421,10 +2430,10 @@ Myo.prototype.notifyUserAction = function(action) {
     var self = this;
 
     switch (action) {
-        case self.USER_ACTION_SINGLE:
+        case Myo.USER_ACTION_SINGLE:
             self.context.send({
                 'command': 'notifyUserAction',
-                'args': [self.USER_ACTION_SINGLE]
+                'args': [Myo.USER_ACTION_SINGLE]
             });
             break;
         default:
@@ -2437,15 +2446,16 @@ var Pose = module.exports = function(data) {
     'use strict';
     var self = this;
 
+    if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+        throw new Error('Constructor parameter needs to be an object');
+    }
+
     /**
      * Indicates whether this is a valid Pose object.
      */
     self.valid = !data.hasOwnProperty('invalid');
 
     if (self.valid) {
-        if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
-            throw new Error('Constructor parameter needs to be an object');
-        }
         if (!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
             throw new Error('Pose type needs to be of type integer');
         }
@@ -2534,9 +2544,8 @@ Pose.prototype.toString = function() {
         case self.DOUBLE_TAP:
             return '[Pose type:' + self.type.toString() + ' DOUBLE_TAP]';
         default:
-            break;
+            return '[Pose type:' + self.type.toString() + ']';
     }
-    return '[Pose type:' + self.type.toString() + ']';
 };
 
 },{}],11:[function(require,module,exports){
@@ -3102,7 +3111,7 @@ Vector3.prototype.roll = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.zero = function() {
+Vector3.zero = function() {
     'use strict';
     return new Vector3([
         0,
@@ -3116,7 +3125,7 @@ Vector3.prototype.zero = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.xAxis = function() {
+Vector3.xAxis = function() {
     'use strict';
     return new Vector3([
         1,
@@ -3130,7 +3139,7 @@ Vector3.prototype.xAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.yAxis = function() {
+Vector3.yAxis = function() {
     'use strict';
     return new Vector3([
         0,
@@ -3144,7 +3153,7 @@ Vector3.prototype.yAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.zAxis = function() {
+Vector3.zAxis = function() {
     'use strict';
     return new Vector3([
         0,
@@ -3158,7 +3167,7 @@ Vector3.prototype.zAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.left = function() {
+Vector3.left = function() {
     'use strict';
     return new Vector3([-1,
         0,
@@ -3171,7 +3180,7 @@ Vector3.prototype.left = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.right = function() {
+Vector3.right = function() {
     'use strict';
     var self = this;
 
@@ -3183,7 +3192,7 @@ Vector3.prototype.right = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.down = function() {
+Vector3.down = function() {
     'use strict';
     return new Vector3([
         0, -1,
@@ -3196,7 +3205,7 @@ Vector3.prototype.down = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.up = function() {
+Vector3.up = function() {
     'use strict';
     var self = this;
 
@@ -3208,7 +3217,7 @@ Vector3.prototype.up = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.forward = function() {
+Vector3.forward = function() {
     'use strict';
     return new Vector3([
         0,
@@ -3221,7 +3230,7 @@ Vector3.prototype.forward = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.backward = function() {
+Vector3.backward = function() {
     'use strict';
     var self = this;
 
@@ -3261,10 +3270,10 @@ Vector3.prototype.toString = function() {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.15.0',
+    full: '0.15.1',
     major: 0,
-    minor: 15554444444444444444443,
-    dot: 0
+    minor: 15,
+    dot: 1
 };
 
 },{}],14:[function(require,module,exports){
@@ -3407,7 +3416,7 @@ BaseConnection.prototype.handleData = function(data) {
     if (!self.connected && message.hasOwnProperty('frame')) {
         frame = message.frame;
         if (frame.hasOwnProperty('deviceInfo')) {
-            deviceInfo = frame['deviceInfo'];
+            deviceInfo = frame.deviceInfo;
             self.emit('deviceInfo', deviceInfo);
             self.connected = true;
             self.emit('connect');

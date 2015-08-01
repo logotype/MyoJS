@@ -16,35 +16,59 @@ describe('Myo', function(){
         });
     });
     describe('#vibrate', function(){
-        it('should call context', function(){
-            var output = '';
-            var context = {};
-            context.send = function(message) { output = JSON.stringify(message) };
-            var myo = new MyoJS.Myo(context);
-            myo.vibrate(0);
-            assert.equal(output, '{"command":"vibrate","args":[0]}');
-        });
         it('should throw an error when passing incorrect value', function(){
             assert.throws(function() {
                 var myo = new MyoJS.Myo({});
                 myo.vibrate('incorrect');
             }, Error, 'Valid values are: Myo.VIBRATION_SHORT, Myo.VIBRATION_MEDIUM, Myo.VIBRATION_LONG');
         });
-    });
-    describe('#unlock', function(){
-        it('should call context', function(){
+        it('should call context with value Myo.VIBRATION_SHORT', function(){
             var output = '';
             var context = {};
             context.send = function(message) { output = JSON.stringify(message) };
             var myo = new MyoJS.Myo(context);
-            myo.unlock(0);
-            assert.equal(output, '{"command":"unlock","args":[0]}');
+            myo.vibrate(MyoJS.Myo.VIBRATION_SHORT);
+            assert.equal(output, '{"command":"vibrate","args":[0]}');
         });
+        it('should call context with value Myo.VIBRATION_MEDIUM', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var myo = new MyoJS.Myo(context);
+            myo.vibrate(MyoJS.Myo.VIBRATION_MEDIUM);
+            assert.equal(output, '{"command":"vibrate","args":[1]}');
+        });
+        it('should call context with value Myo.VIBRATION_LONG', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var myo = new MyoJS.Myo(context);
+            myo.vibrate(MyoJS.Myo.VIBRATION_LONG);
+            assert.equal(output, '{"command":"vibrate","args":[2]}');
+        });
+    });
+    describe('#unlock', function(){
         it('should throw an error when passing incorrect value', function(){
             assert.throws(function() {
                 var myo = new MyoJS.Myo({});
                 myo.unlock('incorrect');
             }, Error, 'Valid values are: Myo.UNLOCK_TIMED, Myo.UNLOCK_HOLD');
+        });
+        it('should call context with value Myo.UNLOCK_TIMED', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var myo = new MyoJS.Myo(context);
+            myo.unlock(MyoJS.Myo.UNLOCK_TIMED);
+            assert.equal(output, '{"command":"unlock","args":[0]}');
+        });
+        it('should call context with value Myo.UNLOCK_HOLD', function(){
+            var output = '';
+            var context = {};
+            context.send = function(message) { output = JSON.stringify(message) };
+            var myo = new MyoJS.Myo(context);
+            myo.unlock(MyoJS.Myo.UNLOCK_HOLD);
+            assert.equal(output, '{"command":"unlock","args":[1]}');
         });
     });
     describe('#lock', function(){

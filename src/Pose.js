@@ -2,15 +2,16 @@ var Pose = module.exports = function(data) {
     'use strict';
     var self = this;
 
+    if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
+        throw new Error('Constructor parameter needs to be an object');
+    }
+
     /**
      * Indicates whether this is a valid Pose object.
      */
     self.valid = !data.hasOwnProperty('invalid');
 
     if (self.valid) {
-        if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {
-            throw new Error('Constructor parameter needs to be an object');
-        }
         if (!data.hasOwnProperty('type') || data.type !== parseInt(data.type, 10)) {
             throw new Error('Pose type needs to be of type integer');
         }
@@ -99,7 +100,6 @@ Pose.prototype.toString = function() {
         case self.DOUBLE_TAP:
             return '[Pose type:' + self.type.toString() + ' DOUBLE_TAP]';
         default:
-            break;
+            return '[Pose type:' + self.type.toString() + ']';
     }
-    return '[Pose type:' + self.type.toString() + ']';
 };

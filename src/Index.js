@@ -2,7 +2,7 @@
  * Myo is the global namespace of the Myo API.
  * @namespace Myo
  */
-Myo = module.exports = {
+var Myo = module.exports = {
     BaseConnection: require('./connection/BaseConnection'),
     Hub: require('./Hub'),
     Myo: require('./Myo'),
@@ -13,3 +13,9 @@ Myo = module.exports = {
     Frame: require('./Frame'),
     Version: require('./Version.js')
 };
+
+/**
+ * Browserify exports global to the window object.
+ * @namespace Myo
+ */
+global.Myo = Myo;

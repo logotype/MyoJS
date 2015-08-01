@@ -397,7 +397,7 @@ Vector3.prototype.roll = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.zero = function() {
+Vector3.zero = function() {
     'use strict';
     return new Vector3([
         0,
@@ -411,7 +411,7 @@ Vector3.prototype.zero = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.xAxis = function() {
+Vector3.xAxis = function() {
     'use strict';
     return new Vector3([
         1,
@@ -425,7 +425,7 @@ Vector3.prototype.xAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.yAxis = function() {
+Vector3.yAxis = function() {
     'use strict';
     return new Vector3([
         0,
@@ -439,7 +439,7 @@ Vector3.prototype.yAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.zAxis = function() {
+Vector3.zAxis = function() {
     'use strict';
     return new Vector3([
         0,
@@ -453,7 +453,7 @@ Vector3.prototype.zAxis = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.left = function() {
+Vector3.left = function() {
     'use strict';
     return new Vector3([-1,
         0,
@@ -466,7 +466,7 @@ Vector3.prototype.left = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.right = function() {
+Vector3.right = function() {
     'use strict';
     var self = this;
 
@@ -478,7 +478,7 @@ Vector3.prototype.right = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.down = function() {
+Vector3.down = function() {
     'use strict';
     return new Vector3([
         0, -1,
@@ -491,7 +491,7 @@ Vector3.prototype.down = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.up = function() {
+Vector3.up = function() {
     'use strict';
     var self = this;
 
@@ -503,7 +503,7 @@ Vector3.prototype.up = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.forward = function() {
+Vector3.forward = function() {
     'use strict';
     return new Vector3([
         0,
@@ -516,7 +516,7 @@ Vector3.prototype.forward = function() {
  * @return {Vector3}
  *
  */
-Vector3.prototype.backward = function() {
+Vector3.backward = function() {
     'use strict';
     var self = this;
 

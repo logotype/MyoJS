@@ -189,4 +189,92 @@ describe('Vector3', function(){
             assert.closeTo(new MyoJS.Vector3([42, 77, 29]).roll(), 2.642245931909663, 0.0001);
         });
     });
+    describe('#zero', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.zero();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#xAxis', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.xAxis();
+            assert.closeTo(vec1.x, 1.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#yAxis', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.yAxis();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 1.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#zAxis', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.zAxis();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 1.0, 0.0001);
+        });
+    });
+    describe('#left', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.left();
+            assert.closeTo(vec1.x, -1.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#right', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.right();
+            assert.closeTo(vec1.x, 1.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#down', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.down();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, -1.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#up', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.up();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 1.0, 0.0001);
+            assert.closeTo(vec1.z, 0.0, 0.0001);
+        });
+    });
+    describe('#forward', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.forward();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, -1.0, 0.0001);
+        });
+    });
+    describe('#backward', function(){
+        it('should return the correct vector', function(){
+            var vec1 = MyoJS.Vector3.backward();
+            assert.closeTo(vec1.x, 0.0, 0.0001);
+            assert.closeTo(vec1.y, 0.0, 0.0001);
+            assert.closeTo(vec1.z, 1.0, 0.0001);
+        });
+    });
+    describe('#toString', function(){
+        it('should return a String describing Vector3 invalid', function(){
+            assert.equal(MyoJS.Vector3.invalid().toString(), '[Vector3 invalid]');
+        });
+        it('should return a String describing Vector3 x, y and z', function(){
+            assert.equal(new MyoJS.Vector3([42, 77, 29]).toString(), '[Vector3 x:42 y:77 z:29]');
+        });
+    });
 });
