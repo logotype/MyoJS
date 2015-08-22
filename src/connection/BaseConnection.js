@@ -110,9 +110,11 @@ BaseConnection.prototype.reconnect = function() {
 
     if (self.connected) {
         self.stopReconnection();
+        return 'stopReconnection';
     } else {
         self.disconnect(true);
         self.connect();
+        return 'connect';
     }
 };
 
@@ -169,7 +171,7 @@ BaseConnection.prototype.connect = function() {
     var self = this;
 
     if (self.socket) {
-        return;
+        return 'socket already created';
     }
 
     self.emit('ready');

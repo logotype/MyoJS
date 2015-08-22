@@ -10,11 +10,8 @@ module.exports = function(grunt){
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        'jshint': {
-            options: {
-                jshintrc: true
-            },
-            src: ['src/**/*.js']
+        'eslint': {
+            target: ['src/**/*.js']
         },
         'jsbeautifier' : {
             files : ['src/**/*.js'],
@@ -123,7 +120,7 @@ module.exports = function(grunt){
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', [
-        'jshint',
+        'eslint',
         'string-replace',
         'clean',
         'browserify',

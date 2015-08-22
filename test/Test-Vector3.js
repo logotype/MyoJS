@@ -5,10 +5,10 @@ describe('Vector3', function(){
     describe('Constructor validation', function(){
         it('should return a Vector3 object with correct components', function(){
             var vec = new MyoJS.Vector3([1, 2, 3]);
-            assert.equal(vec.x, 1);
-            assert.equal(vec.y, 2);
-            assert.equal(vec.z, 3);
-            assert.equal(vec instanceof MyoJS.Vector3, true);
+            assert.strictEqual(vec.x, 1);
+            assert.strictEqual(vec.y, 2);
+            assert.strictEqual(vec.z, 3);
+            assert.strictEqual(vec instanceof MyoJS.Vector3, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
@@ -34,66 +34,66 @@ describe('Vector3', function(){
     describe('#opposite', function(){
         it('should return a Vector3 object with all components negated', function(){
             var vec1 = new MyoJS.Vector3([1, 2, 3]).opposite();
-            assert.equal(-1, vec1.x);
-            assert.equal(-2, vec1.y);
-            assert.equal(-3, vec1.z);
+            assert.strictEqual(-1, vec1.x);
+            assert.strictEqual(-2, vec1.y);
+            assert.strictEqual(-3, vec1.z);
         });
     });
     describe('#plus', function(){
         it('should add vectors component-wise', function(){
             var vec1 = new MyoJS.Vector3([1, 2, 3]).plus(new MyoJS.Vector3([4, 5, 6]));
-            assert.equal(vec1.x, 5);
-            assert.equal(vec1.y, 7);
-            assert.equal(vec1.z, 9);
+            assert.strictEqual(vec1.x, 5);
+            assert.strictEqual(vec1.y, 7);
+            assert.strictEqual(vec1.z, 9);
         });
     });
     describe('#plusAssign', function(){
         it('should add vectors component-wise and assign the value', function(){
             var vec1 = new MyoJS.Vector3([1, 2, 3]);
             vec1.plusAssign(new MyoJS.Vector3([4, 5, 6]));
-            assert.equal(vec1.x, 5);
-            assert.equal(vec1.y, 7);
-            assert.equal(vec1.z, 9);
+            assert.strictEqual(vec1.x, 5);
+            assert.strictEqual(vec1.y, 7);
+            assert.strictEqual(vec1.z, 9);
         });
     });
     describe('#minus', function(){
         it('should return a copy of this vector pointing in the opposite direction', function(){
             var vec1 = new MyoJS.Vector3([4, 5, 6]).minus(new MyoJS.Vector3([1, 2, 3]));
-            assert.equal(vec1.x, 3);
-            assert.equal(vec1.y, 3);
-            assert.equal(vec1.z, 3);
+            assert.strictEqual(vec1.x, 3);
+            assert.strictEqual(vec1.y, 3);
+            assert.strictEqual(vec1.z, 3);
         });
     });
     describe('#minusAssign', function(){
         it('should return a copy of this vector pointing in the opposite direction and assign the value', function(){
             var vec1 = new MyoJS.Vector3([4, 5, 6]).minusAssign(new MyoJS.Vector3([1, 2, 3]));
-            assert.equal(vec1.x, 3);
-            assert.equal(vec1.y, 3);
-            assert.equal(vec1.z, 3);
+            assert.strictEqual(vec1.x, 3);
+            assert.strictEqual(vec1.y, 3);
+            assert.strictEqual(vec1.z, 3);
         });
     });
     describe('#multiply', function(){
         it('should multiply a vector by a scalar', function(){
             var vec1 = new MyoJS.Vector3([5, 10, 15]).multiply(5);
-            assert.equal(vec1.x, 25);
-            assert.equal(vec1.y, 50);
-            assert.equal(vec1.z, 75);
+            assert.strictEqual(vec1.x, 25);
+            assert.strictEqual(vec1.y, 50);
+            assert.strictEqual(vec1.z, 75);
         });
     });
     describe('#multiplyAssign', function(){
         it('should multiply a vector by a scalar and assign the quotient', function(){
             var vec1 = new MyoJS.Vector3([5, 10, 15]).multiplyAssign(5);
-            assert.equal(vec1.x, 25);
-            assert.equal(vec1.y, 50);
-            assert.equal(vec1.z, 75);
+            assert.strictEqual(vec1.x, 25);
+            assert.strictEqual(vec1.y, 50);
+            assert.strictEqual(vec1.z, 75);
         });
     });
     describe('#divide', function(){
         it('should divide a vector by a scalar', function(){
             var vec1 = new MyoJS.Vector3([5, 10, 15]).divide(3);
-            assert.equal(vec1.x, 1.6666666666666667);
-            assert.equal(vec1.y, 3.3333333333333333);
-            assert.equal(vec1.z, 5);
+            assert.strictEqual(vec1.x, 1.6666666666666667);
+            assert.strictEqual(vec1.y, 3.3333333333333333);
+            assert.strictEqual(vec1.z, 5);
         });
     });
     describe('#divideAssign', function(){
@@ -106,10 +106,10 @@ describe('Vector3', function(){
     });
     describe('#isEqual', function(){
         it('should be equal', function(){
-            assert.equal(new MyoJS.Vector3([1, 2, 3]).isEqualTo(new MyoJS.Vector3([1, 2, 3])), true);
+            assert.strictEqual(new MyoJS.Vector3([1, 2, 3]).isEqualTo(new MyoJS.Vector3([1, 2, 3])), true);
         });
         it('should not be equal', function(){
-            assert.equal(new MyoJS.Vector3([1, 2, 3]).isEqualTo(new MyoJS.Vector3([4, 5, 6])), false);
+            assert.strictEqual(new MyoJS.Vector3([1, 2, 3]).isEqualTo(new MyoJS.Vector3([4, 5, 6])), false);
         });
     });
     describe('#angleTo', function(){
@@ -117,7 +117,7 @@ describe('Vector3', function(){
             assert.closeTo(new MyoJS.Vector3([1, 2, 3]).angleTo(new MyoJS.Vector3([4, 5, 6])), 0.2257261285527342, 0.0001);
         });
         it('should return 0 when the denominator is less or equal to 0', function(){
-            assert.equal(new MyoJS.Vector3([-1, -1, -1]).angleTo(new MyoJS.Vector3([0, 0, 0])), 0);
+            assert.strictEqual(new MyoJS.Vector3([-1, -1, -1]).angleTo(new MyoJS.Vector3([0, 0, 0])), 0);
         });
     });
     describe('#distanceTo', function(){
@@ -128,18 +128,18 @@ describe('Vector3', function(){
     describe('#cross', function(){
         it('should return cross product of this vector and the specified vector', function(){
             var vec1 = new MyoJS.Vector3([2, 14, 32]).cross(new MyoJS.Vector3([46, 11, 98]));
-            assert.equal(vec1.x, 1020);
-            assert.equal(vec1.y, 1276);
-            assert.equal(vec1.z, -622);
+            assert.strictEqual(vec1.x, 1020);
+            assert.strictEqual(vec1.y, 1276);
+            assert.strictEqual(vec1.z, -622);
         });
     });
     describe('#dot', function(){
         it('should return the dot product of this vector with another vector', function(){
-            assert.equal(new MyoJS.Vector3([34, 17, 84]).dot(new MyoJS.Vector3([56, 41, 28])), 4953);
+            assert.strictEqual(new MyoJS.Vector3([34, 17, 84]).dot(new MyoJS.Vector3([56, 41, 28])), 4953);
         });
     });
     describe('#isValid', function(){
-        it('should be valid', function(){ assert.equal(new MyoJS.Vector3([1, 2, 3]).isValid(), true) });
+        it('should be valid', function(){ assert.strictEqual(new MyoJS.Vector3([1, 2, 3]).isValid(), true) });
         assert.throws(function() {
             new MyoJS.Vector3(['a', 'b', 'c']);
         }, Error, 'Component values needs to be integers or numbers');
@@ -149,7 +149,7 @@ describe('Vector3', function(){
         assert.throws(function() {
             new MyoJS.Vector3({});
         }, Error, 'Components needs to be an array');
-        it('should not be valid', function(){ assert.equal(new MyoJS.Vector3({invalid:true}).isValid(), false) });
+        it('should not be valid', function(){ assert.strictEqual(new MyoJS.Vector3({invalid:true}).isValid(), false) });
     });
     describe('#magnitude', function(){
         it('should return the magnitude, or length, of this vector', function(){
@@ -169,9 +169,9 @@ describe('Vector3', function(){
             assert.closeTo(vec1.z, 0.3139219466, 0.0001);
         });
         it('should return a zero vector when the denominator is less or equal to 0', function(){
-            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().x, 0);
-            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().y, 0);
-            assert.equal(new MyoJS.Vector3([0, 0, 0]).normalized().z, 0);
+            assert.strictEqual(new MyoJS.Vector3([0, 0, 0]).normalized().x, 0);
+            assert.strictEqual(new MyoJS.Vector3([0, 0, 0]).normalized().y, 0);
+            assert.strictEqual(new MyoJS.Vector3([0, 0, 0]).normalized().z, 0);
         });
     });
     describe('#pitch', function(){
@@ -271,10 +271,10 @@ describe('Vector3', function(){
     });
     describe('#toString', function(){
         it('should return a String describing Vector3 invalid', function(){
-            assert.equal(MyoJS.Vector3.invalid().toString(), '[Vector3 invalid]');
+            assert.strictEqual(MyoJS.Vector3.invalid().toString(), '[Vector3 invalid]');
         });
         it('should return a String describing Vector3 x, y and z', function(){
-            assert.equal(new MyoJS.Vector3([42, 77, 29]).toString(), '[Vector3 x:42 y:77 z:29]');
+            assert.strictEqual(new MyoJS.Vector3([42, 77, 29]).toString(), '[Vector3 x:42 y:77 z:29]');
         });
     });
 });

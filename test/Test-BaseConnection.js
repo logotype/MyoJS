@@ -14,8 +14,8 @@ describe('BaseConnection', function(){
             done();
         });
         it('should return a Myo object', function(done){
-            assert.equal(baseConnection.host, '127.0.0.1');
-            assert.equal(baseConnection.port, 6450);
+            assert.strictEqual(baseConnection.host, '127.0.0.1');
+            assert.strictEqual(baseConnection.port, 6450);
             done();
         });
     });
@@ -123,7 +123,7 @@ describe('BaseConnection', function(){
             done();
         });
         it('should return the correct url', function(done){
-            assert.equal(baseConnection.getUrl(), 'ws://127.0.0.1:6450/');
+            assert.strictEqual(baseConnection.getUrl(), 'ws://127.0.0.1:6450/');
             done();
         });
     });
@@ -143,7 +143,7 @@ describe('BaseConnection', function(){
         it('should call context to requestDeviceInfo', function(done){
             var didRequestDeviceInfo = false;
             var errTimeout = setTimeout(function () {
-                assert(false, '"requestDeviceInfo" never sent');
+                assert.strictEqual(false, '"requestDeviceInfo" never sent');
                 baseConnection = null;
                 done();
             }, 1000);
@@ -154,14 +154,17 @@ describe('BaseConnection', function(){
                         if(data.command === 'requestDeviceInfo') {
                             didRequestDeviceInfo = true;
                             clearTimeout(errTimeout);
-                            assert(true, baseConnection.connected);
-                            assert(true, didRequestDeviceInfo);
+                            assert.strictEqual(true, didRequestDeviceInfo);
                             done();
                         }
                     }
                 });
             });
             baseConnection.connect();
+        });
+        it('should return string "connected"', function(){
+            baseConnection.connected = true;
+            assert.strictEqual('connected', baseConnection.handleOpen());
         });
     });
     describe('#handleClose: when connected', function(){
@@ -179,7 +182,7 @@ describe('BaseConnection', function(){
         it('should return "disconnecting"', function(done){
             var didRequestDeviceInfo = false;
             var errTimeout = setTimeout(function () {
-                assert(false, 'failed to connect or receive data');
+                assert.strictEqual(false, 'failed to connect or receive data');
                 baseConnection = null;
                 done();
             }, 1000);
@@ -197,9 +200,9 @@ describe('BaseConnection', function(){
             baseConnection = new MyoJS.BaseConnection();
             baseConnection.on('connect', function() {
                 clearTimeout(errTimeout);
-                assert.equal(didRequestDeviceInfo, true);
-                assert.equal(baseConnection.connected, true, 'socket connection');
-                assert.equal('disconnecting', baseConnection.handleClose());
+                assert.strictEqual(didRequestDeviceInfo, true);
+                assert.strictEqual(baseConnection.connected, true, 'socket connection');
+                assert.strictEqual('disconnecting', baseConnection.handleClose());
                 done();
             });
             baseConnection.connect();
@@ -221,7 +224,7 @@ describe('BaseConnection', function(){
         it('should return "disconnecting" if connected', function(done){
             var didRequestDeviceInfo = false;
             var errTimeout = setTimeout(function () {
-                assert(false, 'failed to connect or receive data');
+                assert.strictEqual(false, 'failed to connect or receive data');
                 baseConnection = null;
                 done();
             }, 1000);
@@ -232,13 +235,25 @@ describe('BaseConnection', function(){
                         if(data.command === 'requestDeviceInfo') {
                             didRequestDeviceInfo = true;
                             clearTimeout(errTimeout);
-                            assert.equal(baseConnection.handleClose(), 'disconnected');
+                            assert.strictEqual(baseConnection.handleClose(), 'disconnected');
                             done();
                         }
                     }
                 });
             });
             baseConnection.connect();
+        });
+    });
+    describe('#reconnect', function(){
+        it('should return "stopReconnection" when connected', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.connected = true;
+            assert.strictEqual(baseConnection.reconnect(), 'stopReconnection');
+        });
+        it('should return "connect" if not connected', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.connected = false;
+            assert.strictEqual(baseConnection.reconnect(), 'connect');
         });
     });
     describe('#handleData', function(){
@@ -255,69 +270,79 @@ describe('BaseConnection', function(){
             }, Error, 'Invalid JSON');
         });
         it('should emit a deviceInfo event', function(done){
+            var didEmitDeviceInfo = false;
             var baseConnection = new MyoJS.BaseConnection();
             var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
+                assert.strictEqual(false, 'Event never fired');
                 done();
             }, 10);
             baseConnection.on('deviceInfo', function() {
+                didEmitDeviceInfo = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitDeviceInfo);
                 done();
             });
             baseConnection.handleData(frameDumpDeviceInfo);
         });
         it('should emit a "connect" event', function(done){
+            var didEmitConnect = false;
             var baseConnection = new MyoJS.BaseConnection();
             var errTimeout = setTimeout(function () {
-                assert(false, '"connect" event never fired');
+                assert.strictEqual(false, '"connect" event never fired');
                 done();
             }, 10);
             baseConnection.on('connect', function() {
+                didEmitConnect = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitConnect);
                 done();
             });
             baseConnection.handleData(frameDumpDeviceInfo);
         });
         it('should emit a "frame" event', function(done){
+            var didEmitFrame = false;
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.connected = true;
             var errTimeout = setTimeout(function () {
-                assert(false, '"frame" event never fired');
+                assert.strictEqual(false, '"frame" event never fired');
                 done();
             }, 10);
             baseConnection.on('frame', function() {
+                didEmitFrame = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitFrame);
                 done();
             });
             baseConnection.handleData(frameDump);
         });
         it('should emit a "pose" event', function(done){
+            var didEmitPose = false;
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.connected = true;
             var errTimeout = setTimeout(function () {
-                assert(false, '"pose" event never fired');
+                assert.strictEqual(false, '"pose" event never fired');
                 done();
             }, 10);
             baseConnection.on('pose', function() {
+                didEmitPose = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitPose);
                 done();
             });
             baseConnection.handleData(frameDump);
         });
         it('should emit a "event" event', function(done){
+            var didEmitEvent = false;
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.connected = true;
             var errTimeout = setTimeout(function () {
-                assert(false, '"event" event never fired');
+                assert.strictEqual(false, '"event" event never fired');
                 done();
             }, 10);
             baseConnection.on('event', function() {
+                didEmitEvent = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitEvent);
                 done();
             });
             baseConnection.handleData(frameDump);
@@ -327,12 +352,12 @@ describe('BaseConnection', function(){
         it('should return "reconnecting" if no reconnectionTimer', function(){
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.reconnectionTimer = null;
-            assert.equal(baseConnection.startReconnection(), 'reconnecting');
+            assert.strictEqual(baseConnection.startReconnection(), 'reconnecting');
         });
         it('should return "already reconnecting" if having reconnectionTimer', function(){
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.reconnectionTimer = 1234;
-            assert.equal(baseConnection.startReconnection(), 'already reconnecting');
+            assert.strictEqual(baseConnection.startReconnection(), 'already reconnecting');
         });
     });
     describe('#stopReconnection', function(){
@@ -340,7 +365,7 @@ describe('BaseConnection', function(){
             var baseConnection = new MyoJS.BaseConnection();
             baseConnection.reconnectionTimer = setInterval(function() {}, 1000);
             baseConnection.stopReconnection();
-            assert.equal(baseConnection.reconnectionTimer, null);
+            assert.isUndefined(baseConnection.reconnectionTimer);
         });
     });
     describe('#connect', function(){
@@ -352,6 +377,11 @@ describe('BaseConnection', function(){
             wss.close();
             wss = null;
             done();
+        });
+        it('should return "socket already created" when already created socket', function(){
+            var baseConnection = new MyoJS.BaseConnection();
+            baseConnection.socket = {};
+            assert.strictEqual(baseConnection.connect(), 'socket already created');
         });
         it('should emit a "connect" event', function(done){
             var didRequestDeviceInfo = false;
@@ -368,19 +398,20 @@ describe('BaseConnection', function(){
             });
             var baseConnection = new MyoJS.BaseConnection();
             var errTimeout = setTimeout(function () {
-                assert(false, '"connect" event never fired');
+                assert.strictEqual(false, '"connect" event never fired');
                 done();
             }, 1000);
             baseConnection.on('connect', function() {
                 clearTimeout(errTimeout);
-                assert(true, baseConnection.connected);
-                assert(true, didRequestDeviceInfo);
+                assert.strictEqual(true, baseConnection.connected);
+                assert.strictEqual(true, didRequestDeviceInfo);
                 done();
             });
             baseConnection.connect();
         });
     });
     describe('#disconnect (connected)', function(){
+        var didEmitDisconnect = false;
         var baseConnection;
         var didCloseSocket;
         before(function() {
@@ -399,19 +430,21 @@ describe('BaseConnection', function(){
             didCloseSocket = false;
             baseConnection.connected = true;
             var errTimeout = setTimeout(function () {
-                assert(false, '"disconnect" event never fired');
+                assert.strictEqual(false, '"disconnect" event never fired');
                 done();
             }, 10);
             baseConnection.on('disconnect', function() {
+                didEmitDisconnect = true;
                 clearTimeout(errTimeout);
-                assert(true);
+                assert.strictEqual(true, didEmitDisconnect);
                 done();
             });
             baseConnection.disconnect();
-            assert.equal(true, didCloseSocket);
+            assert.strictEqual(true, didCloseSocket);
         });
     });
     describe('#disconnect (disconnected)', function(){
+        var didEmitDisconnect = false;
         var baseConnection;
         var didCloseSocket;
         before(function() {
@@ -429,16 +462,17 @@ describe('BaseConnection', function(){
         it('should not emit a "disconnect" event if disconnected', function(done){
             didCloseSocket = false;
             var errTimeout = setTimeout(function () {
-                assert(true, '"disconnect" event never fired');
+                assert.strictEqual(false, didEmitDisconnect);
                 done();
             }, 10);
             baseConnection.on('disconnect', function() {
+                didEmitDisconnect = true;
                 clearTimeout(errTimeout);
-                assert(false);
+                assert.strictEqual(true, didEmitDisconnect);
                 done();
             });
             baseConnection.disconnect();
-            assert.equal(true, didCloseSocket);
+            assert.strictEqual(true, didCloseSocket);
         });
     });
     describe('#disconnect (stopReconnection)', function(){
@@ -463,8 +497,8 @@ describe('BaseConnection', function(){
                 didStopReconnection = true;
             };
             baseConnection.disconnect(false);
-            assert.equal(baseConnection.reconnectionTimer, null);
-            assert.equal(true, didStopReconnection);
+            assert.isUndefined(baseConnection.reconnectionTimer);
+            assert.strictEqual(true, didStopReconnection);
             done();
         });
     });

@@ -1,6 +1,6 @@
 {
   "name": "myojs",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "description": "JavaScript client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
@@ -20,9 +20,9 @@
     "grunt-banner": "latest",
     "grunt-browserify": "latest",
     "grunt-contrib-clean": "latest",
-    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
+    "grunt-eslint": "^17.1.0",
     "grunt-exec": "latest",
     "grunt-jsbeautifier": "latest",
     "grunt-mocha-istanbul": "latest",

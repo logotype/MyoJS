@@ -1,5 +1,5 @@
 /*! 
- * MyoJS v0.15.1
+ * MyoJS v0.15.2
  * https://github.com/logotype/myojs.git
  * 
  * Copyright 2015 Victor Norgren
@@ -3270,10 +3270,10 @@ Vector3.prototype.toString = function() {
 },{}],13:[function(require,module,exports){
 // This file is automatically updated from package.json by grunt.
 module.exports = {
-    full: '0.15.1',
+    full: '0.15.2',
     major: 0,
-    minor: 15,
-    dot: 1
+    minor: 155555,
+    dot: 2
 };
 
 },{}],14:[function(require,module,exports){
@@ -3390,9 +3390,11 @@ BaseConnection.prototype.reconnect = function() {
 
     if (self.connected) {
         self.stopReconnection();
+        return 'stopReconnection';
     } else {
         self.disconnect(true);
         self.connect();
+        return 'connect';
     }
 };
 
@@ -3449,7 +3451,7 @@ BaseConnection.prototype.connect = function() {
     var self = this;
 
     if (self.socket) {
-        return;
+        return 'socket already created';
     }
 
     self.emit('ready');

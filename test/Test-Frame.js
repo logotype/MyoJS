@@ -33,61 +33,61 @@ describe('Frame', function(){
     });
     describe('End to End', function(){
         var frame = new MyoJS.Frame(JSON.parse(frameDump).frame);
-        it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-        it('should have id', function(){ assert.equal(frame.id, 43928, 'id found') });
-        it('should have timestamp', function(){ assert.equal(frame.timestamp, 1423842951, 'timestamp found') });
-        it('should have rssi', function(){ assert.equal(frame.rssi, 53, 'rssi found') });
-        it('should make a valid frame type', function(){ assert.equal(frame.type, 'frame', 'frame type is matching') });
-        it('should make a onConnect event', function(){ assert.equal(frame.event.type, 'onConnect', 'event type is matching') });
+        it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+        it('should have id', function(){ assert.strictEqual(frame.id, 43928, 'id found') });
+        it('should have timestamp', function(){ assert.strictEqual(frame.timestamp, '1423842951', 'timestamp found') });
+        it('should have rssi', function(){ assert.strictEqual(frame.rssi, 53, 'rssi found') });
+        it('should make a valid frame type', function(){ assert.strictEqual(frame.type, 'frame', 'frame type is matching') });
+        it('should make a onConnect event', function(){ assert.strictEqual(frame.event.type, 'onConnect', 'event type is matching') });
         describe('frame.euler', function() {
-            it('should have euler roll', function(){ assert.equal(frame.euler.roll, 1.34422, 'roll is matching') });
-            it('should have euler pitch', function(){ assert.equal(frame.euler.pitch, -1.428455, 'pitch is matching') });
-            it('should have euler yaw', function(){ assert.equal(frame.euler.yaw, 2.271631, 'yaw is matching') });
+            it('should have euler roll', function(){ assert.strictEqual(frame.euler.roll, 1.34422, 'roll is matching') });
+            it('should have euler pitch', function(){ assert.strictEqual(frame.euler.pitch, -1.428455, 'pitch is matching') });
+            it('should have euler yaw', function(){ assert.strictEqual(frame.euler.yaw, 2.271631, 'yaw is matching') });
         });
         describe('frame.accel (Vector3)', function() {
-            it('should make a instance of Vector3', function(){ assert.equal(frame.accel instanceof MyoJS.Vector3, true) });
-            it('should make a valid Vector3', function(){ assert.equal(frame.accel.valid, true) });
-            it('should have x', function(){ assert.equal(frame.accel.x, 0.04736328, 'x is matching') });
-            it('should have y', function(){ assert.equal(frame.accel.y, -0.7241211, 'y is matching') });
-            it('should have z', function(){ assert.equal(frame.accel.z, 0.6367188, 'z is matching') });
+            it('should make a instance of Vector3', function(){ assert.strictEqual(frame.accel instanceof MyoJS.Vector3, true) });
+            it('should make a valid Vector3', function(){ assert.strictEqual(frame.accel.valid, true) });
+            it('should have x', function(){ assert.strictEqual(frame.accel.x, 0.04736328, 'x is matching') });
+            it('should have y', function(){ assert.strictEqual(frame.accel.y, -0.7241211, 'y is matching') });
+            it('should have z', function(){ assert.strictEqual(frame.accel.z, 0.6367188, 'z is matching') });
         });
         describe('frame.gyro (Vector3)', function() {
-            it('should make a instance of Vector3', function(){ assert.equal(frame.gyro instanceof MyoJS.Vector3, true) });
-            it('should make a valid Vector3', function(){ assert.equal(frame.gyro.valid, true) });
-            it('should have x', function(){ assert.equal(frame.gyro.x, 2.868652, 'x is matching') });
-            it('should have y', function(){ assert.equal(frame.gyro.y, -2.868652, 'y is matching') });
-            it('should have z', function(){ assert.equal(frame.gyro.z, 2.563476, 'z is matching') });
+            it('should make a instance of Vector3', function(){ assert.strictEqual(frame.gyro instanceof MyoJS.Vector3, true) });
+            it('should make a valid Vector3', function(){ assert.strictEqual(frame.gyro.valid, true) });
+            it('should have x', function(){ assert.strictEqual(frame.gyro.x, 2.868652, 'x is matching') });
+            it('should have y', function(){ assert.strictEqual(frame.gyro.y, -2.868652, 'y is matching') });
+            it('should have z', function(){ assert.strictEqual(frame.gyro.z, 2.563476, 'z is matching') });
         });
         describe('frame.emg', function() {
-            it('should have matching EMG sensor 1 data', function(){ assert.equal(frame.emg[0], -6) });
-            it('should have matching EMG sensor 2 data', function(){ assert.equal(frame.emg[1], 0) });
-            it('should have matching EMG sensor 3 data', function(){ assert.equal(frame.emg[2], -1) });
-            it('should have matching EMG sensor 4 data', function(){ assert.equal(frame.emg[3], 0) });
-            it('should have matching EMG sensor 5 data', function(){ assert.equal(frame.emg[4], 40) });
-            it('should have matching EMG sensor 6 data', function(){ assert.equal(frame.emg[5], 1) });
-            it('should have matching EMG sensor 7 data', function(){ assert.equal(frame.emg[6], 2) });
-            it('should have matching EMG sensor 8 data', function(){ assert.equal(frame.emg[7], -2) });
+            it('should have matching EMG sensor 1 data', function(){ assert.strictEqual(frame.emg[0], -6) });
+            it('should have matching EMG sensor 2 data', function(){ assert.strictEqual(frame.emg[1], 0) });
+            it('should have matching EMG sensor 3 data', function(){ assert.strictEqual(frame.emg[2], -1) });
+            it('should have matching EMG sensor 4 data', function(){ assert.strictEqual(frame.emg[3], 0) });
+            it('should have matching EMG sensor 5 data', function(){ assert.strictEqual(frame.emg[4], 40) });
+            it('should have matching EMG sensor 6 data', function(){ assert.strictEqual(frame.emg[5], 1) });
+            it('should have matching EMG sensor 7 data', function(){ assert.strictEqual(frame.emg[6], 2) });
+            it('should have matching EMG sensor 8 data', function(){ assert.strictEqual(frame.emg[7], -2) });
         });
         describe('frame.rotation (Quaternion)', function() {
-            it('should make a instance of Quaternion', function(){ assert.equal(frame.rotation instanceof MyoJS.Quaternion, true) });
-            it('should make a valid Quaternion', function(){ assert.equal(frame.rotation.valid, true) });
-            it('should have x', function(){ assert.equal(frame.rotation.x, -0.4093628, 'x is matching') });
-            it('should have y', function(){ assert.equal(frame.rotation.y, -0.1088257, 'y is matching') });
-            it('should have z', function(){ assert.equal(frame.rotation.z, 0.1548462, 'z is matching') });
-            it('should have w', function(){ assert.equal(frame.rotation.w, 0.8925171, 'w is matching') });
+            it('should make a instance of Quaternion', function(){ assert.strictEqual(frame.rotation instanceof MyoJS.Quaternion, true) });
+            it('should make a valid Quaternion', function(){ assert.strictEqual(frame.rotation.valid, true) });
+            it('should have x', function(){ assert.strictEqual(frame.rotation.x, -0.4093628, 'x is matching') });
+            it('should have y', function(){ assert.strictEqual(frame.rotation.y, -0.1088257, 'y is matching') });
+            it('should have z', function(){ assert.strictEqual(frame.rotation.z, 0.1548462, 'z is matching') });
+            it('should have w', function(){ assert.strictEqual(frame.rotation.w, 0.8925171, 'w is matching') });
         });
         describe('vector comparison', function() {
-            it('gyro should be equal to gyro', function(){ assert.equal(frame.gyro.isEqualTo(frame.gyro), true) });
-            it('gyro should not be equal to accel', function(){ assert.equal(frame.gyro.isEqualTo(frame.accel), false) });
+            it('gyro should be equal to gyro', function(){ assert.strictEqual(frame.gyro.isEqualTo(frame.gyro), true) });
+            it('gyro should not be equal to accel', function(){ assert.strictEqual(frame.gyro.isEqualTo(frame.accel), false) });
         });
         it('should make a pose of type DOUBLE_TAP', function(){
             var pose = new MyoJS.Pose({invalid:true});
-            assert.equal(frame.pose.type, pose.DOUBLE_TAP, 'Pose is POSE.DOUBLE_TAP');
+            assert.strictEqual(frame.pose.type, pose.DOUBLE_TAP, 'Pose is POSE.DOUBLE_TAP');
         });
-        it('should make a instance of Pose', function(){ assert.equal(frame.pose instanceof MyoJS.Pose, true) });
+        it('should make a instance of Pose', function(){ assert.strictEqual(frame.pose instanceof MyoJS.Pose, true) });
         describe('#toString', function(){
             it('should return a String describing Frame properties', function(){
-                assert.equal(frame.toString(), '[Frame id:43928 timestamp:1423842951 accel:[Vector3 x:0.04736328 y:-0.7241211 z:0.6367188]]');
+                assert.strictEqual(frame.toString(), '[Frame id:43928 timestamp:1423842951 accel:[Vector3 x:0.04736328 y:-0.7241211 z:0.6367188]]');
             });
         });
     });
@@ -96,36 +96,36 @@ describe('Frame', function(){
             var frameData = JSON.parse(frameDump).frame;
             delete frameData.pose;
             var frame = new MyoJS.Frame(frameData);
-            it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-            it('should make a invalid Pose', function(){ assert.equal(frame.pose.valid, false) });
+            it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+            it('should make a invalid Pose', function(){ assert.strictEqual(frame.pose.valid, false) });
         });
         describe('Missing Quaternion', function() {
             var frameData = JSON.parse(frameDump).frame;
             delete frameData.rotation;
             var frame = new MyoJS.Frame(frameData);
-            it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-            it('should make a invalid Quaternion', function(){ assert.equal(frame.rotation.valid, false) });
+            it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+            it('should make a invalid Quaternion', function(){ assert.strictEqual(frame.rotation.valid, false) });
         });
         describe('Missing Accelerometer', function() {
             var frameData = JSON.parse(frameDump).frame;
             delete frameData.accel;
             var frame = new MyoJS.Frame(frameData);
-            it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-            it('should make a invalid Vector3', function(){ assert.equal(frame.accel.valid, false) });
+            it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+            it('should make a invalid Vector3', function(){ assert.strictEqual(frame.accel.valid, false) });
         });
         describe('Missing Gyroscope', function() {
             var frameData = JSON.parse(frameDump).frame;
             delete frameData.gyro;
             var frame = new MyoJS.Frame(frameData);
-            it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-            it('should make a invalid Vector3', function(){ assert.equal(frame.gyro.valid, false) });
+            it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+            it('should make a invalid Vector3', function(){ assert.strictEqual(frame.gyro.valid, false) });
         });
         describe('Missing EMG sensor data', function() {
             var frameData = JSON.parse(frameDump).frame;
             delete frameData.emg;
             var frame = new MyoJS.Frame(frameData);
-            it('should make a instance of Frame', function(){ assert.equal(frame instanceof MyoJS.Frame, true) });
-            it('should make a empty array', function(){ assert.equal(frame.emg.length, 0) });
+            it('should make a instance of Frame', function(){ assert.strictEqual(frame instanceof MyoJS.Frame, true) });
+            it('should make a empty array', function(){ assert.strictEqual(frame.emg.length, 0) });
         });
     });
 });

@@ -6,15 +6,15 @@ describe('Hub', function(){
     describe('Constructor validation', function(){
         it('should return a Hub object with host 0.0.0.0', function(){
             var hub = new MyoJS.Hub({host: '0.0.0.0', port: 0});
-            assert.equal(hub.connection.host, '0.0.0.0');
-            assert.equal(hub.connection.port, 0);
-            assert.equal(hub instanceof MyoJS.Hub, true);
+            assert.strictEqual(hub.connection.host, '0.0.0.0');
+            assert.strictEqual(hub.connection.port, 0);
+            assert.strictEqual(hub instanceof MyoJS.Hub, true);
         });
         it('should return a Hub object with default host', function(){
             var hub = new MyoJS.Hub();
-            assert.equal(hub.connection.host, '127.0.0.1');
-            assert.equal(hub.connection.port, 6450);
-            assert.equal(hub instanceof MyoJS.Hub, true);
+            assert.strictEqual(hub.connection.host, '127.0.0.1');
+            assert.strictEqual(hub.connection.port, 6450);
+            assert.strictEqual(hub instanceof MyoJS.Hub, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
@@ -52,7 +52,7 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             var frameListener = function(event) {};
             hub.addListener('frame', frameListener);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 1);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 1);
         });
         it('should add 5 listeners', function(){
             var hub = new MyoJS.Hub();
@@ -66,7 +66,7 @@ describe('Hub', function(){
             hub.addListener('frame', frameListener3);
             hub.addListener('frame', frameListener4);
             hub.addListener('frame', frameListener5);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 5);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 5);
         });
         it('should throw an error when not passing a function', function(){
             assert.throws(function() {
@@ -80,9 +80,9 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             var frameListener = function(event) {};
             hub.addListener('frame', frameListener);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 1);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 1);
             hub.removeListener('frame', frameListener);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 0);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 0);
         });
         it('should remove 5 listeners', function(){
             var hub = new MyoJS.Hub();
@@ -96,13 +96,13 @@ describe('Hub', function(){
             hub.addListener('frame', frameListener3);
             hub.addListener('frame', frameListener4);
             hub.addListener('frame', frameListener5);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 5);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 5);
             hub.removeListener('frame', frameListener1);
             hub.removeListener('frame', frameListener2);
             hub.removeListener('frame', frameListener3);
             hub.removeListener('frame', frameListener4);
             hub.removeListener('frame', frameListener5);
-            assert.equal(EventEmitter.listenerCount(hub, 'frame'), 0);
+            assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 0);
         });
         it('should throw an error when not passing a function', function(){
             assert.throws(function() {
@@ -117,7 +117,7 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             var frame = new MyoJS.Frame(JSON.parse(frameDump).frame);
             hub.history.push(frame);
-            assert.equal(hub.frame(0), frame);
+            assert.strictEqual(hub.frame(0), frame);
         });
         it('should return a frame at correct index', function(){
             var hub = new MyoJS.Hub();
@@ -125,7 +125,7 @@ describe('Hub', function(){
             hub.history.push(frame);
             hub.history.push(frame);
             hub.history.push(frame);
-            assert.equal(hub.frame(2), frame);
+            assert.strictEqual(hub.frame(2), frame);
         });
         it('should not return a frame when overflowing index', function(){
             var hub = new MyoJS.Hub();
@@ -142,7 +142,7 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             hub.connection = context;
             hub.waitForMyo(100);
-            assert.equal(output, '{"waitForMyo":100}');
+            assert.strictEqual(output, '{"waitForMyo":100}');
         });
         it('should throw an error when parameter is not integer', function(){
             assert.throws(function() {
@@ -162,7 +162,7 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             hub.connection = context;
             hub.run(100);
-            assert.equal(output, '{"run":100}');
+            assert.strictEqual(output, '{"run":100}');
         });
         it('should throw an error when parameter is not integer', function(){
             assert.throws(function() {
@@ -182,7 +182,7 @@ describe('Hub', function(){
             var hub = new MyoJS.Hub();
             hub.connection = context;
             hub.runOnce(100);
-            assert.equal(output, '{"runOnce":100}');
+            assert.strictEqual(output, '{"runOnce":100}');
         });
         it('should throw an error when parameter is not integer', function(){
             assert.throws(function() {

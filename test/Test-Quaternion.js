@@ -5,11 +5,11 @@ describe('Quaternion', function(){
     describe('Constructor validation', function(){
         it('should return a Quaternion object with correct components', function(){
             var quaternion = new MyoJS.Quaternion([1, 2, 3, 4]);
-            assert.equal(quaternion.x, 1);
-            assert.equal(quaternion.y, 2);
-            assert.equal(quaternion.z, 3);
-            assert.equal(quaternion.w, 4);
-            assert.equal(quaternion instanceof MyoJS.Quaternion, true);
+            assert.strictEqual(quaternion.x, 1);
+            assert.strictEqual(quaternion.y, 2);
+            assert.strictEqual(quaternion.z, 3);
+            assert.strictEqual(quaternion.w, 4);
+            assert.strictEqual(quaternion instanceof MyoJS.Quaternion, true);
         });
         it('should throw an error when passing an empty object', function(){
             assert.throws(function() {
@@ -67,10 +67,10 @@ describe('Quaternion', function(){
     });
     describe('#toString', function(){
         it('should return a String describing Quaternion invalid', function(){
-            assert.equal(new MyoJS.Quaternion.invalid().toString(), '[Quaternion invalid]');
+            assert.strictEqual(new MyoJS.Quaternion.invalid().toString(), '[Quaternion invalid]');
         });
         it('should return a String describing Quaternion x, y, z and w', function(){
-            assert.equal(new MyoJS.Quaternion([1, 2, 3, 4]).toString(), '[Quaternion x:1 y:2 z:3 w:4]');
+            assert.strictEqual(new MyoJS.Quaternion([1, 2, 3, 4]).toString(), '[Quaternion x:1 y:2 z:3 w:4]');
         });
     });
 });
