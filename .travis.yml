@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-  - "0.10.33"
+  - "0.12"
+  - "iojs"
 before_install: npm install -g grunt-cli
 addons:
   code_climate:
