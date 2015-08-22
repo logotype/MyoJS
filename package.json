@@ -29,6 +29,7 @@
     "grunt-string-replace": "latest",
     "load-grunt-tasks": "latest",
     "mocha": "latest",
+    "istanbul": "latest",
     "uglify-js": "latest"
   },
   "keywords": [
