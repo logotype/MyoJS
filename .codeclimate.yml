@@ -1,0 +1,27 @@
+# http://docs.codeclimate.com/article/296-engines-available-engines
+engines:
+  rubocop:
+    enabled: false
+  golint:
+    enabled: false
+  gofmt:
+    enabled: false
+  eslint:
+    enabled: true
+  csslint:
+    enabled: false
+
+# ratings:
+#   paths:
+#   - app/**
+#   - lib/**
+#   - "**.rb"
+#   - "**.go"
+
+exclude_paths:
+- "coverage/**/*"
+- "test/**/*"
+- "build/**/*"
+- "examples/**/*"
+- "template/**/*"
+- "myojs*"
