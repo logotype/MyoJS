@@ -1,0 +1,1 @@
+module.exports = require('./build/myojs-1.0.0').default;

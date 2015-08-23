@@ -1,7 +1,7 @@
 {
   "name": "myojs",
-  "version": "0.15.2",
-  "description": "JavaScript client for the Thalmic Labs Myo",
+  "version": "1.0.0",
+  "description": "JavaScript/ES2015/ES6 client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
     "type": "git",
@@ -13,29 +13,42 @@
     "ws": "latest"
   },
   "devDependencies": {
+    "babel": "latest",
+    "babelify": "latest",
     "browserify": "latest",
     "chai": "latest",
     "codeclimate-test-reporter": "latest",
-    "grunt": "latest",
-    "grunt-banner": "latest",
-    "grunt-browserify": "latest",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-eslint": "^17.1.0",
-    "grunt-exec": "latest",
-    "grunt-jsbeautifier": "latest",
-    "grunt-mocha-istanbul": "latest",
-    "grunt-string-replace": "latest",
-    "load-grunt-tasks": "latest",
+    "del": "latest",
+    "gulp": "latest",
+    "gulp-babel": "latest",
+    "gulp-cli": "latest",
+    "gulp-concat": "latest",
+    "gulp-eslint": "latest",
+    "gulp-istanbul": "latest",
+    "gulp-load-plugins": "latest",
+    "gulp-mocha": "latest",
+    "gulp-uglify": "latest",
+    "isparta": "latest",
     "mocha": "latest",
-    "istanbul": "latest",
-    "uglify-js": "latest"
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    }
   },
   "keywords": [
+    "es6",
+    "es2015",
     "myo",
     "myojs",
     "thalmic",
     "thalmic labs myo"
-  ]
+  ],
+  "scripts": {
+    "test" : "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha"
+  }
 }

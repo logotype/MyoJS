@@ -1,32 +1,26 @@
-var CircularBuffer = module.exports = function(size) {
-    'use strict';
-    var self = this;
+export class CircularBuffer {
+    constructor(size) {
 
-    self.pos = 0;
-    self._buf = [];
-    self.size = size;
-};
-
-CircularBuffer.prototype.get = function(i) {
-    'use strict';
-    var self = this;
-
-    if (i === undefined) {
-        i = 0;
+        this.pos = 0;
+        this._buf = [];
+        this.size = size;
     }
-    if (i >= self.size) {
-        return undefined;
-    }
-    if (i >= self._buf.length) {
-        return undefined;
-    }
-    return self._buf[(self.pos - i - 1) % self.size];
-};
 
-CircularBuffer.prototype.push = function(o) {
-    'use strict';
-    var self = this;
+    get(i) {
+        if (!i || i === null) {
+            i = 0;
+        }
+        if (i >= this.size) {
+            return null;
+        }
+        if (i >= this._buf.length) {
+            return null;
+        }
+        return this._buf[(this.pos - i - 1) % this.size];
+    }
 
-    self._buf[self.pos % self.size] = o;
-    return self.pos++;
-};
+    push(o) {
+        this._buf[this.pos % this.size] = o;
+        return this.pos++;
+    }
+}

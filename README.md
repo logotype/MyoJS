@@ -19,17 +19,17 @@ Create an instance of the `Hub` class:
 ```javascript
     var hub = new Myo.Hub();
 
-    hub.on('ready', function() {
+    hub.on('ready', () => {
         console.log('ready');
     });
-    hub.on('connect', function() {
+    hub.on('connect', () => {
         console.log('connected');
     });
-    hub.on('frame', function(frame) {
+    hub.on('frame', (frame) => {
         // Get the most recent frame and report some basic information
     	console.log('Frame id: ' + frame.id + ', timestamp: ' + frame.timestamp);
     });
-    hub.on('disconnect', function() {
+    hub.on('disconnect', () => {
         console.log('disconnect');
     });
 ```
@@ -39,9 +39,10 @@ What you'll get from the `frame` handler is a `Frame` instance, with properties 
 Features
 --------
 <img src="http://logotype.se/myo/myodaemon.png?v5">
++ Modern, written in ES6/ES2015
 + Clean, lightweight and documented code
 + Same structure as official API
-+ Supports browser and node.js connections
++ Supports both browser and node.js connections
 + Accelerometer, Gyroscope, Pose and more
 + Access to raw EMG data
 + Connects via [myodaemon OSX app](https://github.com/logotype/myodaemon)
