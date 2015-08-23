@@ -146,7 +146,7 @@ export class BaseConnection extends EventEmitter {
     }
 
     connect() {
-        var inBrowser = typeof(window) !== 'undefined';
+        var inBrowser = typeof window !== 'undefined';
 
         if (this.socket) {
             return 'socket already created';

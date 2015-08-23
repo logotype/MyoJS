@@ -1,6 +1,6 @@
 {
   "name": "myojs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript/ES2015/ES6 client for the Thalmic Labs Myo",
   "main": "src",
   "repository": {
@@ -9,7 +9,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "underscore": "latest",
     "ws": "latest"
   },
   "devDependencies": {
@@ -24,7 +23,6 @@
     "gulp-cli": "latest",
     "gulp-concat": "latest",
     "gulp-eslint": "latest",
-    "gulp-istanbul": "latest",
     "gulp-load-plugins": "latest",
     "gulp-mocha": "latest",
     "gulp-uglify": "latest",

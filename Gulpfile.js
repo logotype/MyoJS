@@ -2,7 +2,6 @@ require('babel/register');
 var gulp = require('gulp'),
     browserify = require('browserify'),
     babelify = require('babelify'),
-    isparta = require('isparta'),
     del = require('del'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
@@ -31,9 +30,9 @@ gulp.task('compile', ['clean'], function() {
         .bundle()
         .pipe(source('myojs-' + pkg.version + '.js'))
         .pipe(buffer())
-        /*.pipe($.uglify({
+        .pipe($.uglify({
             mangle: false
-        }))*/
+        }))
         .pipe(gulp.dest('./build'));
 });
 
