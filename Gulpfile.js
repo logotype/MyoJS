@@ -28,7 +28,7 @@ gulp.task('compile', ['clean'], function() {
     })
         .exclude('ws')
         .bundle()
-        .pipe(source('myojs-' + pkg.version + '.js'))
+        .pipe(source('myojs.min.js'))
         .pipe(buffer())
         .pipe($.uglify({
             mangle: false
