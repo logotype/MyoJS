@@ -11,12 +11,10 @@ engines:
   csslint:
     enabled: false
 
-# ratings:
-#   paths:
-#   - app/**
-#   - lib/**
-#   - "**.rb"
-#   - "**.go"
+ratings:
+   paths:
+   - "src/**/*"
+   - "test/**/*"
 
 exclude_paths:
 - "coverage/**/*"
@@ -24,4 +22,3 @@ exclude_paths:
 - "build/**/*"
 - "examples/**/*"
 - "template/**/*"
-- "myojs*"
