@@ -9,7 +9,6 @@ export class Hub extends EventEmitter {
 
         this.connection = new BaseConnection(opt);
         this.history = new CircularBuffer(200);
-        this.myos = [];
 
         this.connection.connect();
 

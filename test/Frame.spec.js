@@ -83,7 +83,6 @@ describe('Frame', () => {
             it('gyro should not be equal to accel', () => { assert.strictEqual(frame.gyro.isEqualTo(frame.accel), false) });
         });
         it('should make a pose of type POSE_DOUBLE_TAP', () => {
-            let pose = new Pose({invalid:true});
             assert.strictEqual(frame.pose.type, Pose.POSE_DOUBLE_TAP, 'Pose is POSE.POSE_DOUBLE_TAP');
         });
         it('should make a instance of Pose', () => { assert.strictEqual(frame.pose instanceof Pose, true) });

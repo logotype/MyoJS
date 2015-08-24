@@ -31,17 +31,17 @@ describe('Hub', () => {
     describe('#addListener', () => {
         it('should add a listener', () => {
             let hub = new Hub();
-            let frameListener = (event) => {};
+            let frameListener = () => {};
             hub.addListener('frame', frameListener);
             assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 1);
         });
         it('should add 5 listeners', () => {
             let hub = new Hub();
-            let frameListener1 = (event) => {};
-            let frameListener2 = (event) => {};
-            let frameListener3 = (event) => {};
-            let frameListener4 = (event) => {};
-            let frameListener5 = (event) => {};
+            let frameListener1 = () => {};
+            let frameListener2 = () => {};
+            let frameListener3 = () => {};
+            let frameListener4 = () => {};
+            let frameListener5 = () => {};
             hub.addListener('frame', frameListener1);
             hub.addListener('frame', frameListener2);
             hub.addListener('frame', frameListener3);
@@ -59,7 +59,7 @@ describe('Hub', () => {
     describe('#removeListener', () => {
         it('should remove a listener', () => {
             let hub = new Hub();
-            let frameListener = (event) => {};
+            let frameListener = () => {};
             hub.addListener('frame', frameListener);
             assert.strictEqual(EventEmitter.listenerCount(hub, 'frame'), 1);
             hub.removeListener('frame', frameListener);
@@ -67,11 +67,11 @@ describe('Hub', () => {
         });
         it('should remove 5 listeners', () => {
             let hub = new Hub();
-            let frameListener1 = (event) => {};
-            let frameListener2 = (event) => {};
-            let frameListener3 = (event) => {};
-            let frameListener4 = (event) => {};
-            let frameListener5 = (event) => {};
+            let frameListener1 = () => {};
+            let frameListener2 = () => {};
+            let frameListener3 = () => {};
+            let frameListener4 = () => {};
+            let frameListener5 = () => {};
             hub.addListener('frame', frameListener1);
             hub.addListener('frame', frameListener2);
             hub.addListener('frame', frameListener3);
