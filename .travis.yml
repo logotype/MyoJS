@@ -9,4 +9,4 @@ script:
   - gulp test
   - npm test
 after_script:
-  - cat coverage/lcov.info | codeclimate
+  - ./node_modules/codeclimate-test-reporter/./bin/codeclimate.js < coverage/lcov.info
