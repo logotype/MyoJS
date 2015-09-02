@@ -78,7 +78,7 @@
         hub.on('pose', function(pose) {
             currentPose = pose;
             switch(currentPose.type) {
-                case currentPose.POSE_FIST:
+                case 0:
                     title.style.color = "#00ff00";
                     title.innerHTML = "Fist";
                     TweenMax.to(camera.position,1,{x:150, y:30, z:-100,onUpdate:function(){
@@ -86,7 +86,7 @@
                         camera.lookAt(scene.position);
                     }});
                     break;
-                case currentPose.POSE_WAVE_IN:
+                case 1:
                     title.style.color = "#0000ff";
                     title.innerHTML = "Wave in";
                     TweenMax.to(camera.position,1,{x:-100, y:100, z:-100,onUpdate:function(){
@@ -94,7 +94,7 @@
                         camera.lookAt(scene.position);
                     }});
                     break;
-                case currentPose.POSE_WAVE_OUT:
+                case 2:
                     title.style.color = "#ff00ff";
                     title.innerHTML = "Wave out";
                     TweenMax.to(camera.position,1,{x:100, y:100, z:100,onUpdate:function(){
@@ -102,7 +102,7 @@
                         camera.lookAt(scene.position);
                     }});
                     break;
-                case currentPose.POSE_FINGERS_SPREAD:
+                case 3:
                     title.style.color = "#ffff00";
                     title.innerHTML = "Fingers spread";
                     TweenMax.to(camera.position,1,{x:10, y:200, z:10,onUpdate:function(){
@@ -110,7 +110,7 @@
                         camera.lookAt(scene.position);
                     }});
                     break;
-                case currentPose.POSE_TWIST_IN:
+                case 4:
                     title.style.color = "#00ffff";
                     title.innerHTML = "Twist in";
                     break;
