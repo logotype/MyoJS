@@ -33,7 +33,7 @@ export class Quaternion {
      *
      */
     normalized() {
-        let magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+        const magnitude = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
 
         return new Quaternion([
             this.x / magnitude,
@@ -60,7 +60,7 @@ export class Quaternion {
      */
     toEuler() {
         'use strict';
-        var test, heading, attitude, bank, sqx, sqy, sqz, sqw, unit;
+        let test = 0, heading = 0, attitude = 0, bank = 0, sqx = 0, sqy = 0, sqz = 0, sqw = 0, unit = 0;
 
         sqw = this.w * this.w;
         sqx = this.x * this.x;
@@ -83,9 +83,9 @@ export class Quaternion {
         }
 
         return {
-            heading: heading, // Heading = rotation about y axis
-            attitude: attitude, // Attitude = rotation about z axis
-            bank: bank // Bank = rotation about x axis
+            heading, // Heading = rotation about y axis
+            attitude, // Attitude = rotation about z axis
+            bank // Bank = rotation about x axis
         };
     }
 
@@ -135,6 +135,6 @@ export class Quaternion {
         if (!this.valid) {
             return '[Quaternion invalid]';
         }
-        return '[Quaternion x:' + this.x + ' y:' + this.y + ' z:' + this.z + ' w:' + this.w + ']';
+        return `[Quaternion x:${this.x} y:${this.y} z:${this.z} w:${this.w}]`;
     }
 }

@@ -102,6 +102,6 @@ export class Hub extends EventEmitter {
      *
      */
     toString() {
-        return '[Hub history:' + this.history + ']';
+        return `[Hub history: ${this.history}]`;
     }
 }

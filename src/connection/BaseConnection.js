@@ -18,11 +18,11 @@ export class BaseConnection extends EventEmitter {
     }
 
     getUrl() {
-        return 'ws://' + this.host + ':' + this.port + '/';
+        return `ws://${this.host}:${this.port}/`;
     }
 
     handleOpen() {
-        var returnValue;
+        let returnValue = '';
 
         if (!this.connected) {
             this.send({
@@ -36,20 +36,18 @@ export class BaseConnection extends EventEmitter {
     }
 
     handleClose() {
-        var returnValue;
+        let returnValue = 'disconnected';
 
         if (this.connected) {
             this.disconnect();
             this.startReconnection();
             returnValue = 'disconnecting';
-        } else {
-            returnValue = 'disconnected';
         }
         return returnValue;
     }
 
     startReconnection() {
-        var returnValue;
+        let returnValue = '';
 
         if (!this.reconnectionTimer) {
             this.reconnectionTimer = setInterval(() => {
@@ -79,11 +77,10 @@ export class BaseConnection extends EventEmitter {
             this.connected = false;
             this.emit('disconnect');
         }
-        return true;
     }
 
     reconnect() {
-        var returnValue;
+        let returnValue = '';
 
         if (this.connected) {
             this.stopReconnection();
@@ -97,10 +94,7 @@ export class BaseConnection extends EventEmitter {
     }
 
     handleData(data) {
-        var message,
-            frameObject,
-            frame,
-            deviceInfo;
+        let message = {};
 
         if (!data) {
             throw new Error('No data received');
@@ -115,9 +109,9 @@ export class BaseConnection extends EventEmitter {
 
         // Wait for deviceInfo until connected
         if (!this.connected && message.hasOwnProperty('frame')) {
-            frame = message.frame;
+            const frame = message.frame;
             if (frame.hasOwnProperty('deviceInfo')) {
-                deviceInfo = frame.deviceInfo;
+                const deviceInfo = frame.deviceInfo;
                 this.emit('deviceInfo', deviceInfo);
                 this.connected = true;
                 this.emit('connect');
@@ -130,7 +124,7 @@ export class BaseConnection extends EventEmitter {
         }
 
         if (message.hasOwnProperty('frame')) {
-            frameObject = new Frame(message.frame);
+            const frameObject = new Frame(message.frame);
             this.emit(frameObject.type, frameObject);
 
             // Emit pose if existing
@@ -146,7 +140,7 @@ export class BaseConnection extends EventEmitter {
     }
 
     connect() {
-        var inBrowser = typeof window !== 'undefined';
+        const inBrowser = typeof window !== 'undefined';
 
         if (this.socket) {
             return 'socket already created';

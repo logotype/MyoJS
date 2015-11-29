@@ -1,4 +1,10 @@
 {
+  "parser": "babel-eslint",
+  "env": {
+    "mocha": true,
+    "browser": true,
+    "node": true
+  },
   "ecmaFeatures": {
     "arrowFunctions": true,
     "binaryLiterals": true,
@@ -25,10 +31,32 @@
     "experimentalObjectRestSpread": true
   },
   "rules": {
-    /* ERRORS */
+
+    /* ENFORCE STRICT MODE */
+    "strict": [
+      2,
+      "never"
+    ],
+
+    /* ES6 SPECIFIC */
+    "constructor-super": 2,
+    "no-var": 2,
+    "prefer-const": 2,
+    "arrow-parens": [2, "always"],
+    "arrow-spacing": [2, { "before": true, "after": true }],
+    "no-arrow-condition": 2,
+    "no-class-assign" : 2,
+    "no-const-assign": 2,
+    "no-dupe-class-members": 2,
+    "no-this-before-super": 2,
+    "object-shorthand": [2, "always"],
+    "prefer-arrow-callback": 2,
+    "prefer-template": 2,
+
+    /* VARIOUS */
     "comma-dangle": 1,
     "no-cond-assign": 1,
-    "no-console": 1,
+    "no-console": 0,
     "no-constant-condition": 1,
     "no-control-regex": 1,
     "no-debugger": 1,
@@ -39,8 +67,9 @@
     "no-empty": 1,
     "no-ex-assign": 1,
     "no-extra-boolean-cast": 1,
-    "no-extra-parens": 1,
+    "no-extra-parens": 0,
     "no-extra-semi": 1,
+    "semi": [2, "always"],
     "no-func-assign": 1,
     "no-inner-declarations": 1,
     "no-invalid-regexp": 1,
@@ -56,6 +85,7 @@
     /* BEST PRACTICES */
     "block-scoped-var": 1,
     "default-case": 1,
+    "consistent-return": 1,
     "dot-notation": 1,
     "complexity": 1,
     "eqeqeq": 1,
@@ -82,16 +112,20 @@
     "yoda": 1,
 
     /* VARIABLES */
+    "init-declarations": 1,
+    "no-catch-shadow": 1,
     "no-delete-var": 1,
     "no-shadow": 1,
+    "no-shadow-restricted-names": 2,
     "no-undef-init": 1,
     "no-undef": 1,
     "no-undefined": 1,
     "no-unused-vars": 1,
-    "no-use-before-define": 1,
+    "no-use-before-define": 2,
 
     /* STYLE */
     "camelcase": 1,
+    "comma-spacing": [1, {"before": false, "after": true}],
     "no-array-constructor": 1,
     "quotes": [1, "single"]
   }

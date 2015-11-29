@@ -102,6 +102,6 @@ export class Frame {
      *
      */
     toString() {
-        return '[Frame id:' + this.id + ' timestamp:' + this.timestamp + ' accel:' + this.accel.toString() + ']';
+        return `[Frame id:${this.id} timestamp:${this.timestamp} accel:${this.accel.toString()}]`;
     }
 }

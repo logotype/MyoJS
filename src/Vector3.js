@@ -172,8 +172,8 @@ export class Vector3 {
      *
      */
     angleTo(other) {
-        var denom = this.magnitudeSquared() * other.magnitudeSquared(),
-            returnValue;
+        const denom = this.magnitudeSquared() * other.magnitudeSquared();
+        let returnValue = 0;
 
         if (denom <= 0) {
             returnValue = 0;
@@ -272,7 +272,7 @@ export class Vector3 {
      *
      */
     normalized() {
-        var denom = this.magnitudeSquared();
+        let denom = this.magnitudeSquared();
         if (denom <= 0) {
             return new Vector3([
                 0,
@@ -478,6 +478,6 @@ export class Vector3 {
         if (!this.valid) {
             return '[Vector3 invalid]';
         }
-        return '[Vector3 x:' + this.x + ' y:' + this.y + ' z:' + this.z + ']';
+        return `[Vector3 x:${this.x} y:${this.y} z:${this.z}]`;
     }
 }

@@ -50,19 +50,19 @@ export class Pose {
         }
         switch (this.type) {
             case Pose.POSE_REST:
-                return '[Pose type:' + this.type.toString() + ' POSE_REST]';
+                return `[Pose type:${this.type.toString()} POSE_REST]`;
             case Pose.POSE_FIST:
-                return '[Pose type:' + this.type.toString() + ' POSE_FIST]';
+                return `[Pose type:${this.type.toString()} POSE_FIST]`;
             case Pose.POSE_WAVE_IN:
-                return '[Pose type:' + this.type.toString() + ' POSE_WAVE_IN]';
+                return `[Pose type:${this.type.toString()} POSE_WAVE_IN]`;
             case Pose.POSE_WAVE_OUT:
-                return '[Pose type:' + this.type.toString() + ' POSE_WAVE_OUT]';
+                return `[Pose type:${this.type.toString()} POSE_WAVE_OUT]`;
             case Pose.POSE_FINGERS_SPREAD:
-                return '[Pose type:' + this.type.toString() + ' POSE_FINGERS_SPREAD]';
+                return `[Pose type:${this.type.toString()} POSE_FINGERS_SPREAD]`;
             case Pose.POSE_DOUBLE_TAP:
-                return '[Pose type:' + this.type.toString() + ' POSE_DOUBLE_TAP]';
+                return `[Pose type:${this.type.toString()} POSE_DOUBLE_TAP]`;
             default:
-                return '[Pose type:' + this.type.toString() + ']';
+                return `[Pose type:${this.type.toString()}]`;
         }
     }
 }
