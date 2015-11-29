@@ -1,4 +1,4 @@
-require('babel/register');
+require('babel-core/register');
 var gulp = require('gulp'),
     browserify = require('browserify'),
     babelify = require('babelify'),
@@ -40,7 +40,7 @@ gulp.task('test', ['compile'], function () {
     gulp
         .src(['./test/**/*.spec.js'], {read:false})
         .pipe($.mocha({
-            compilers: require('babel/register'),
+            compilers: require('babel-core/register'),
             reporter: 'spec'
         }));
 });
