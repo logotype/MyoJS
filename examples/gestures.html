@@ -71,7 +71,7 @@
 
         title = document.getElementById("title");
 
-        hub = new Myo.Hub();
+        hub = Myo.Hub();
         hub.on('connect', function() {
             title.innerHTML = "Myo connected";
         });

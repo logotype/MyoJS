@@ -1,4 +1,4 @@
-export class Pose {
+export default class Pose {
     constructor(data) {
 
         if (typeof data !== 'object' || Object.prototype.toString.call(data) === '[object Array]') {

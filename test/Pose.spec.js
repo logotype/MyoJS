@@ -1,10 +1,10 @@
 import {assert} from 'chai';
-import {Pose} from './../src/Pose.js';
+import Pose from './../src/Pose.js';
 
 describe('Pose', () => {
     describe('Constructor validation', () => {
         it('should return a Pose object', () => {
-            let pose = new Pose({type:3});
+            const pose = new Pose({type:3});
             assert.strictEqual(pose.type, 3);
             assert.strictEqual(pose.type, Pose.POSE_WAVE_OUT);
             assert.strictEqual(pose instanceof Pose, true);
@@ -25,32 +25,32 @@ describe('Pose', () => {
             }, Error, 'Constructor parameter needs to be an object');
         });
         it('should return a Pose type POSE_REST', () => {
-            let pose = new Pose({type:0});
+            const pose = new Pose({type:0});
             assert.strictEqual(pose.type, Pose.POSE_REST);
             assert.strictEqual(pose instanceof Pose, true);
         });
         it('should return a Pose type POSE_FIST', () => {
-            let pose = new Pose({type:1});
+            const pose = new Pose({type:1});
             assert.strictEqual(pose.type, Pose.POSE_FIST);
             assert.strictEqual(pose instanceof Pose, true);
         });
         it('should return a Pose type POSE_WAVE_IN', () => {
-            let pose = new Pose({type:2});
+            const pose = new Pose({type:2});
             assert.strictEqual(pose.type, Pose.POSE_WAVE_IN);
             assert.strictEqual(pose instanceof Pose, true);
         });
         it('should return a Pose type POSE_WAVE_OUT', () => {
-            let pose = new Pose({type:3});
+            const pose = new Pose({type:3});
             assert.strictEqual(pose.type, Pose.POSE_WAVE_OUT);
             assert.strictEqual(pose instanceof Pose, true);
         });
         it('should return a Pose type POSE_FINGERS_SPREAD', () => {
-            let pose = new Pose({type:4});
+            const pose = new Pose({type:4});
             assert.strictEqual(pose.type, Pose.POSE_FINGERS_SPREAD);
             assert.strictEqual(pose instanceof Pose, true);
         });
         it('should return a Pose type DOUBLE_TAP', () => {
-            let pose = new Pose({type:5});
+            const pose = new Pose({type:5});
             assert.strictEqual(pose.type, Pose.POSE_DOUBLE_TAP);
             assert.strictEqual(pose instanceof Pose, true);
         });

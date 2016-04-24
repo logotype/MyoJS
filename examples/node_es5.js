@@ -1,17 +1,18 @@
-var MyoJS = require('./../index'),
-    hub = new Myo.Hub(),
+require('./../build/myojs.min');
+
+var hub = Myo.Hub(),
     checkConnection;
 
-hub.on('ready', function() { console.log('ready'); });
-hub.on('connect', function() { console.log('connected'); });
-hub.on('disconnect', function() { console.log('disconnect'); });
-hub.on('frame', function(frame) {
+hub.on('ready', () => { console.log('ready'); });
+hub.on('connect', () => { console.log('connected'); });
+hub.on('disconnect', () => { console.log('disconnect'); });
+hub.on('frame', (frame) => {
     console.log(frame.rotation.toString());
     console.log(frame.accel.toString());
     console.log(frame.gyro.toString());
 });
 
-checkConnection = setInterval(function() {
+checkConnection = setInterval(() => {
     if(hub.connection.connected) {
         clearInterval(checkConnection);
     } else {

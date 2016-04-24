@@ -1,4 +1,4 @@
-export class Myo {
+export default class Myo {
     constructor(context) {
 
         if (!context) {

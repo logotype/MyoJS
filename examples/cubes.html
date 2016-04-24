@@ -38,7 +38,7 @@
     animate();
 
     function initMyo() {
-        hub = new Myo.Hub();
+        hub = Myo.Hub();
         hub.on('frame', function(frame) {
             myoX = ( (frame.pitch * 1000) - windowHalfX );
             myoY = ( (frame.yaw * 1000) - windowHalfY );

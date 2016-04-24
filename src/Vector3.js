@@ -1,4 +1,4 @@
-export class Vector3 {
+export default class Vector3 {
     constructor(data) {
 
         if (!data) {

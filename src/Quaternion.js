@@ -1,4 +1,4 @@
-export class Quaternion {
+export default class Quaternion {
     constructor(data) {
 
         /**
@@ -59,7 +59,6 @@ export class Quaternion {
      *
      */
     toEuler() {
-        'use strict';
         let test = 0, heading = 0, attitude = 0, bank = 0, sqx = 0, sqy = 0, sqz = 0, sqw = 0, unit = 0;
 
         sqw = this.w * this.w;
@@ -83,9 +82,9 @@ export class Quaternion {
         }
 
         return {
-            heading, // Heading = rotation about y axis
-            attitude, // Attitude = rotation about z axis
-            bank // Bank = rotation about x axis
+            heading: heading, // Heading = rotation about y axis
+            attitude: attitude, // Attitude = rotation about z axis
+            bank: bank // Bank = rotation about x axis
         };
     }
 

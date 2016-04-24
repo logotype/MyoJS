@@ -58,7 +58,7 @@
     var initMyo = function() {
         "use strict";
 
-        window.hub = new Myo.Hub();
+        window.hub = Myo.Hub();
         window.quaternion = new THREE.Quaternion();
 
         window.hub.on('frame', function(frame) {

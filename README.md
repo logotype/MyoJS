@@ -17,7 +17,7 @@ MyoJS is dependent on the [myodaemon OSX app](https://github.com/logotype/myodae
 Create an instance of the `Hub` class:
 
 ```javascript
-    var hub = new Myo.Hub();
+    const hub = Myo.Hub();
 
     hub.on('ready', () => {
         console.log('ready');
@@ -60,7 +60,7 @@ Authors
 Copyright and license
 ---------------------
 
-Copyright © 2015 logotype
+Copyright © 2016 logotype
 
 Author: Victor Norgren
 

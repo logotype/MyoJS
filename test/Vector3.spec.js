@@ -1,10 +1,10 @@
 import {assert} from 'chai';
-import {Vector3} from './../src/Vector3.js';
+import Vector3 from './../src/Vector3.js';
 
 describe('Vector3', () => {
     describe('Constructor validation', () => {
         it('should return a Vector3 object with correct components', () => {
-            let vec = new Vector3([1, 2, 3]);
+            const vec = new Vector3([1, 2, 3]);
             assert.strictEqual(vec.x, 1);
             assert.strictEqual(vec.y, 2);
             assert.strictEqual(vec.z, 3);
@@ -33,7 +33,7 @@ describe('Vector3', () => {
     });
     describe('#opposite', () => {
         it('should return a Vector3 object with all components negated', () => {
-            let vec1 = new Vector3([1, 2, 3]).opposite();
+            const vec1 = new Vector3([1, 2, 3]).opposite();
             assert.strictEqual(-1, vec1.x);
             assert.strictEqual(-2, vec1.y);
             assert.strictEqual(-3, vec1.z);
@@ -41,7 +41,7 @@ describe('Vector3', () => {
     });
     describe('#plus', () => {
         it('should add vectors component-wise', () => {
-            let vec1 = new Vector3([1, 2, 3]).plus(new Vector3([4, 5, 6]));
+            const vec1 = new Vector3([1, 2, 3]).plus(new Vector3([4, 5, 6]));
             assert.strictEqual(vec1.x, 5);
             assert.strictEqual(vec1.y, 7);
             assert.strictEqual(vec1.z, 9);
@@ -49,7 +49,7 @@ describe('Vector3', () => {
     });
     describe('#plusAssign', () => {
         it('should add vectors component-wise and assign the value', () => {
-            let vec1 = new Vector3([1, 2, 3]);
+            const vec1 = new Vector3([1, 2, 3]);
             vec1.plusAssign(new Vector3([4, 5, 6]));
             assert.strictEqual(vec1.x, 5);
             assert.strictEqual(vec1.y, 7);
@@ -58,7 +58,7 @@ describe('Vector3', () => {
     });
     describe('#minus', () => {
         it('should return a copy of this vector pointing in the opposite direction', () => {
-            let vec1 = new Vector3([4, 5, 6]).minus(new Vector3([1, 2, 3]));
+            const vec1 = new Vector3([4, 5, 6]).minus(new Vector3([1, 2, 3]));
             assert.strictEqual(vec1.x, 3);
             assert.strictEqual(vec1.y, 3);
             assert.strictEqual(vec1.z, 3);
@@ -66,7 +66,7 @@ describe('Vector3', () => {
     });
     describe('#minusAssign', () => {
         it('should return a copy of this vector pointing in the opposite direction and assign the value', () => {
-            let vec1 = new Vector3([4, 5, 6]).minusAssign(new Vector3([1, 2, 3]));
+            const vec1 = new Vector3([4, 5, 6]).minusAssign(new Vector3([1, 2, 3]));
             assert.strictEqual(vec1.x, 3);
             assert.strictEqual(vec1.y, 3);
             assert.strictEqual(vec1.z, 3);
@@ -74,7 +74,7 @@ describe('Vector3', () => {
     });
     describe('#multiply', () => {
         it('should multiply a vector by a scalar', () => {
-            let vec1 = new Vector3([5, 10, 15]).multiply(5);
+            const vec1 = new Vector3([5, 10, 15]).multiply(5);
             assert.strictEqual(vec1.x, 25);
             assert.strictEqual(vec1.y, 50);
             assert.strictEqual(vec1.z, 75);
@@ -82,7 +82,7 @@ describe('Vector3', () => {
     });
     describe('#multiplyAssign', () => {
         it('should multiply a vector by a scalar and assign the quotient', () => {
-            let vec1 = new Vector3([5, 10, 15]).multiplyAssign(5);
+            const vec1 = new Vector3([5, 10, 15]).multiplyAssign(5);
             assert.strictEqual(vec1.x, 25);
             assert.strictEqual(vec1.y, 50);
             assert.strictEqual(vec1.z, 75);
@@ -90,7 +90,7 @@ describe('Vector3', () => {
     });
     describe('#divide', () => {
         it('should divide a vector by a scalar', () => {
-            let vec1 = new Vector3([5, 10, 15]).divide(3);
+            const vec1 = new Vector3([5, 10, 15]).divide(3);
             assert.strictEqual(vec1.x, 1.6666666666666667);
             assert.strictEqual(vec1.y, 3.3333333333333333);
             assert.strictEqual(vec1.z, 5);
@@ -98,7 +98,7 @@ describe('Vector3', () => {
     });
     describe('#divideAssign', () => {
         it('should divide a vector by a scalar and assign the value', () => {
-            let vec1 = new Vector3([5, 10, 15]).divideAssign(3);
+            const vec1 = new Vector3([5, 10, 15]).divideAssign(3);
             assert.closeTo(vec1.x, 1.6666666666666667, 0.0001);
             assert.closeTo(vec1.y, 3.3333333333333333, 0.0001);
             assert.closeTo(vec1.z, 5, 0.0001);
@@ -127,7 +127,7 @@ describe('Vector3', () => {
     });
     describe('#cross', () => {
         it('should return cross product of this vector and the specified vector', () => {
-            let vec1 = new Vector3([2, 14, 32]).cross(new Vector3([46, 11, 98]));
+            const vec1 = new Vector3([2, 14, 32]).cross(new Vector3([46, 11, 98]));
             assert.strictEqual(vec1.x, 1020);
             assert.strictEqual(vec1.y, 1276);
             assert.strictEqual(vec1.z, -622);
@@ -139,7 +139,7 @@ describe('Vector3', () => {
         });
     });
     describe('#isValid', () => {
-        it('should be valid', () => { assert.strictEqual(new Vector3([1, 2, 3]).isValid(), true) });
+        it('should be valid', () => { assert.strictEqual(new Vector3([1, 2, 3]).isValid(), true); });
         assert.throws(() => {
             new Vector3(['a', 'b', 'c']);
         }, Error, 'Component values needs to be integers or numbers');
@@ -149,7 +149,7 @@ describe('Vector3', () => {
         assert.throws(() => {
             new Vector3({});
         }, Error, 'Components needs to be an array');
-        it('should not be valid', () => { assert.strictEqual(new Vector3({invalid:true}).isValid(), false) });
+        it('should not be valid', () => { assert.strictEqual(new Vector3({invalid:true}).isValid(), false); });
     });
     describe('#magnitude', () => {
         it('should return the magnitude, or length, of this vector', () => {
@@ -163,7 +163,7 @@ describe('Vector3', () => {
     });
     describe('#normalized', () => {
         it('should return a Vector object with a length of one, pointing in the same direction as this Vector object', () => {
-            let vec1 = new Vector3([42, 77, 29]).normalized();
+            const vec1 = new Vector3([42, 77, 29]).normalized();
             assert.closeTo(vec1.x, 0.4546455778, 0.0001);
             assert.closeTo(vec1.y, 0.8335168927, 0.0001);
             assert.closeTo(vec1.z, 0.3139219466, 0.0001);
@@ -191,7 +191,7 @@ describe('Vector3', () => {
     });
     describe('#zero', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.zero();
+            const vec1 = Vector3.zero();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -199,7 +199,7 @@ describe('Vector3', () => {
     });
     describe('#xAxis', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.xAxis();
+            const vec1 = Vector3.xAxis();
             assert.closeTo(vec1.x, 1.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -207,7 +207,7 @@ describe('Vector3', () => {
     });
     describe('#yAxis', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.yAxis();
+            const vec1 = Vector3.yAxis();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 1.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -215,7 +215,7 @@ describe('Vector3', () => {
     });
     describe('#zAxis', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.zAxis();
+            const vec1 = Vector3.zAxis();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 1.0, 0.0001);
@@ -223,7 +223,7 @@ describe('Vector3', () => {
     });
     describe('#left', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.left();
+            const vec1 = Vector3.left();
             assert.closeTo(vec1.x, -1.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -231,7 +231,7 @@ describe('Vector3', () => {
     });
     describe('#right', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.right();
+            const vec1 = Vector3.right();
             assert.closeTo(vec1.x, 1.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -239,7 +239,7 @@ describe('Vector3', () => {
     });
     describe('#down', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.down();
+            const vec1 = Vector3.down();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, -1.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -247,7 +247,7 @@ describe('Vector3', () => {
     });
     describe('#up', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.up();
+            const vec1 = Vector3.up();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 1.0, 0.0001);
             assert.closeTo(vec1.z, 0.0, 0.0001);
@@ -255,7 +255,7 @@ describe('Vector3', () => {
     });
     describe('#forward', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.forward();
+            const vec1 = Vector3.forward();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, -1.0, 0.0001);
@@ -263,7 +263,7 @@ describe('Vector3', () => {
     });
     describe('#backward', () => {
         it('should return the correct vector', () => {
-            let vec1 = Vector3.backward();
+            const vec1 = Vector3.backward();
             assert.closeTo(vec1.x, 0.0, 0.0001);
             assert.closeTo(vec1.y, 0.0, 0.0001);
             assert.closeTo(vec1.z, 1.0, 0.0001);

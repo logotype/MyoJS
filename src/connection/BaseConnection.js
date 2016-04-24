@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
-import {Frame} from './../Frame.js';
+import Frame from './../Frame.js';
 
-export class BaseConnection extends EventEmitter {
+export default class BaseConnection extends EventEmitter {
     constructor({host = '127.0.0.1', port = 6450} = {}) {
         super();
 

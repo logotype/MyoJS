@@ -1,9 +1,9 @@
 import {EventEmitter} from 'events';
-import {Myo} from './Myo.js';
-import {BaseConnection} from './connection/BaseConnection.js';
-import {CircularBuffer} from './CircularBuffer.js';
+import Myo from './Myo.js';
+import BaseConnection from './connection/BaseConnection.js';
+import CircularBuffer from './CircularBuffer.js';
 
-export class Hub extends EventEmitter {
+export default class Hub extends EventEmitter {
     constructor(opt) {
         super(opt);
 

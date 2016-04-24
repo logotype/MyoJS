@@ -1,6 +1,7 @@
 {
   "parser": "babel-eslint",
   "env": {
+    "es6": true,
     "mocha": true,
     "browser": true,
     "node": true
@@ -44,12 +45,12 @@
     "prefer-const": 2,
     "arrow-parens": [2, "always"],
     "arrow-spacing": [2, { "before": true, "after": true }],
-    "no-arrow-condition": 2,
+    "no-confusing-arrow": 2,
     "no-class-assign" : 2,
     "no-const-assign": 2,
     "no-dupe-class-members": 2,
     "no-this-before-super": 2,
-    "object-shorthand": [2, "always"],
+    "object-shorthand": [2, "never"],
     "prefer-arrow-callback": 2,
     "prefer-template": 2,
 

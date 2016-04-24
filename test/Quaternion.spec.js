@@ -1,10 +1,10 @@
 import {assert} from 'chai';
-import {Quaternion} from './../src/Quaternion.js';
+import Quaternion from './../src/Quaternion.js';
 
 describe('Quaternion', () => {
     describe('Constructor validation', () => {
         it('should return a Quaternion object with correct components', () => {
-            let quaternion = new Quaternion([1, 2, 3, 4]);
+            const quaternion = new Quaternion([1, 2, 3, 4]);
             assert.strictEqual(quaternion.x, 1);
             assert.strictEqual(quaternion.y, 2);
             assert.strictEqual(quaternion.z, 3);
@@ -25,7 +25,7 @@ describe('Quaternion', () => {
     describe('Euler angles', () => {
         describe('#toEuler', () => {
             it('should return a euler object with correct components', () => {
-                let euler = new Quaternion([0.235, -0.667, 0.241, 0.665]).toEuler();
+                const euler = new Quaternion([0.235, -0.667, 0.241, 0.665]).toEuler();
                 assert.closeTo(euler.heading, -1.5763, 0.0001);
                 assert.closeTo(euler.attitude, 0.0070, 0.0001);
                 assert.closeTo(euler.bank, 0.6864, 0.0001);
@@ -49,7 +49,7 @@ describe('Quaternion', () => {
     });
     describe('#normalized', () => {
         it('should return a Quaternion object with a length of one, pointing in the same direction as this Quaternion object', () => {
-            let quaternion = new Quaternion([21, 35, 78, 32]).normalized();
+            const quaternion = new Quaternion([21, 35, 78, 32]).normalized();
             assert.closeTo(quaternion.x, 0.2241921902, 0.0001);
             assert.closeTo(quaternion.y, 0.3736536503, 0.0001);
             assert.closeTo(quaternion.z, 0.8327138492, 0.0001);
@@ -58,7 +58,7 @@ describe('Quaternion', () => {
     });
     describe('#conjugate', () => {
         it('should return a Quaternion object with all components negated, except w', () => {
-            let quaternion = new Quaternion([21, 35, 78, 32]).conjugate();
+            const quaternion = new Quaternion([21, 35, 78, 32]).conjugate();
             assert.closeTo(quaternion.x, -21, 0.0001);
             assert.closeTo(quaternion.y, -35, 0.0001);
             assert.closeTo(quaternion.z, -78, 0.0001);

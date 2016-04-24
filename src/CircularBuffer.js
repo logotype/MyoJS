@@ -1,4 +1,4 @@
-export class CircularBuffer {
+export default class CircularBuffer {
     constructor(size) {
 
         this.pos = 0;

@@ -1,12 +1,12 @@
 import {Server as WebSocketServer} from 'ws';
-import {BaseConnection} from './../src/connection/BaseConnection.js';
+import BaseConnection from './../src/connection/BaseConnection.js';
 import {assert} from 'chai';
 
-let frameDump = '{ "frame" : { "id" : 43928, "timestamp" : "1423842951", "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
-let frameDumpDeviceInfo = '{ "frame" : { "deviceInfo" : { "connected" : true }}}';
+const frameDump = '{ "frame" : { "id" : 43928, "timestamp" : "1423842951", "rssi" : 53, "event" : { "type" : "onConnect" }, "rotation" : [ -0.4093628, -0.1088257, 0.1548462, 0.8925171 ], "euler" : { "roll" : 1.34422, "pitch" : -1.428455, "yaw" : 2.271631 }, "pose" : { "type" : 5 }, "gyro" : [ 2.868652, -2.868652, 2.563476 ], "accel" : [ 0.04736328, -0.7241211, 0.6367188 ], "emg" : [ -6, 0, -1, 0, 40, 1, 2, -2 ] }}';
+const frameDumpDeviceInfo = '{ "frame" : { "deviceInfo" : { "connected" : true }}}';
 describe('BaseConnection', () => {
     describe('Constructor: Test with valid host and port', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -22,7 +22,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('Constructor: Test with empty object', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection({});
         });
@@ -37,7 +37,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('Constructor: Test with empty host', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection({someProperty:'someString', port:6450});
         });
@@ -52,20 +52,18 @@ describe('BaseConnection', () => {
         });
     });
     describe('Constructor: Test with host of wrong type', () => {
-        let baseConnection;
         after((done) => {
-            baseConnection = null;
             done();
         });
         it('should throw an error when host is of wrong type', (done) => {
             assert.throws(() => {
-                baseConnection = new BaseConnection({host: 6450});
+                new BaseConnection({host: 6450});
             }, Error, 'Host needs to be of type string');
             done();
         });
     });
     describe('Constructor: Test with empty port', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection({host:'someString'});
         });
@@ -80,20 +78,18 @@ describe('BaseConnection', () => {
         });
     });
     describe('Constructor: Test with port of wrong type', () => {
-        let baseConnection;
         after((done) => {
-            baseConnection = null;
             done();
         });
         it('should throw an error when port is of wrong type', (done) => {
             assert.throws(() => {
-                baseConnection = new BaseConnection({host:'someString', port:'someOtherString'});
+                new BaseConnection({host:'someString', port:'someOtherString'});
             }, Error, 'Port needs to be of type integer');
             done();
         });
     });
     describe('Constructor: Test with passing a string as an argument', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection('someString');
         });
@@ -108,7 +104,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#send', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
              baseConnection = new BaseConnection();
         });
@@ -125,7 +121,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#getUrl', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -140,8 +136,8 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleOpen', () => {
-        let wss;
-        let baseConnection;
+        let wss = null;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
             wss = new WebSocketServer({port: 6450});
@@ -155,7 +151,7 @@ describe('BaseConnection', () => {
         });
         it('should call context to requestDeviceInfo', (done) => {
             let didRequestDeviceInfo = false;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"requestDeviceInfo" never sent');
                 clearInterval(baseConnection.reconnectionTimer);
             baseConnection = null;
@@ -163,7 +159,7 @@ describe('BaseConnection', () => {
             }, 1000);
             wss.on('connection', (ws) => {
                 ws.on('message', (message) => {
-                    let data = JSON.parse(message);
+                    const data = JSON.parse(message);
                     if(data.hasOwnProperty('command')) {
                         if(data.command === 'requestDeviceInfo') {
                             didRequestDeviceInfo = true;
@@ -178,8 +174,8 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleOpen: when already connected', () => {
-        let wss;
-        let baseConnection;
+        let wss = null;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
             wss = new WebSocketServer({port: 6450});
@@ -198,7 +194,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleClose: when connected', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -214,8 +210,8 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleClose: return "disconnected" if disconnected', () => {
-        let wss;
-        let baseConnection;
+        let wss = null;
+        let baseConnection = null;
         before(() => {
             wss = new WebSocketServer({port: 6450});
             baseConnection = new BaseConnection();
@@ -228,8 +224,7 @@ describe('BaseConnection', () => {
             done();
         });
         it('should return "disconnecting" if connected', (done) => {
-            let didRequestDeviceInfo = false;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, 'failed to connect or receive data');
                 clearInterval(baseConnection.reconnectionTimer);
             baseConnection = null;
@@ -237,10 +232,9 @@ describe('BaseConnection', () => {
             }, 1000);
             wss.on('connection', (ws) => {
                 ws.on('message', (message) => {
-                    let data = JSON.parse(message);
+                    const data = JSON.parse(message);
                     if(data.hasOwnProperty('command')) {
                         if(data.command === 'requestDeviceInfo') {
-                            didRequestDeviceInfo = true;
                             clearTimeout(errTimeout);
                             assert.strictEqual(baseConnection.handleClose(), 'disconnected');
                             done();
@@ -252,7 +246,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#reconnect', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -277,19 +271,19 @@ describe('BaseConnection', () => {
     describe('#handleData: errors', () => {
         it('should throw an error when no data is sent', () => {
             assert.throws(() => {
-                let baseConnection = new BaseConnection();
+                const baseConnection = new BaseConnection();
                 baseConnection.handleData();
             }, Error, 'No data received');
         });
         it('should throw an error when JSON string is invalid', () => {
             assert.throws(() => {
-                let baseConnection = new BaseConnection();
+                const baseConnection = new BaseConnection();
                 baseConnection.handleData('abc');
             }, Error, 'Invalid JSON');
         });
     });
     describe('#handleData: deviceInfo', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -300,7 +294,7 @@ describe('BaseConnection', () => {
         });
         it('should emit a deviceInfo event', (done) => {
             let didEmitDeviceInfo = false;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, 'Event never fired');
                 done();
             }, 10);
@@ -315,7 +309,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleData: connect', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -326,7 +320,7 @@ describe('BaseConnection', () => {
         });
         it('should emit a "connect" event', (done) => {
             let didEmitConnect = false;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"connect" event never fired');
                 done();
             }, 10);
@@ -341,7 +335,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleData: frame', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -353,7 +347,7 @@ describe('BaseConnection', () => {
         it('should emit a "frame" event', (done) => {
             let didEmitFrame = false;
             baseConnection.connected = true;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"frame" event never fired');
                 done();
             }, 10);
@@ -367,7 +361,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleData: pose', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -379,7 +373,7 @@ describe('BaseConnection', () => {
         it('should emit a "pose" event', (done) => {
             let didEmitPose = false;
             baseConnection.connected = true;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"pose" event never fired');
                 done();
             }, 10);
@@ -393,7 +387,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#handleData: event', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -405,7 +399,7 @@ describe('BaseConnection', () => {
         it('should emit a "event" event', (done) => {
             let didEmitEvent = false;
             baseConnection.connected = true;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"event" event never fired');
                 done();
             }, 10);
@@ -419,7 +413,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#startReconnection', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -436,7 +430,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#startReconnection: when already connected', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -452,7 +446,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#stopReconnection', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -469,8 +463,8 @@ describe('BaseConnection', () => {
         });
     });
     describe('#connect', () => {
-        let wss;
-        let baseConnection;
+        let wss = null;
+        let baseConnection = null;
         before(() => {
             wss = new WebSocketServer({port: 6450});
             baseConnection = new BaseConnection();
@@ -487,7 +481,7 @@ describe('BaseConnection', () => {
             let didRequestDeviceInfo = false;
             wss.on('connection', (ws) => {
                 ws.on('message', (message) => {
-                    let data = JSON.parse(message);
+                    const data = JSON.parse(message);
                     if(data.hasOwnProperty('command')) {
                         if(data.command === 'requestDeviceInfo') {
                             didRequestDeviceInfo = true;
@@ -496,7 +490,7 @@ describe('BaseConnection', () => {
                     }
                 });
             });
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"connect" event never fired');
                 done();
             }, 1000);
@@ -510,7 +504,7 @@ describe('BaseConnection', () => {
         });
     });
     describe('#connect: when already connected', () => {
-        let baseConnection;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
         });
@@ -527,8 +521,8 @@ describe('BaseConnection', () => {
     });
     describe('#disconnect (connected)', () => {
         let didEmitDisconnect = false;
-        let baseConnection;
-        let didCloseSocket;
+        let baseConnection = null;
+        let didCloseSocket = null;
         before(() => {
             baseConnection = new BaseConnection();
             baseConnection.socket = {};
@@ -545,7 +539,7 @@ describe('BaseConnection', () => {
         it('should emit a "disconnect" event', (done) => {
             didCloseSocket = false;
             baseConnection.connected = true;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, '"disconnect" event never fired');
                 done();
             }, 10);
@@ -561,8 +555,8 @@ describe('BaseConnection', () => {
     });
     describe('#disconnect (disconnected)', () => {
         let didEmitDisconnect = false;
-        let baseConnection;
-        let didCloseSocket;
+        let baseConnection = null;
+        let didCloseSocket = null;
         before(() => {
             baseConnection = new BaseConnection();
             baseConnection.socket = {};
@@ -577,7 +571,7 @@ describe('BaseConnection', () => {
         });
         it('should not emit a "disconnect" event if disconnected', (done) => {
             didCloseSocket = false;
-            let errTimeout = setTimeout(() => {
+            const errTimeout = setTimeout(() => {
                 assert.strictEqual(false, didEmitDisconnect);
                 done();
             }, 10);
@@ -592,14 +586,11 @@ describe('BaseConnection', () => {
         });
     });
     describe('#disconnect (stopReconnection)', () => {
-        let baseConnection;
-        let didCloseSocket;
+        let baseConnection = null;
         before(() => {
             baseConnection = new BaseConnection();
             baseConnection.socket = {};
-            baseConnection.socket.close = () => {
-                didCloseSocket = true;
-            };
+            baseConnection.socket.close = () => {};
         });
         after((done) => {
             clearInterval(baseConnection.reconnectionTimer);

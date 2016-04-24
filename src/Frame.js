@@ -1,8 +1,8 @@
-import {Pose} from './Pose.js';
-import {Quaternion} from './Quaternion.js';
-import {Vector3} from './Vector3.js';
+import Pose from './Pose.js';
+import Quaternion from './Quaternion.js';
+import Vector3 from './Vector3.js';
 
-export class Frame {
+export default class Frame {
     constructor(data) {
 
         if (!data) {

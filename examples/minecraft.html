@@ -73,7 +73,7 @@
 			animate();
 
             function initMyo() {
-                hub = new Myo.Hub();
+                hub = Myo.Hub();
 
                 hub.on('frame', function(frame) {
                     quaternion.x = frame.rotation.y;
