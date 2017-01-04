@@ -53,7 +53,7 @@ describe('Hub', () => {
             assert.throws(() =>  {
                 const hub = new Hub();
                 hub.addListener('frame', {});
-            }, Error, 'listener must be a function');
+            }, Error, 'argument must be a function');
         });
     });
     describe('#removeListener', () => {
@@ -89,7 +89,7 @@ describe('Hub', () => {
             assert.throws(() =>  {
                 const hub = new Hub();
                 hub.removeListener('frame', {});
-            }, Error, 'listener must be a function');
+            }, Error, 'argument must be a function');
         });
     });
     describe('#frame', () => {
